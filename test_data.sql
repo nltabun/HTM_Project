@@ -1,0 +1,1 @@
+INSERT INTO `game` VALUES ('MUSK', 100000, 999999, 'FAOR', 'Elon Musk'), ('Player', 150, 20, '', 'Player1');
