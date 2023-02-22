@@ -1,10 +1,11 @@
-#
+# Game
 
 import mysql.connector
-import game_objects
+import game_init
+#import game_objects
 
 
-if __name__ == "__main__":
+def main():
     conn = mysql.connector.connect(
         host='localhost',
         database='htm_database',
@@ -12,19 +13,28 @@ if __name__ == "__main__":
         password='play',
         autocommit=True
     )
+    
+    save_data = game_init.saved_game_data_exists(conn)
 
-    player = game_objects.Player('Player 1', 250, 1000, 'KBOS')
-    musk = game_objects.Player('Elon Musk', 1000000, 9999999, 'KBOI', game_objects.Airplane('Air Force Musk'))
+    if save_data:
+        print('True')
+    else:
+        print('False')
+    
+    option = 1
+    if option == 1: # New game
+        game_init.new_game(conn)
+        # TODO Start game
+    elif option == 2: # Continue game (TODO Hide if no save to load maybe?)
+        if save_data: 
+            pass # TODO Start game
+        else: # No save
+            pass
+    elif option == 4: # Quit game
+        pass
     
     conn.close()
 
 
-# Test
-'''query = f'SELECT * FROM minigame WHERE difficulty = 2'
-cur = conn.cursor()
-cur.execute(query)
-results = cur.fetchall()
-
-for row in results:
-    print(row)'''
-# Test end
+if __name__ == "__main__":
+    main()
