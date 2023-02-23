@@ -5,11 +5,12 @@ def airport_visit():
           "\n"
           "(A) Play Minigame\n"
           "(B) Buy Fuel\n"
-          "(C) Buy a clue from Twitter\n")
+          "(C) Buy a clue\n"
+          "(D) Select another airport\n")
 
     while True:
         selection = input("Selection: ")
-        choices = ('A', 'B', 'C')
+        choices = ('A', 'B', 'C', 'D')
         if selection in choices:
             break
         else:
@@ -19,8 +20,11 @@ def airport_visit():
         print("MINIGAME STARTS")
     elif selection == 'B':
         print("BUYING FUEL")
+    elif selection == 'C':
+        print("BUY A CLUE")
     else:
-        print("BUY A CLUE FROM TWITTER")
+        print("MOVE TO ANOTHER AIRPORT")
+
 
 
 airport_visit()
