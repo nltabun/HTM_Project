@@ -14,7 +14,7 @@ def airport_visit():
         if selection in choices:
             break
         else:
-            print("Error in selection. Please use letters A, B or C.")
+            print("Error in selection. Please use letters A, B, C or D.")
             continue
     if selection == 'A':
         print("MINIGAME STARTS")
