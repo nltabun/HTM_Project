@@ -74,7 +74,7 @@ DROP TABLE IF EXISTS `minigame`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `minigame` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(120) DEFAULT NULL,
+  `question` varchar(160) DEFAULT NULL,
   `answer1` varchar(40) DEFAULT NULL,
   `answer2` varchar(40) DEFAULT NULL,
   `answer3` varchar(40) DEFAULT NULL,
