@@ -13,9 +13,11 @@ connection = mysql.connector.connect(
 
 
 
-def select_airports():
+def select_airport():
     sql = "SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = NA"
     cursor = conn.cursor(Dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
     return result
+
+
