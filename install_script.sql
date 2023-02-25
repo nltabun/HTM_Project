@@ -20,7 +20,7 @@ CREATE TABLE `airport` (
   `id` int(11) NOT NULL,
   `ident` varchar(40) NOT NULL,
   `type` varchar(40) DEFAULT NULL,
-  `name` varchar(40) DEFAULT NULL,
+  `name` varchar(120) DEFAULT NULL,
   `latitude_deg` double DEFAULT NULL,
   `longitude_deg` double DEFAULT NULL,
   `elevation_ft` int(11) DEFAULT NULL,
