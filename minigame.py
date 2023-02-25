@@ -1,16 +1,9 @@
 import mysql.connector
 import random
 
-connection = mysql.connector.connect(
-    host='localhost',
-    port=3306,
-    database='htm_database',
-    user='user',
-    password='koira',
-    autocommit=True
-)
 
-def minigame():
+
+def minigame(connection):
     id = random.randint(1, 25) #randomizer for the random question
     correct_answer = ''
 
@@ -36,7 +29,7 @@ def minigame():
             elif rivi[6] == rivi[4]:
                 correct_answer = 'c'
             else:
-                correct_answer = 'c'
+                correct_answer = 'd'
 
     # Waiting for the correct answer format
     while True:
