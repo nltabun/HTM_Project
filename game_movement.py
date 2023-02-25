@@ -2,23 +2,34 @@ import mysql.connector
 import game_objects
 from geopy import distance
 
-connection = mysql.connector.connect(
-        host='localhost',
-        database='htm_database',
-        user='htm',
-        password='play',
-        autocommit=True
-    )
+#hahaa
+
 
 def select_airport(connection):
-    sql = "SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = NA"
+    sql = f'SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = \'NA\''
     cursor = connection.cursor(Dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
     return result
 
+def player_location(connection):
+    sql = f'SELECT location FROM game WHERE id = \'Player\''
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    return result
+
+def player_location_name(connection):
+    sql = f'SELECT name FROM airport WHERE ident IN(SELECT location FROM game WHERE id = \'Player\')'
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    return result
+
+
 def get_player_coordinates(player_location, connection):
-    sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = \'{player_location}\''
+    player_location = str(player_location).strip('[(,)]')
+    sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {player_location}'
     cursor = connection.cursor()
     cursor.execute(sql)
     tulos = cursor.fetchall()
@@ -43,7 +54,7 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     distances = []
     for row in airport_list:
         location_data = (row[1], row[2])
-        airport_distance = (row[0], calculate_distance(location_data ,player_coordinates))
+        airport_distance = (row[0], calculate_distance(location_data, player_coordinates))
         distances.append(airport_distance)
     return distances
 
@@ -55,7 +66,10 @@ def airports_in_range(airport_list):
     return in_range
 
 
-def player_movement(in_range, connection):
+def player_movement(connection):
+    player_loc = player_location(connection)
+    airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(player_loc, connection))
+    in_range = airports_in_range(airport_list)
     i = 1
     airport_dic = dict()
 
@@ -88,6 +102,6 @@ def player_movement(in_range, connection):
 
 
 
-calculated = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates('KIND', connection))
+#calculated = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates('KIND', connection))
 
-player_movement(airports_in_range(calculated), connection)
+#player_movement(airports_in_range(calculated), connection)
