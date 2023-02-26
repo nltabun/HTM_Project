@@ -53,16 +53,15 @@ def main():
     option = 1
     if option == 1: # New game
         game_init.new_game(conn)
-        # TODO Start game
+        play_game(conn)
     elif option == 2: # Continue game (TODO Hide if no save to load maybe?)
         if save_data: 
-            pass # TODO Start game
+            play_game(conn)
         else: # No save
             pass
     elif option == 4: # Quit game
         pass
 
-    play_game(conn)
     conn.close()
 
 
