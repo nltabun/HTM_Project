@@ -81,28 +81,7 @@ def minigame(connection):
 ################################################## Clue buying section below, be aware of eye cancer
 
 #Get Elons location as it had not been done in game_movement(as in, the function was only made for players)
-def musk_location(connection):
-    sql = f'SELECT location FROM game WHERE id = \'Musk\''
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    return result
 
-#Same comment as mentioned in row 83 but instead of location, its coordinates
-def get_musk_coordinates(musk_location, connection):
-    musk_location = str(musk_location).strip('[(,)]')
-    sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {musk_location}'
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return result[0]
-
-#Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
-def clue_distance_to_musk(connection):
-    musk = get_musk_coordinates(musk_location(connection), connection)
-    player = game_movement.get_player_coordinates(game_movement.player_location(connection), connection)
-
-    return print(f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers')
 
 #Function for buying clues
 def buy_clue(connection):
@@ -136,7 +115,7 @@ def buy_clue(connection):
         cursor.execute(update)
 
         #Finally give the clue to player
-        clue_distance_to_musk(connection)
+        game_movement.clue_distance_to_musk(connection)
         print(f'Your stonks have been deducted to the value of {stonks}')
     else:
 
