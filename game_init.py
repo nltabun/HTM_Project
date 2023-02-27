@@ -2,6 +2,7 @@
 
 import game_objects
 
+
 # Check if game table already contains data
 def saved_game_data_exists(connection):
     query = f'SELECT * FROM game'
@@ -18,41 +19,39 @@ def saved_game_data_exists(connection):
     return exists
 
 
-# Create list of planes the player can acquire
+# Create planes and return them in a list
 def generate_airplanes():
     planes = []
     
+    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9)
     plane1 = game_objects.Airplane('Cloudbus A69')
     plane2 = game_objects.Airplane('Boijong 420', 15000)
     
+    planes.append(plane_musk)
     planes.append(plane1)
     planes.append(plane2)
 
     return planes
 
+
 # Setup players when no data exists in 'game' table
 def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc):
-    #players = []
-
     start_money = 250
     start_fuel = 1000
-    start_plane = planes[0]
-    musk_plane = game_objects.Airplane('Air Force Musk', 50000, 0.9)
+    start_plane = planes[1]
+    musk_plane = planes[0]
 
     player = game_objects.Player('Player', player_name, start_money, start_fuel, start_loc, start_plane)
     musk = game_objects.Player('Musk', 'Elon Musk', 1000000, 9999999, musk_start_loc, musk_plane)
 
-    #players.append(player)
-    #players.append(musk)
-
     insert_values = f'INSERT INTO game VALUES ({player.sql_values()}), ({musk.sql_values()})'
-    #print(insert_values)
     cur = connection.cursor()
     cur.execute(insert_values)
 
     return
 
 
+# Setup new game (currently also deletes old game)
 def new_game(connection):
     cur = connection.cursor()
     if saved_game_data_exists(connection):
@@ -71,4 +70,3 @@ def new_game(connection):
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
     
     return
-
