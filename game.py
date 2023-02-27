@@ -1,6 +1,8 @@
 # Game
 
 import mysql.connector
+
+import game_fuel
 import game_init
 import game_movement
 import game_choice_options
@@ -28,7 +30,7 @@ def airport_visit(connection):
     if selection == 'A':
         game_choice_options.minigame(connection)
     elif selection == 'B':
-        print("BUYING FUEL")
+        game_fuel.buying_fuel(connection)
     elif selection == 'C':
         game_choice_options.buy_clue(connection)
     elif selection == 'D':
