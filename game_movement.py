@@ -2,8 +2,6 @@ import mysql.connector
 import game_objects
 from geopy import distance
 
-#hahaa
-
 
 def select_airport(connection):
     sql = f'SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = \'NA\''
@@ -12,12 +10,14 @@ def select_airport(connection):
     result = cursor.fetchone()
     return result
 
+
 def player_location(connection):
     sql = f'SELECT location FROM game WHERE id = \'Player\''
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
     return result
+
 
 def player_location_name(connection):
     sql = f'SELECT name FROM airport WHERE ident IN(SELECT location FROM game WHERE id = \'Player\')'
@@ -35,6 +35,7 @@ def get_player_coordinates(player_location, connection):
     tulos = cursor.fetchall()
     return tulos[0]
 
+
 def get_all_airport_coordinates(connection):
     sql = f'SELECT name, latitude_deg, longitude_deg, ident FROM airport'
     cursor = connection.cursor()
@@ -45,10 +46,12 @@ def get_all_airport_coordinates(connection):
         airport_coordinates.append(row)
     return airport_coordinates
 
+
 def calculate_distance(location_data, player_location):
     player_coordinates = (player_location[0], player_location[1])
     airport_location = (location_data[0], location_data[1])
     return float(distance.distance(airport_location, player_coordinates).km)
+
 
 def calculate_all_airport_distance(airport_list, player_coordinates):
     distances = []
@@ -57,6 +60,7 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
         airport_distance = (row[0], calculate_distance(location_data, player_coordinates))
         distances.append(airport_distance)
     return distances
+
 
 def airports_in_range(airport_list):
     in_range = []
@@ -69,7 +73,7 @@ def airports_in_range(airport_list):
 def player_movement(connection):
     player_loc = player_location(connection)
     airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(player_loc, connection))
-    in_range = airports_in_range(airport_list)
+    in_range = airports_in_range(airport_list) # TODO list shouldn't contain current airport
     i = 1
     airport_dic = dict()
 
@@ -77,7 +81,7 @@ def player_movement(connection):
         print(f'({i}) {row[0]}')
         airport_dic.update({i:row[0]})
         i+=1
-    answer = input(f'Choose your destination: ')
+    answer = input(f'Choose your destination: ') # TODO Option to cancel?
 
     try:
         if airport_dic.get(int(answer)):
@@ -94,12 +98,8 @@ def player_movement(connection):
     print(result)
     placeholder_id = 'Player'
 
-    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\''
+    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update now or when turn ends?
     cursor.execute(update)
-
-
-
-
 
 
 #calculated = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates('KIND', connection))
