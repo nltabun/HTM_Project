@@ -4,6 +4,7 @@ import mysql.connector
 import game_init
 import game_movement
 import game_choice_options
+import game_data
 #import game_objects
 
 #A little variable to keep the game going for testing purposes
@@ -36,7 +37,11 @@ def airport_visit(connection):
     elif selection == 'F11':
         global game_on
         game_on = False
+
+
 def play_game(connection):
+    players = game_data.load_player_data(connection)
+
     #A loop made for testing purposes
     while game_on == True:
         airport_visit(connection)
