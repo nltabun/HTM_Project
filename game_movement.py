@@ -1,6 +1,8 @@
 import mysql.connector
 import game_objects
 from geopy import distance
+import random
+
 
 
 def select_airport(connection):
@@ -124,6 +126,33 @@ def clue_distance_to_musk(connection):
     player = get_player_coordinates(player_location(connection), connection)
 
     return print(f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers')
+
+def musk_movement(connection):
+    musk_loc = musk_location(connection)
+    airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_musk_coordinates(musk_loc, connection))
+    in_range = airports_in_range(airport_list)
+
+    airport_dict = dict()
+    a = 1
+
+    for row in in_range:
+        airport_dict.update({a: row[0]})
+        a += 1
+
+    rand = random.randint(1, a)
+
+    sql = f'SELECT ident FROM airport WHERE name LIKE "{airport_dict.get(int(rand))}"'
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    result = str(result).strip('[(,)]')
+    print(f'Musk has moved to {result}\n')
+    musk_id = 'Musk'
+
+    update = f'UPDATE game SET location = {result} WHERE id = \'{musk_id}\''  # TODO Update now or when turn ends?
+    cursor.execute(update)
+
 
 
 #calculated = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates('KIND', connection))
