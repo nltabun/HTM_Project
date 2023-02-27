@@ -57,15 +57,19 @@ def minigame(connection):
         result_prize = cursor.fetchone()
         result_prize = int(str(result_prize).strip('(,)'))
 
+        #Get players current amount of stonks
         sql = f'SELECT stonks  FROM game WHERE id = \'player\''
         cursor = connection.cursor()
         cursor.execute(sql)
         player_stonks = cursor.fetchall()
         player_stonks = int(str(player_stonks).strip('[(,)]'))
 
+        #update the amount of stonks for player
         stonks = player_stonks + result_prize
+
         update = f'UPDATE game SET stonks = {stonks} WHERE id = \'player\''
         cursor.execute(update)
+
         print(f'Your stonks have reached the value of {stonks}')
 
     else:
@@ -84,7 +88,7 @@ def musk_location(connection):
     result = cursor.fetchone()
     return result
 
-#Same comment as mentioned in row 79 but instead of location, its coordinates
+#Same comment as mentioned in row 83 but instead of location, its coordinates
 def get_musk_coordinates(musk_location, connection):
     musk_location = str(musk_location).strip('[(,)]')
     sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {musk_location}'
