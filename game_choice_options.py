@@ -84,7 +84,7 @@ def musk_location(connection):
     result = cursor.fetchone()
     return result
 
-#Same comment as mentioned in row 61 but instead of location, its coordinates
+#Same comment as mentioned in row 79 but instead of location, its coordinates
 def get_musk_coordinates(musk_location, connection):
     musk_location = str(musk_location).strip('[(,)]')
     sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {musk_location}'
@@ -116,7 +116,7 @@ def buy_clue(connection):
         if you_sure in choices:
             break
         else:
-            print("Error in selection. Please use letters A or N.")
+            print("Error in selection. Please use letters Y or N.")
 
     if you_sure == 'Y':
         pass
