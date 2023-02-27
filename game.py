@@ -35,6 +35,10 @@ def airport_visit(connection):
         game_choice_options.buy_clue(connection)
     elif selection == 'D':
         game_movement.player_movement(connection)
+        print("\nElon Musk is moving.\n")
+        game_movement.musk_movement(connection)
+        #game_movement.player_movement(connection)
+
     #A way to end the while loop/program
     elif selection == 'F11':
         global game_on
