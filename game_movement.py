@@ -102,6 +102,30 @@ def player_movement(connection):
     cursor.execute(update)
 
 
+def musk_location(connection):
+    sql = f'SELECT location FROM game WHERE id = \'Musk\''
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    return result
+
+#Same comment as mentioned in row 83 but instead of location, its coordinates
+def get_musk_coordinates(musk_location, connection):
+    musk_location = str(musk_location).strip('[(,)]')
+    sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {musk_location}'
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result[0]
+
+#Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
+def clue_distance_to_musk(connection):
+    musk = get_musk_coordinates(musk_location(connection), connection)
+    player = get_player_coordinates(player_location(connection), connection)
+
+    return print(f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers')
+
+
 #calculated = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates('KIND', connection))
 
 #player_movement(airports_in_range(calculated), connection)
