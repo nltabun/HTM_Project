@@ -1,7 +1,6 @@
 # Game
 
 import mysql.connector
-
 import game_fuel
 import game_init
 import game_movement
@@ -11,6 +10,8 @@ import game_data
 
 #A little variable to keep the game going for testing purposes
 game_on = True
+
+
 def airport_visit(connection):
     print(f"Welcome to {str(game_movement.player_location_name(connection)).strip('[(,)]')}. Select what you want to do.\n"
           "\n"
@@ -27,6 +28,7 @@ def airport_visit(connection):
         else:
             print("Error in selection. Please use letters A, B, C or D.")
             continue
+
     if selection == 'A':
         game_choice_options.minigame(connection)
     elif selection == 'B':
@@ -41,14 +43,20 @@ def airport_visit(connection):
         game_on = False
 
 
+# Start game
 def play_game(connection):
-    players = game_data.load_player_data(connection)
+    player, musk = game_data.load_game_table_data(connection) # Loads player and Musk as "Player" objects from the game table
 
-    #A loop made for testing purposes
+    print(f'{player}') # Test print loaded player
+    print(f'{musk}\n') # Test print loaded musk
+
+    # A loop made for testing purposes
     while game_on == True:
         airport_visit(connection)
 
+
 def main():
+    # Establish connection to database using predetermined login details
     conn = mysql.connector.connect(
         host='localhost',
         database='htm_database',
@@ -57,13 +65,15 @@ def main():
         autocommit=True
     )
     
+    # Check if save data can be found. (= is there something in the game table)
     save_data = game_init.saved_game_data_exists(conn)
 
     if save_data:
-        print('True')
+        print('\nSave data found.\n')
     else:
-        print('False')
+        print('\nNo save data found.\n')
     
+    # Test "main menu"
     option = 1
     if option == 1: # New game
         game_init.new_game(conn)
@@ -75,10 +85,10 @@ def main():
             pass
     elif option == 4: # Quit game
         pass
-
+    
+    # Close database connection
     conn.close()
 
 
 if __name__ == "__main__":
     main()
-
