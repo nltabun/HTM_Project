@@ -3,9 +3,11 @@
 import mysql.connector
 import game_init
 import game_movement
-import minigame
+import game_choice_options
 #import game_objects
 
+#A little variable to keep the game going for testing purposes
+game_on = True
 def airport_visit(connection):
     print(f"Welcome to {str(game_movement.player_location_name(connection)).strip('[(,)]')}. Select what you want to do.\n"
           "\n"
@@ -16,23 +18,28 @@ def airport_visit(connection):
 
     while True:
         selection = input("Selection: ").capitalize()
-        choices = ('A', 'B', 'C', 'D')
+        choices = ('A', 'B', 'C', 'D', 'F11')
         if selection in choices:
             break
         else:
             print("Error in selection. Please use letters A, B, C or D.")
             continue
     if selection == 'A':
-        minigame.minigame(connection)
+        game_choice_options.minigame(connection)
     elif selection == 'B':
         print("BUYING FUEL")
     elif selection == 'C':
-        print("BUY A CLUE")
+        game_choice_options.buy_clue(connection)
     elif selection == 'D':
         game_movement.player_movement(connection)
-
+    #A way to end the while loop/program
+    elif selection == 'F11':
+        global game_on
+        game_on = False
 def play_game(connection):
-    airport_visit(connection)
+    #A loop made for testing purposes
+    while game_on == True:
+        airport_visit(connection)
 
 def main():
     conn = mysql.connector.connect(
