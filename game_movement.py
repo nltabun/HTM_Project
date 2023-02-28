@@ -100,7 +100,7 @@ def player_movement(connection):
     print(result)
     placeholder_id = 'Player'
 
-    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update now or when turn ends?
+    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update when turn ends
     cursor.execute(update)
 
 
@@ -150,7 +150,7 @@ def musk_movement(connection):
     print(f'Musk has moved to {result}\n')
     musk_id = 'Musk'
 
-    update = f'UPDATE game SET location = {result} WHERE id = \'{musk_id}\''  # TODO Update now or when turn ends?
+    update = f'UPDATE game SET location = {result} WHERE id = \'{musk_id}\''  # TODO Update when turn ends
     cursor.execute(update)
 
 
