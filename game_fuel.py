@@ -7,28 +7,34 @@ def player_money(connection):
     return int(str(result).strip('[(,)]'))
 
 # Gets players fuel
-def player_fuel(connection):
-    sql = (f"SELECT fuel FROM game WHERE id = \'player\'")
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return int(str(result).strip('[(,)]'))
+def player_fuel(connection, player):
+    player_current_fuel = player.fuel
+
+    #sql = (f"SELECT fuel FROM game WHERE id = \'player\'")
+    #cursor = connection.cursor()
+    #cursor.execute(sql)
+    #result = cursor.fetchall()
+    #return int(str(result).strip('[(,)]'))
+    return player_current_fuel
 
 #
-def buying_fuel(connection):
+def buying_fuel(connection, player):
     cursor = connection.cursor()
-    money = player_money(connection)
+    player_money = player.money
 
     print(f'BUYING FUEL\n'
-          f'\nYou have {player_money(connection)} TSLA Stock')
+          f'\nYou have {player_money} TSLA Stock')
 
     fuel = int(input('Do you want to by fuel? 1 TSLA Stock = 1Km of range. Enter the amount you want to buy: '))
-    if fuel > money:
+    if fuel > player_money:
         print(f'\nYou cannot afford that amount of fuel.\n')
     else:
 
-        new_player_money = money - fuel
-        new_player_fuel = player_fuel(connection) + fuel
+        new_player_money = player_money - fuel
+        new_player_fuel = player.fuel + fuel
+
+        player.fuel = new_player_fuel
+        player.money = new_player_money
 
         update = f'UPDATE game SET stonks = {new_player_money} WHERE id = \'player\''
         cursor.execute(update)

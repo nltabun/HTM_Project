@@ -4,7 +4,7 @@ import mysql.connector
 import game_fuel
 import game_init
 import game_movement
-import game_choice_options
+import game_actions
 import game_data
 #import game_objects
 
@@ -12,7 +12,7 @@ import game_data
 game_on = True
 
 
-def airport_visit(connection):
+def airport_visit(connection, player):
     print(f"Welcome to {str(game_movement.player_location_name(connection)).strip('[(,)]')}. Select what you want to do.\n"
           "\n"
           "(A) Play Minigame\n"
@@ -30,11 +30,11 @@ def airport_visit(connection):
             continue
 
     if selection == 'A':
-        game_choice_options.minigame(connection)
+        game_actions.minigame(connection)
     elif selection == 'B':
-        game_fuel.buying_fuel(connection)
+        game_fuel.buying_fuel(connection, player)
     elif selection == 'C':
-        game_choice_options.buy_clue(connection)
+        game_actions.buy_clue(connection)
     elif selection == 'D':
         game_movement.player_movement(connection)
         print("\nElon Musk is moving.\n")
@@ -56,7 +56,9 @@ def play_game(connection):
 
     # A loop made for testing purposes
     while game_on == True:
-        airport_visit(connection)
+        airport_visit(connection, player)
+
+    print(f'{player}')
 
 
 def main():
