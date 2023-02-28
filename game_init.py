@@ -44,7 +44,7 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
     player = game_objects.Player('Player', player_name, start_money, start_fuel, start_loc, start_plane)
     musk = game_objects.Player('Musk', 'Elon Musk', 1000000, 9999999, musk_start_loc, musk_plane)
 
-    insert_values = f'INSERT INTO game VALUES ({player.sql_values()}), ({musk.sql_values()})'
+    insert_values = f'INSERT INTO game VALUES ({player.new_values()}), ({musk.new_values()})'
     cur = connection.cursor()
     cur.execute(insert_values)
 
