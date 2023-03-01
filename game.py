@@ -59,6 +59,7 @@ def play_game(connection):
         airport_visit(connection, player)
 
     print(f'{player}')
+    game_data.save_to_game_table(connection, player, musk)
 
 
 def main_menu(connection): # TODO
