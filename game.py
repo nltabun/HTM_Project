@@ -13,20 +13,20 @@ game_on = True
 
 
 def airport_visit(connection, player):
-    print(f"Welcome to {str(game_movement.player_location_name(connection)).strip('[(,)]')}. Select what you want to do.\n"
-          "\n"
-          "(A) Play Minigame\n"
-          "(B) Buy Fuel\n"
-          "(C) Buy a clue\n"
-          "(D) Select another airport\n")
+    print(f'Welcome to {str(game_movement.player_location_name(connection)).strip("[(,)]")}. Select what you want to do.\n'
+          '\n'
+          '(A) Play Minigame\n'
+          '(B) Buy Fuel\n'
+          '(C) Buy a clue\n'
+          '(D) Select another airport\n')
 
     while True:
-        selection = input("Selection: ").capitalize()
+        selection = input('Selection: ').capitalize()
         choices = ('A', 'B', 'C', 'D', 'F11')
         if selection in choices:
             break
         else:
-            print("Error in selection. Please use letters A, B, C or D.")
+            print('Error in selection. Please use letters A, B, C or D.')
             continue
 
     if selection == 'A':
@@ -37,7 +37,7 @@ def airport_visit(connection, player):
         game_actions.buy_clue(connection)
     elif selection == 'D':
         game_movement.player_movement(connection)
-        print("\nElon Musk is moving.\n")
+        print('\nElon Musk is moving.\n')
         game_movement.musk_movement(connection)
         #game_movement.player_movement(connection)
 
@@ -61,6 +61,10 @@ def play_game(connection):
     print(f'{player}')
 
 
+def main_menu(connection): # TODO
+    pass
+
+
 def main():
     # Establish connection to database using predetermined login details
     conn = mysql.connector.connect(
@@ -79,7 +83,7 @@ def main():
     else:
         print('\nNo save data found.\n')
     
-    # Test "main menu"
+    # Test "main menu" # TODO func main menu
     option = 1
     if option == 1: # New game
         game_init.new_game(conn)
