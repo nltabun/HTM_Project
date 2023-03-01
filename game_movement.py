@@ -84,9 +84,10 @@ def player_movement(connection):
         airport_dic.update({i:row[0]})
         i+=1
     answer = input(f'Choose your destination: ') # TODO Option to cancel?
-
+    print(answer)
+    print(len(in_range))
     try:
-        if 0 < answer <= len(in_range): 
+        if 0 < int(answer) <= len(in_range): 
             query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))}"'
     
             cursor = connection.cursor()
