@@ -11,7 +11,6 @@ def saved_game_data_exists(connection):
     result = cur.fetchall()
 
     if len(result) > 0:
-        #print(result)
         exists = True
     else:
         exists = False
@@ -70,3 +69,4 @@ def new_game(connection):
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
     
     return
+

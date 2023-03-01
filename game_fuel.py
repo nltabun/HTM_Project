@@ -1,6 +1,5 @@
 #
 
-
 def buying_fuel(player):
     print(f'BUYING FUEL\n'
           f'\nYou have {player.money} TSLA Stock')

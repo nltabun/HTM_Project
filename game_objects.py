@@ -39,11 +39,3 @@ class Player:
     def update_values(self): # returns player statistics in the correct format to update a player in the database
         return f'fuel = {self.fuel}, stonks = {self.money}, location = {self.location}, plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}'
 
-
-#if __name__ == "__main__":
-#    test_player = Player('Player', 'Player 1', 250, 1000, 'KBOS')
-#    test_musk = Player('Elon Musk', 1000000, 9999999, 'KBOI', Airplane('Air Force Musk'))
-#    print(test_player)
-#    print('')
-#    print(test_player.sql_values())
-#    print(test_musk)

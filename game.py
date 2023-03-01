@@ -6,7 +6,6 @@ import game_init
 import game_movement
 import game_actions
 import game_data
-# import game_objects
 
 # A little variable to keep the game going for testing purposes
 game_on = True
@@ -41,7 +40,6 @@ def airport_visit(connection, musk, player=None):
         print(player.location)
         print('\nElon Musk is moving.\n')
         game_movement.player_movement(connection, musk)
-        # game_movement.player_movement(connection)
 
     # A way to end the while loop/program
     elif selection == 'F11':
