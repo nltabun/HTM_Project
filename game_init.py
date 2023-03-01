@@ -23,9 +23,9 @@ def saved_game_data_exists(connection):
 def generate_airplanes():
     planes = []
     
-    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9)
-    plane1 = game_objects.Airplane('Cloudbus A69')
-    plane2 = game_objects.Airplane('Boijong 420', 15000)
+    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000)
+    plane1 = game_objects.Airplane('Cloudbus A69', 10000, 1.0, 850)
+    plane2 = game_objects.Airplane('Boijong 420', 24000, 1.1, 900)
     
     planes.append(plane_musk)
     planes.append(plane1)
