@@ -72,7 +72,7 @@ def airports_in_range(airport_list):
     return in_range
 
 
-def player_movement(connection):
+def player_movement(connection, player):
     player_loc = player_location(connection)
     airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(player_loc, connection))
     in_range = airports_in_range(airport_list) # TODO list shouldn't contain current airport
@@ -84,8 +84,8 @@ def player_movement(connection):
         airport_dic.update({i:row[0]})
         i+=1
     answer = input(f'Choose your destination: ') # TODO Option to cancel?
-    print(answer)
-    print(len(in_range))
+    #print(answer)
+    #print(len(in_range))
     try:
         if 0 < int(answer) <= len(in_range): 
             query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))}"'
@@ -94,12 +94,16 @@ def player_movement(connection):
             cursor.execute(query)
             result = cursor.fetchall()
             result = str(result).strip('[(,)]')
-            print(result)
+            #print(result)
             placeholder_id = 'Player'
 
             update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
             print(update)
             cursor.execute(update)
+
+            # Separate object update
+            player.location = result
+            #print(player.location)
         else:
             raise Exception
     except:
