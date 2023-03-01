@@ -1,7 +1,7 @@
 #
 
 class Airplane:
-    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, current_fuel=0, speed=850):
+    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, speed=850, current_fuel=0):
         self.name = name # varchar(40)
         self.fuel_capacity = fuel_capacity
         self.fuel_efficiency = fuel_efficiency # lower = better
