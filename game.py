@@ -6,6 +6,7 @@ import game_init
 import game_movement
 import game_actions
 import game_data
+import game_events
 # import game_objects
 
 # A little variable to keep the game going for testing purposes
@@ -36,7 +37,8 @@ def airport_visit(connection, player):
     elif selection == 'C':
         game_actions.buy_clue(connection, player)
     elif selection == 'D':
-        game_movement.player_movement(connection)
+        game_movement.player_movement(connection, player)
+        game_events.event(player)
         print('\nElon Musk is moving.\n')
         game_movement.musk_movement(connection)
         # game_movement.player_movement(connection)
@@ -53,9 +55,8 @@ def play_game(connection):
 
     print(f'{player}') # Test print loaded player
     print(f'{musk}\n') # Test print loaded musk
-
     # A loop made for testing purposes
-    while game_on == True:
+    while game_on:
         airport_visit(connection, player)
 
     print(f'{player}')

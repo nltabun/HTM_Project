@@ -67,12 +67,12 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
 def airports_in_range(airport_list):
     in_range = []
     for row in airport_list:
-        if row[1] <= 500:
+        if row[1] <= 1000:
             in_range.append(row)
     return in_range
 
 
-def player_movement(connection):
+def player_movement(connection, player):
     player_loc = player_location(connection)
     airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(player_loc, connection))
     in_range = airports_in_range(airport_list) # TODO list shouldn't contain current airport
@@ -100,6 +100,8 @@ def player_movement(connection):
             update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
             print(update)
             cursor.execute(update)
+
+            player.location = result
         else:
             raise Exception
     except:

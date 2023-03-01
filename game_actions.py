@@ -1,14 +1,4 @@
-import random
-import mysql.connector
 import game_movement
-
-conn = mysql.connector.connect(
-        host='localhost',
-        database='htm_database',
-        user='htm',
-        password='play',
-        autocommit=True
-    )
 
 
 def minigame(connection, player):
@@ -61,7 +51,12 @@ def minigame(connection, player):
         result_prize = int(str(result_prize).strip('(,)'))
 
         # update the amount of stonks for player
-        stonks = player.money + result_prize
+        if player.location == "'PHNL'":
+            stonks = player.money + (result_prize * 3)  #triple the amount of money if in hawaii
+            player.money = stonks
+        else:
+            stonks = player.money + result_prize
+            player.money = stonks
 
         print(f'Your stonks have reached the value of {stonks}')
 
