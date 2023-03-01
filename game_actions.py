@@ -61,8 +61,9 @@ def minigame(connection, player):
         result_prize = int(str(result_prize).strip('(,)'))
 
         # update the amount of stonks for player
-        stonks = player.money + result_prize
-
+        stonks = player.money + result_prize 
+        # pls update player monis tuu
+        player.money = stonks
         print(f'Your stonks have reached the value of {stonks}')
 
     else:
