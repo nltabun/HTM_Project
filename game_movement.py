@@ -1,4 +1,4 @@
-import mysql.connector
+#
 import game_objects
 from geopy import distance
 import random
@@ -14,7 +14,7 @@ def select_airport(connection):
 
 
 def player_location(connection):
-    sql = f'SELECT location FROM game WHERE id = \'Player\''
+    sql = f'SELECT location FROM game WHERE id = \'Player\'' # TODO Get from object not database
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -22,7 +22,7 @@ def player_location(connection):
 
 
 def player_location_name(connection):
-    sql = f'SELECT name FROM airport WHERE ident IN(SELECT location FROM game WHERE id = \'Player\')'
+    sql = f'SELECT name FROM airport WHERE ident IN(SELECT location FROM game WHERE id = \'Player\')' 
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -100,19 +100,19 @@ def player_movement(connection):
     print(result)
     placeholder_id = 'Player'
 
-    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update when turn ends
+    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
     cursor.execute(update)
 
 
-def musk_location(connection):
-    sql = f'SELECT location FROM game WHERE id = \'Musk\''
+def musk_location(connection): # TODO Duplicate/Unneeded
+    sql = f'SELECT location FROM game WHERE id = \'Musk\'' # TODO Get from object not database
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
     return result
 
 #Same comment as mentioned in row 83 but instead of location, its coordinates
-def get_musk_coordinates(musk_location, connection):
+def get_musk_coordinates(musk_location, connection): # TODO Duplicate/Unneeded
     musk_location = str(musk_location).strip('[(,)]')
     sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {musk_location}'
     cursor = connection.cursor()
@@ -150,7 +150,7 @@ def musk_movement(connection):
     print(f'Musk has moved to {result}\n')
     musk_id = 'Musk'
 
-    update = f'UPDATE game SET location = {result} WHERE id = \'{musk_id}\''  # TODO Update when turn ends
+    update = f'UPDATE game SET location = {result} WHERE id = \'{musk_id}\''  # TODO Update object not database
     cursor.execute(update)
 
 
