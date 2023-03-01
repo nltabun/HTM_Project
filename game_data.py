@@ -1,10 +1,10 @@
 #
-
+#import mysql.connector
 import game_init
 import game_objects
 
 
-# Return plane from list of planes with the plane name as search term. Can also set its current fuel with the optional parameter.
+# Return a plane from list of planes using plane name as the search term. Can also set its current fuel with the optional parameter.
 def load_plane(plane_name, current_fuel=0):
     planes = game_init.generate_airplanes()
     
@@ -38,11 +38,15 @@ def load_game_table_data(connection):
 
 
 # Save game data to the database
-def save_to_game_table(connection):
-    # TODO
-    pass
+def save_to_game_table(connection, player, musk):
+    player_update = f'UPDATE game SET {player.update_values()} WHERE id = \'{player.id}\''
+    musk_update = f'UPDATE game SET {musk.update_values()} WHERE id = \'{musk.id}\''
 
+    cur = connection.cursor()
+    cur.execute(player_update)
+    cur.execute(musk_update)
 
+# Testing
 #if __name__ == "__main__":
 #    conn = mysql.connector.connect(
 #        host='localhost',
@@ -53,6 +57,16 @@ def save_to_game_table(connection):
 #    )
 #
 #    player, musk = load_game_table_data(conn)
-#
 #    print(player)
 #    print(musk)
+#    player.fuel = player.fuel + 1500
+#    if player.location == 'KLIT':
+#        player.location = 'KBOS'
+#    else:
+#        player.location = 'KLIT'
+#    musk.money = musk.money - 10000
+#    musk.fuel = musk.fuel - 1000
+#    player.plane = load_plane('Boijong 420', 7900)    
+#    print(player)
+#    print(musk)
+#    save_to_game_table(conn, player, musk)

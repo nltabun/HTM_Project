@@ -2,7 +2,7 @@
 
 class Airplane:
     def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, current_fuel=0):
-        self.name = name
+        self.name = name # varchar(40)
         self.fuel_capacity = fuel_capacity
         self.fuel_efficiency = fuel_efficiency # lower = better
         self.current_fuel = current_fuel # int(8)
@@ -11,6 +11,8 @@ class Airplane:
     def stats(self): # returns plane statistics
         return f'\'{self.name}\', {self.fuel_capacity}, {self.fuel_efficiency}, {self.current_fuel}'
 
+    def range(self): # returns max single flight distance for the plane
+        return 1.0 * self.current_fuel * self.fuel_efficiency 
 
 class Player:
     def __init__(self, id, name, money, fuel, location, plane=Airplane('Default Plane')):
@@ -19,16 +21,22 @@ class Player:
         self.money = money # int(8)
         self.fuel = fuel # int(8)
         self.location = location # varchar(10)
-        self.plane = plane # varchar(40)
-        self.range = 1.0 * self.plane.current_fuel * self.plane.fuel_efficiency # max single flight distance
+        self.plane = plane # plane.name: varchar(40)
+        #self.range = # swapped to airplane/player method
         # TODO self.ap = ? (base ap + speed?)
+
+    def range(self): # returns max single flight distance for the players current plane
+        return self.plane.range()
     
     def __str__(self): # returns statistics for the player and their plane
         return  f'Player: {self.name}, TSLA stocks: {self.money}, Fuel: {self.fuel}, Current location: {self.location}\n' \
                 f'Plane: {self.plane.name}, Current Fuel: {self.plane.current_fuel}, Fuel Capacity: {self.plane.fuel_capacity}, Fuel Efficiency: {self.plane.fuel_efficiency}'
 
-    def sql_values(self):
+    def new_values(self): # returns player statistics in the correct format for inserting a new player into the database 
         return f'\'{self.id}\', {self.fuel}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}'
+    
+    def update_values(self): # returns player statistics in the correct format to update a player in the database
+        return f'fuel = {self.fuel}, stonks = {self.money}, location = \'{self.location}\', plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}'
 
 
 #if __name__ == "__main__":
