@@ -84,24 +84,28 @@ def player_movement(connection):
         airport_dic.update({i:row[0]})
         i+=1
     answer = input(f'Choose your destination: ') # TODO Option to cancel?
-
+    print(answer)
+    print(len(in_range))
     try:
-        if airport_dic.get(int(answer)):
-            pass
-    except:
-        print("\nInvalid value\n")
-        player_movement(in_range)
-    query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))}"'
+        if 0 < int(answer) <= len(in_range): 
+            query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))}"'
     
-    cursor = connection.cursor()
-    cursor.execute(query)
-    result = cursor.fetchall()
-    result = str(result).strip('[(,)]')
-    print(result)
-    placeholder_id = 'Player'
+            cursor = connection.cursor()
+            cursor.execute(query)
+            result = cursor.fetchall()
+            result = str(result).strip('[(,)]')
+            print(result)
+            placeholder_id = 'Player'
 
-    update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
-    cursor.execute(update)
+            update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
+            print(update)
+            cursor.execute(update)
+        else:
+            raise Exception
+    except:
+        print('\nInvalid value\n')
+        player_movement(connection)
+    
 
 
 def musk_location(connection): # TODO Duplicate/Unneeded
@@ -134,12 +138,12 @@ def musk_movement(connection):
 
     airport_dict = dict()
     a = 1
-
+    print(f'Number of airports in range: {len(in_range)}')
     for row in in_range:
         airport_dict.update({a: row[0]})
         a += 1
-
-    rand = random.randint(1, a)
+    print(f'Last airport number: {a}')
+    rand = random.randint(1, a-1)
 
     sql = f'SELECT ident FROM airport WHERE name LIKE "{airport_dict.get(int(rand))}"'
 
@@ -151,6 +155,7 @@ def musk_movement(connection):
     musk_id = 'Musk'
 
     update = f'UPDATE game SET location = {result} WHERE id = \'{musk_id}\''  # TODO Update object not database
+    print(update)
     cursor.execute(update)
 
 

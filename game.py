@@ -32,7 +32,7 @@ def airport_visit(connection, player):
     if selection == 'A':
         game_actions.minigame(connection, player)
     elif selection == 'B':
-        game_fuel.buying_fuel(connection, player)
+        game_fuel.buying_fuel(player)
     elif selection == 'C':
         game_actions.buy_clue(connection)
     elif selection == 'D':
