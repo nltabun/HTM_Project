@@ -40,7 +40,7 @@ def airport_visit(connection, musk, player=None):
         game_movement.player_movement(connection, player)
         print(player.location)
         print('\nElon Musk is moving.\n')
-        game_movement.musk_movement(connection)
+        game_movement.player_movement(connection, musk)
         # game_movement.player_movement(connection)
 
     # A way to end the while loop/program
