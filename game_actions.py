@@ -1,7 +1,6 @@
 import random
 import mysql.connector
 import game_movement
-import game_fuel
 
 conn = mysql.connector.connect(
         host='localhost',
@@ -10,39 +9,6 @@ conn = mysql.connector.connect(
         password='play',
         autocommit=True
     )
-
-def airport_visit(connection, player):
-    print(f'Welcome to {str(game_movement.player_location_name(connection)).strip("[(,)]")}. Select what you want to do.\n'
-          '\n'
-          '(A) Play Minigame\n'
-          '(B) Buy Fuel\n'
-          '(C) Buy a clue\n'
-          '(D) Select another airport\n')
-
-    while True:
-        selection = input('Selection: ').capitalize()
-        choices = ('A', 'B', 'C', 'D', 'F11')
-        if selection in choices:
-            break
-        else:
-            print('Error in selection. Please use letters A, B, C or D.')
-            continue
-
-    if selection == 'A':
-        minigame(connection, player)
-    elif selection == 'B':
-        game_fuel.buying_fuel(connection, player)
-    elif selection == 'C':
-        buy_clue(connection)
-    elif selection == 'D':
-        game_movement.player_movement(connection, player)
-        print('\nElon Musk is moving.\n')
-
-
-    # A way to end the while loop/program
-    elif selection == 'F11':
-        global game_on
-        game_on = False
 
 
 def minigame(connection, player):
