@@ -6,9 +6,9 @@ import game_init
 import game_movement
 import game_actions
 import game_data
-#import game_objects
+# import game_objects
 
-#A little variable to keep the game going for testing purposes
+# A little variable to keep the game going for testing purposes
 game_on = True
 
 
@@ -30,7 +30,7 @@ def airport_visit(connection, player):
             continue
 
     if selection == 'A':
-        game_actions.minigame(connection)
+        game_actions.minigame(connection, player)
     elif selection == 'B':
         game_fuel.buying_fuel(connection, player)
     elif selection == 'C':
@@ -39,9 +39,9 @@ def airport_visit(connection, player):
         game_movement.player_movement(connection)
         print("\nElon Musk is moving.\n")
         game_movement.musk_movement(connection)
-        #game_movement.player_movement(connection)
+        # game_movement.player_movement(connection)
 
-    #A way to end the while loop/program
+    # A way to end the while loop/program
     elif selection == 'F11':
         global game_on
         game_on = False

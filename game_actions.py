@@ -1,26 +1,27 @@
 import random
 import mysql.connector
 import game_movement
-from geopy import distance
 
 conn = mysql.connector.connect(
-       host='localhost',
+        host='localhost',
         database='htm_database',
         user='htm',
         password='play',
         autocommit=True
     )
-def minigame(connection):
-    id = random.randint(1, 25) #randomizer for the random question
+
+
+def minigame(connection, player):
     correct_answer = ''
 
     # Fetching and printing a question from the database
-    sql = (f"select * from minigame where id = {id}")
+    sql = (f"SELECT * FROM minigame WHERE completed = 0 ORDER BY RAND() LIMIT 1")
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
     if cursor.rowcount > 0:
         for row in result:
+            completed = row[7]
             correct_answer = row[6]
             difficulty = row[8]
             print(f"{row[1]} \n"
@@ -38,7 +39,9 @@ def minigame(connection):
                 correct_answer = 'c'
             else:
                 correct_answer = 'd'
-
+    else:
+        print("You've gone through all of the questions, theres nothing left here")
+        return
     # Waiting for the correct answer format
     while True:
         answer = input()
@@ -57,18 +60,8 @@ def minigame(connection):
         result_prize = cursor.fetchone()
         result_prize = int(str(result_prize).strip('(,)'))
 
-        #Get players current amount of stonks
-        sql = f'SELECT stonks  FROM game WHERE id = \'player\''
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        player_stonks = cursor.fetchall()
-        player_stonks = int(str(player_stonks).strip('[(,)]'))
-
-        #update the amount of stonks for player
-        stonks = player_stonks + result_prize
-
-        update = f'UPDATE game SET stonks = {stonks} WHERE id = \'player\''
-        cursor.execute(update)
+        # update the amount of stonks for player
+        stonks = player.money + result_prize
 
         print(f'Your stonks have reached the value of {stonks}')
 
@@ -76,25 +69,23 @@ def minigame(connection):
         print('Wrong answer, now you lose your pension.')
         # penalty to be added in the near future
 
-#minigame(conn)
+    if cursor.rowcount > 0:
+        for row in result:
+            update = f'UPDATE minigame SET completed = 1 WHERE id = {row[0]}'
+            cursor.execute(update)
+
+# minigame(conn, player)
 
 ################################################## Clue buying section below, be aware of eye cancer
 
-#Get Elons location as it had not been done in game_movement(as in, the function was only made for players)
+# Function for buying clues
 
 
-#Function for buying clues
-def buy_clue(connection):
-    #Save players stonks to a variable
-    sql = f'SELECT stonks  FROM game WHERE id = \'player\''
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    result = int(str(result[0]).strip('[(,)]'))
+def buy_clue(connection, player):
+    stonks = player.money
 
     while True:
-        you_sure = input(
-            f'Currently you have {result} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
+        you_sure = input(f'Currently you have {stonks} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
         choices = ('Y', 'N')
         if you_sure in choices:
             break
@@ -106,20 +97,17 @@ def buy_clue(connection):
     else:
         return
 
-    #Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
-    if result > 100:
+    # Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
+    if stonks > 100:
 
-        #Player has enough stonks, now we deduct the price and update the new stonk total to database
-        stonks = result - 100
-        update = f'UPDATE game SET stonks = {stonks} WHERE id = \'player\''
-        cursor.execute(update)
+        # Player has enough stonks, now we deduct the price
+        player.money = stonks - 100
 
-        #Finally give the clue to player
+        # Finally give the clue to player
         game_movement.clue_distance_to_musk(connection)
         print(f'Your stonks have been deducted to the value of {stonks}')
     else:
 
-        #The player is too broke for us, show the door to him
+        # The player is too broke for us, show the door to him
         print(f'You do not have enough stonks, come back later')
-
-#buy_clue(conn)
+# buy_clue(conn)
