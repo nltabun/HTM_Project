@@ -37,7 +37,7 @@ class Player:
         return f'\'{self.id}\', {self.fuel}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}'
     
     def update_values(self): # returns player statistics in the correct format to update a player in the database
-        return f'fuel = {self.fuel}, stonks = {self.money}, location = \'{self.location}\', plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}'
+        return f'fuel = {self.fuel}, stonks = {self.money}, location = {self.location}, plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}'
 
 
 #if __name__ == "__main__":
