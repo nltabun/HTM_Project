@@ -1,41 +1,46 @@
 #
-import game_objects
+#import game_objects
 from geopy import distance
 import random
 
 
-
 def select_airport(connection):
-    sql = f'SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = \'NA\''
+    sql = f'SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = "NA"'
     cursor = connection.cursor(Dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
     return result
 
 
-def player_location(connection):
-    sql = f'SELECT location FROM game WHERE id = \'Player\'' # TODO Get from object not database
+'''def player_location(connection):
+    sql = f'SELECT location FROM game WHERE id = "Player"' # TODO Get from object not database
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
-    return result
+    print(result)
+    return result'''
 
 
-def player_location_name(connection):
-    sql = f'SELECT name FROM airport WHERE ident IN(SELECT location FROM game WHERE id = \'Player\')' 
+def player_location_name(connection, player):
+    location = str(player.location).strip("''")
+    sql = f'SELECT name FROM airport WHERE ident = "{location}"'
+    #print(sql)
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
+    #result = str(cursor.fetchone()).strip("''")
+    #print(result)
     return result
 
 
-def get_player_coordinates(player_location, connection):
-    player_location = str(player_location).strip('[(,)]')
-    sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {player_location}'
+def get_player_coordinates(connection, player_loc):
+    sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {player_loc}'
+    #print(sql)
     cursor = connection.cursor()
     cursor.execute(sql)
-    tulos = cursor.fetchall()
-    return tulos[0]
+    tulos = cursor.fetchone()
+    print(f'Get player coord: {tulos}\n')
+    return tulos
 
 
 def get_all_airport_coordinates(connection):
@@ -73,8 +78,7 @@ def airports_in_range(airport_list):
 
 
 def player_movement(connection, player):
-    player_loc = player_location(connection)
-    airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(player_loc, connection))
+    airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(connection, player.location))
     in_range = airports_in_range(airport_list) # TODO list shouldn't contain current airport
     i = 1
     airport_dic = dict()
@@ -83,7 +87,10 @@ def player_movement(connection, player):
         print(f'({i}) {row[0]}')
         airport_dic.update({i:row[0]})
         i+=1
-    answer = input(f'Choose your destination: ') # TODO Option to cancel?
+    answer = input(f'Choose your destination (Type "C" to cancel): ')
+
+    if answer.capitalize() == 'C':
+        return
     #print(answer)
     #print(len(in_range))
     try:
@@ -93,13 +100,13 @@ def player_movement(connection, player):
             cursor = connection.cursor()
             cursor.execute(query)
             result = cursor.fetchall()
-            result = str(result).strip('[(,)]')
+            result = str(result).strip('[('',)]')
             #print(result)
-            placeholder_id = 'Player'
+            #placeholder_id = 'Player'
 
-            update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
-            print(update)
-            cursor.execute(update)
+            #update = f'UPDATE game SET location = {result} WHERE id = \'{placeholder_id}\'' # TODO Update object not database
+            #print(update)
+            #cursor.execute(update)
 
             # Separate object update
             player.location = result
@@ -108,7 +115,7 @@ def player_movement(connection, player):
             raise Exception
     except:
         print('\nInvalid value\n')
-        player_movement(connection)
+        player_movement(connection, player)
     
 
 
@@ -129,9 +136,9 @@ def get_musk_coordinates(musk_location, connection): # TODO Duplicate/Unneeded
     return result[0]
 
 #Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
-def clue_distance_to_musk(connection):
-    musk = get_musk_coordinates(musk_location(connection), connection)
-    player = get_player_coordinates(player_location(connection), connection)
+def clue_distance_to_musk(connection, player, musk):
+    musk = get_player_coordinates(connection, musk.location)
+    player = get_player_coordinates(connection, player.location)
 
     return print(f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers')
 
