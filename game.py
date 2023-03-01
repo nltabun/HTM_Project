@@ -36,7 +36,8 @@ def airport_visit(connection, player):
     elif selection == 'C':
         game_actions.buy_clue(connection, player)
     elif selection == 'D':
-        game_movement.player_movement(connection)
+        game_movement.player_movement(connection, player)
+        #print(player.location)
         print('\nElon Musk is moving.\n')
         game_movement.musk_movement(connection)
         # game_movement.player_movement(connection)
@@ -57,6 +58,7 @@ def play_game(connection):
     # A loop made for testing purposes
     while game_on == True:
         airport_visit(connection, player)
+        print(f'{player}')
 
     print(f'{player}')
     game_data.save_to_game_table(connection, player, musk)
@@ -85,7 +87,7 @@ def main():
         print('\nNo save data found.\n')
     
     # Test "main menu" # TODO func main menu
-    option = 1
+    option = 2
     if option == 1: # New game
         game_init.new_game(conn)
         play_game(conn)
