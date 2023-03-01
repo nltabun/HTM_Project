@@ -34,7 +34,7 @@ def airport_visit(connection, player):
     elif selection == 'B':
         game_fuel.buying_fuel(player)
     elif selection == 'C':
-        game_actions.buy_clue(connection)
+        game_actions.buy_clue(connection, player)
     elif selection == 'D':
         game_movement.player_movement(connection)
         print('\nElon Musk is moving.\n')
