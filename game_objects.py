@@ -1,12 +1,12 @@
 #
 
 class Airplane:
-    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, current_fuel=0):
+    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, current_fuel=0, speed=850):
         self.name = name # varchar(40)
         self.fuel_capacity = fuel_capacity
         self.fuel_efficiency = fuel_efficiency # lower = better
         self.current_fuel = current_fuel # int(8)
-        # TODO self.speed = ?
+        self.speed = speed
 
     def stats(self): # returns plane statistics
         return f'\'{self.name}\', {self.fuel_capacity}, {self.fuel_efficiency}, {self.current_fuel}'
@@ -22,9 +22,9 @@ class Player:
         self.fuel = fuel # int(8)
         self.location = location # varchar(10)
         self.plane = plane # plane.name: varchar(40)
-        #self.range = # swapped to airplane/player method
-        # TODO self.ap = ? (base ap + speed?)
-
+        self.travel_speed = plane.speed # ap per km
+        self.ap = 5
+    
     def range(self): # returns max single flight distance for the players current plane
         return self.plane.range()
     
