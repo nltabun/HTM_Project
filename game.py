@@ -13,7 +13,7 @@ game_on = True
 
 
 def airport_visit(connection, musk, player=None):
-    if game_movement.player_location(connection) != game_movement.musk_location(connection):
+    if player.location != musk.location:
         location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
         print(f'Welcome to {location_name}. Select what you want to do.\n'
               '\n'
