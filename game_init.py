@@ -11,7 +11,6 @@ def saved_game_data_exists(connection):
     result = cur.fetchall()
 
     if len(result) > 0:
-        #print(result)
         exists = True
     else:
         exists = False
@@ -23,9 +22,9 @@ def saved_game_data_exists(connection):
 def generate_airplanes():
     planes = []
     
-    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9)
-    plane1 = game_objects.Airplane('Cloudbus A69')
-    plane2 = game_objects.Airplane('Boijong 420', 15000)
+    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000, 45000)
+    plane1 = game_objects.Airplane('Cloudbus A69', 6000, 1.0, 850, 1000)
+    plane2 = game_objects.Airplane('Boijong 420', 15000, 1.1, 900, 1000)
     
     planes.append(plane_musk)
     planes.append(plane1)
@@ -70,3 +69,4 @@ def new_game(connection):
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
     
     return
+
