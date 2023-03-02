@@ -1,14 +1,4 @@
-import random
-import mysql.connector
 import game_movement
-
-conn = mysql.connector.connect(
-        host='localhost',
-        database='htm_database',
-        user='htm',
-        password='play',
-        autocommit=True
-    )
 
 
 def minigame(connection, player):
@@ -61,9 +51,12 @@ def minigame(connection, player):
         result_prize = int(str(result_prize).strip('(,)'))
 
         # update the amount of stonks for player
-        stonks = player.money + result_prize
+        if player.location == "'PHNL'":
+            player.money = player.money + (result_prize * 3)  #triple the amount of money if in hawaii
+        else:
+            player.money = player.money + result_prize
 
-        print(f'Your stonks have reached the value of {stonks}')
+        print(f'Your stonks have reached the value of {player.money}')
 
     else:
         print('Wrong answer, now you lose your pension.')
@@ -81,11 +74,9 @@ def minigame(connection, player):
 # Function for buying clues
 
 
-def buy_clue(connection, player):
-    stonks = player.money
-
+def buy_clue(connection, player, musk):
     while True:
-        you_sure = input(f'Currently you have {stonks} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
+        you_sure = input(f'Currently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
         choices = ('Y', 'N')
         if you_sure in choices:
             break
@@ -98,14 +89,14 @@ def buy_clue(connection, player):
         return
 
     # Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
-    if stonks > 100:
+    if player.money > 100:
 
         # Player has enough stonks, now we deduct the price
-        player.money = stonks - 100
+        player.money = player.money - 100
 
         # Finally give the clue to player
-        game_movement.clue_distance_to_musk(connection)
-        print(f'Your stonks have been deducted to the value of {stonks}')
+        game_movement.clue_distance_to_musk(connection, player, musk)
+        print(f'Your stonks have been deducted to the value of {player.money}')
     else:
 
         # The player is too broke for us, show the door to him
