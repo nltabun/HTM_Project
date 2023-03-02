@@ -7,14 +7,14 @@ import game_movement
 import game_actions
 import game_data
 import game_events
-# import game_objects
 
 # A little variable to keep the game going for testing purposes
 game_on = True
 
 
-def airport_visit(connection, player):
-    print(f'Welcome to {str(game_movement.player_location_name(connection)).strip("[(,)]")}. Select what you want to do.\n'
+def airport_visit(connection, musk, player=None):
+    location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
+    print(f'Welcome to {location_name}. Select what you want to do.\n'
           '\n'
           '(A) Play Minigame\n'
           '(B) Buy Fuel\n'
@@ -35,13 +35,15 @@ def airport_visit(connection, player):
     elif selection == 'B':
         game_fuel.buying_fuel(player)
     elif selection == 'C':
-        game_actions.buy_clue(connection, player)
+        game_actions.buy_clue(connection, player, musk)
     elif selection == 'D':
         game_movement.player_movement(connection, player)
         game_events.event(player)
+
+        print(player.location)
+
         print('\nElon Musk is moving.\n')
-        game_movement.musk_movement(connection)
-        # game_movement.player_movement(connection)
+        game_movement.player_movement(connection, musk)
 
     # A way to end the while loop/program
     elif selection == 'F11':
@@ -57,9 +59,12 @@ def play_game(connection):
     print(f'{musk}\n') # Test print loaded musk
     # A loop made for testing purposes
     while game_on:
-        airport_visit(connection, player)
+        airport_visit(connection, musk, player)
+        print(f'{player}')
+        print(f'{musk}')
 
-    print(f'{player}')
+
+    game_data.save_to_game_table(connection, player, musk)
 
 
 def main_menu(connection): # TODO
