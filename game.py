@@ -20,7 +20,7 @@ def airport_visit(connection, musk, player=None):
         print(f'Welcome to {location_name}. Select what you want to do.\n'
               '\n'
               '(A) Play Minigame\n'
-              '(B) Buy Fuel\n'
+              '(B) Fuel management\n'
               '(C) Buy a clue\n'
               '(D) Select another airport\n')
 
@@ -36,7 +36,7 @@ def airport_visit(connection, musk, player=None):
         if selection == 'A':
             game_actions.minigame(connection, player)
         elif selection == 'B':
-            game_fuel.buying_fuel(player)
+            game_fuel.fuel_management(player)
         elif selection == 'C':
             game_actions.buy_clue(connection, player, musk)
         elif selection == 'D':
@@ -65,7 +65,7 @@ def play_game(connection):
     # A loop made for testing purposes
     while game_on:
         airport_visit(connection, musk, player)
-        print(f'{player}')
+        print(f'\n{player}')
         print(f'{musk}')
 
     game_data.save_to_game_table(connection, player, musk)
@@ -94,7 +94,7 @@ def main():
         print('\nNo save data found.\n')
     
     # Test "main menu" # TODO func main menu
-    option = 1
+    option = 2
     if option == 1: # New game
         game_init.new_game(conn)
         play_game(conn)
