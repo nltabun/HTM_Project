@@ -159,7 +159,6 @@ def musk_movement(connection):
     cursor.execute(update)
 
 
-
 #calculated = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates('KIND', connection))
 
 #player_movement(airports_in_range(calculated), connection)

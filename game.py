@@ -11,40 +11,43 @@ import game_data
 # A little variable to keep the game going for testing purposes
 game_on = True
 
-
 def airport_visit(connection, player):
-    print(f'Welcome to {str(game_movement.player_location_name(connection)).strip("[(,)]")}. Select what you want to do.\n'
-          '\n'
-          '(A) Play Minigame\n'
-          '(B) Buy Fuel\n'
-          '(C) Buy a clue\n'
-          '(D) Select another airport\n')
+    if game_movement.player_location(connection) != game_movement.musk_location(connection):
+        print(f'Welcome to {str(game_movement.player_location_name(connection)).strip("[(,)]")}. Select what you want to do.\n'
+                '\n'
+                '(A) Play Minigame\n'
+                '(B) Buy Fuel\n'
+                '(C) Buy a clue\n'
+                '(D) Select another airport\n')
 
-    while True:
-        selection = input('Selection: ').capitalize()
-        choices = ('A', 'B', 'C', 'D', 'F11')
-        if selection in choices:
-            break
-        else:
-            print('Error in selection. Please use letters A, B, C or D.')
-            continue
+        while True:
+            selection = input('Selection: ').capitalize()
+            choices = ('A', 'B', 'C', 'D', 'F11')
+            if selection in choices:
+                break
+            else:
+                print('Error in selection. Please use letters A, B, C or D.')
+                continue
 
-    if selection == 'A':
-        game_actions.minigame(connection, player)
-    elif selection == 'B':
-        game_fuel.buying_fuel(player)
-    elif selection == 'C':
-        game_actions.buy_clue(connection, player)
-    elif selection == 'D':
-        game_movement.player_movement(connection)
-        print('\nElon Musk is moving.\n')
-        game_movement.musk_movement(connection)
-        # game_movement.player_movement(connection)
+        if selection == 'A':
+            game_actions.minigame(connection, player)
+        elif selection == 'B':
+            game_fuel.buying_fuel(player)
+        elif selection == 'C':
+            game_actions.buy_clue(connection, player)
+        elif selection == 'D':
+            game_movement.player_movement(connection)
+            print('\nElon Musk is moving.\n')
+            game_movement.musk_movement(connection)
+            # game_movement.player_movement(connection)
 
-    # A way to end the while loop/program
-    elif selection == 'F11':
-        global game_on
-        game_on = False
+        # A way to end the while loop/program
+        elif selection == 'F11':
+            global game_on
+            game_on = False
+    else:
+        print("Gongratulations! You found Elon Musk!")
+
 
 
 # Start game
@@ -57,6 +60,7 @@ def play_game(connection):
     # A loop made for testing purposes
     while game_on == True:
         airport_visit(connection, player)
+
 
     print(f'{player}')
 
