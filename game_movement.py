@@ -69,7 +69,7 @@ def airports_in_range(airport_list):
     in_range = []
     
     for row in airport_list:
-        if row[1] <= 500:
+        if row[1] <= 1000:
             in_range.append(row)
     
     return in_range
