@@ -2,6 +2,7 @@
 
 from geopy import distance
 import random
+import math
 
 # Fetches all airports that are located in the Northen america
 def select_airport(connection):
@@ -60,32 +61,36 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     for row in airport_list:
         location_data = (row[1], row[2])
         airport_distance = (row[0], calculate_distance(location_data, player_coordinates))
-        distances.append(airport_distance)
+        if airport_distance[1] != 0:
+            distances.append(airport_distance)
     
     return distances
 
-# Makes a list of airports that are in a 1000km radius of the player
-def airports_in_range(airport_list):
+# Makes a list of airports that are in range
+def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
     in_range = []
-    
+
     for row in airport_list:
-        if row[1] <= 1000:
-            in_range.append(row)
+        if row[1] <= player_range:
+            ap_cost = math.ceil(row[1] / player_movement_per_ap)
+            row_with_ap = (row[0], row[1], ap_cost)
+            
+            in_range.append(row_with_ap)
     
     return in_range
 
 # Defines the players movement
 def player_movement(connection, player):
     airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(connection, player.location))
-    in_range = airports_in_range(airport_list) # TODO list shouldn't contain current airport
+    in_range = airports_in_range(airport_list, player.travel_speed, player.range())
 
     airport_dic = dict()
     i = 1
     # Prints a list of airports that are in range of the player
     if player.id == 'Player':
         for row in in_range:
-            print(f'({i}) {row[0]}')
-            airport_dic.update({i: row[0]})
+            print(f'({i}) {row[0]} | Distance: {int(row[1])} | AP Cost: {row[2]}')
+            airport_dic.update({i: (row[0], row[2])})
             i += 1
         # Asks for the players input on where they want to go
         answer = input(f'Choose your destination (Type "C" to cancel): ')
@@ -95,7 +100,7 @@ def player_movement(connection, player):
     # Randomly chooses an airport for musk to move to.
     elif player.id == 'Musk':
         for row in in_range:
-            airport_dic.update({i: row[0]})
+            airport_dic.update({i: (row[0], row[2])})
             i += 1
 
         answer = random.randint(1, i-1)
@@ -104,7 +109,7 @@ def player_movement(connection, player):
     
     try:
         if 0 < int(answer) <= len(in_range): 
-            query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))}"'
+            query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))[0]}"'
     
             cursor = connection.cursor()
             cursor.execute(query)
@@ -112,6 +117,7 @@ def player_movement(connection, player):
             result = str(result).strip('[('',)]')
 
             player.location = result
+            player.current_ap -= airport_dic.get(int(answer))[1]
         else:
             raise Exception
     except:
@@ -131,6 +137,4 @@ def clue_distance_to_musk(connection, player, musk):
 
 def decrease_turns(player):
     player.turns_left = player.turns_left - 1
-
-
 
