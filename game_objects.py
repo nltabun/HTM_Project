@@ -27,11 +27,15 @@ class Player:
         self.max_ap = 5
         self.current_ap = self.max_ap
 
-    def range(self): # returns max single flight distance for the players current plane
-        return self.plane.range()
-    
+    def range(self): # returns max single flight distance for the player
+        travel_range = self.current_ap * self.travel_speed
+        if self.plane.range() < travel_range: # if fuel and fuel efficiency is the limiting factor
+            return self.plane.range()
+        else: # if ap and speed are the limiting factor
+            return travel_range
+        
     def __str__(self): # returns statistics for the player and their plane
-        return  f'Player: {self.name}, TSLA stocks: {self.money}, Fuel: {self.fuel_reserve}, Current location: {self.location}\n' \
+        return  f'Player: {self.name}, TSLA stocks: {self.money}, Fuel: {self.fuel_reserve}, Current location: {self.location}, Current AP: {self.current_ap}\n' \
                 f'Plane: {self.plane.name}, Current Fuel: {self.plane.current_fuel}, Fuel Capacity: {self.plane.fuel_capacity}, Fuel Efficiency: {self.plane.fuel_efficiency}'
 
     def new_values(self): # returns player statistics in the correct format for inserting a new player into the database 
