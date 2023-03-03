@@ -11,7 +11,6 @@ import game_events
 # A little variable to keep the game going for testing purposes
 game_on = True
 
-
 def airport_visit(connection, musk, player=None):
     global game_on
 
