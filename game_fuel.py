@@ -62,7 +62,6 @@ def load_fuel(player):
             player.plane.current_fuel += fuel_amount
             player.fuel_reserve -= fuel_amount
 
-
     if fuel_amount == '':
         empty_space = player.plane.fuel_capacity - player.plane.current_fuel
 
