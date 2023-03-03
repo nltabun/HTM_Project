@@ -104,6 +104,7 @@ def player_movement(connection, player):
             i += 1
 
         answer = random.randint(1, i-1)
+        print(f'{answer} out of {i}')
     else:
         print('Invalid player id')
     
@@ -118,6 +119,7 @@ def player_movement(connection, player):
 
             player.location = result
             player.current_ap -= airport_dic.get(int(answer))[1]
+            #print(player)
         else:
             raise Exception
     except:
