@@ -45,14 +45,19 @@ def airport_visit(connection, musk, player=None):
 
             print(player.location)
 
-            print('\nElon Musk is moving.\n')
-            game_movement.player_movement(connection, musk)
+            if musk.turns_left != 0:
+                print('\nElon Musk is moving.\n')
+                game_movement.player_movement(connection, musk)
+                game_movement.decrease_turns(musk)
+            else:
+                print("Elon Musk found his Tesla and escaped, you lost the game...")
+                game_on = False
 
         # A way to end the while loop/program
         elif selection == 'F11':
             game_on = False
     else:
-        print("Gongratulations! You found Elon Musk!")
+        print("Congratulations! You found Elon Musk!")
         game_on = False
 
 
