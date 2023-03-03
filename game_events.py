@@ -17,7 +17,7 @@ def event(player):
             else:
                 print('Some of your fuel got stolen')
                 player.plane.current_fuel = player.plane.current_fuel - 100  # you lose some fuel
-                if player.fuel < 0:
+                if player.plane.current_fuel < 0:
                     player.plane.current_fuel = 0
 
     elif player.location == "'MHPR'" or player.location == "'MMMX'" or player.location == "'MMGL'":  # Honduras, 2 mexican cities
@@ -37,8 +37,8 @@ def event(player):
 
             else:
                 print('Some of your fuel got stolen')
-                player.fuel = player.fuel - 100  # you lose some fuel
+                player.plane.current_fuel = player.plane.current_fuel - 100  # you lose some fuel
 
-                if player.fuel < 0:
+                if player.plane.current_fuel < 0:
                     player.plane.current_fuel = 0
 
