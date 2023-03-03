@@ -15,27 +15,27 @@ def minigame(connection, player):
             correct_answer = row[6]
             difficulty = row[8]
             print(f"{row[1]} \n"
-                  f"(A){row[2]} \n"
-                  f"(B){row[3]} \n"
-                  f"(C){row[4]} \n"
-                  f"(D){row[5]}")
+                  f"(1) {row[2]} \n"
+                  f"(2) {row[3]} \n"
+                  f"(3) {row[4]} \n"
+                  f"(4) {row[5]}")
 
             # Assigning the letter for correct answer
             if row[6] == row[2]:
-                correct_answer = 'a'
+                correct_answer = '1'
             elif row[6] == row[3]:
-                correct_answer = 'b'
+                correct_answer = '2'
             elif row[6] == row[4]:
-                correct_answer = 'c'
+                correct_answer = '3'
             else:
-                correct_answer = 'd'
+                correct_answer = '4'
     else:
         print("You've gone through all of the questions, theres nothing left here")
         return
     # Waiting for the correct answer format
     while True:
-        answer = input()
-        if answer in ('a', 'b', 'c', 'd'):
+        answer = input('Answer: ')
+        if answer in ('1', '2', '3', '4'):
             break
         else:
             print('Answer in wrong format')

@@ -18,27 +18,27 @@ def airport_visit(connection, musk, player=None):
         location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
         print(f'Welcome to {location_name}. Select what you want to do.\n'
               '\n'
-              '(A) Play Minigame\n'
-              '(B) Fuel management\n'
-              '(C) Buy a clue\n'
-              '(D) Select another airport\n')
+              '(1) Play Minigame\n'
+              '(2) Fuel management\n'
+              '(3) Buy a clue\n'
+              '(4) Select another airport\n')
 
         while True:
-            selection = input('Selection: ').capitalize()
-            choices = ('A', 'B', 'C', 'D', 'F11')
+            selection = input('Selection: ')
+            choices = ('1', '2', '3', '4', 'F11')
             if selection in choices:
                 break
             else:
-                print('Error in selection. Please use letters A, B, C or D.')
+                print('Error in selection. Please use numbers 1, 2, 3 or 4.')
                 continue
 
-        if selection == 'A':
+        if selection == '1':
             game_actions.minigame(connection, player)
-        elif selection == 'B':
+        elif selection == '2':
             game_fuel.fuel_management(player)
-        elif selection == 'C':
+        elif selection == '3':
             game_actions.buy_clue(connection, player, musk)
-        elif selection == 'D':
+        elif selection == '4':
             game_movement.player_movement(connection, player)
             game_events.event(player)
 
@@ -98,7 +98,7 @@ def main():
         print('\nNo save data found.\n')
     
     # Test "main menu" # TODO func main menu
-    option = 2
+    option = 1
     if option == 1: # New game
         game_init.new_game(conn)
         play_game(conn)
