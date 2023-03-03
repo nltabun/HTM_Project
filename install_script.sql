@@ -65,6 +65,7 @@ CREATE TABLE `game` (
   `screen_name` varchar(40) DEFAULT NULL,
   `plane` varchar(40) DEFAULT NULL,
   `plane_fuel` int(8) DEFAULT NULL,
+  `turns_left` int(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `location` (`location`),
   CONSTRAINT `game_ibfk_1` FOREIGN KEY (`location`) REFERENCES `airport` (`ident`)

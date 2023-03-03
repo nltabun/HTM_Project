@@ -129,3 +129,8 @@ def clue_distance_to_musk(connection, player, musk):
 
     return print(f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers')
 
+def decrease_turns(player):
+    player.turns_left = player.turns_left - 1
+
+
+

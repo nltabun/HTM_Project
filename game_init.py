@@ -1,7 +1,7 @@
 #
 
 import game_objects
-
+import random
 
 # Check if game table already contains data
 def saved_game_data_exists(connection):
@@ -40,8 +40,19 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
     start_plane = planes[1]
     musk_plane = planes[0]
 
-    player = game_objects.Player('Player', player_name, start_money, start_fuel, start_loc, start_plane)
-    musk = game_objects.Player('Musk', 'Elon Musk', 1000000, 9999999, musk_start_loc, musk_plane)
+    while True:
+        game_len = input('Short or long game?: ')
+        if game_len.capitalize() == 'Short':
+            turns = random.randint(10, 25)
+            break
+        elif game_len.capitalize() == 'Long':
+            turns = random.randint(30, 40)
+            break
+        else:
+            print('Invalid value')
+
+    player = game_objects.Player('Player', player_name, start_money, start_fuel, start_loc, turns, start_plane)
+    musk = game_objects.Player('Musk', 'Elon Musk', 1000000, 9999999, musk_start_loc, turns, musk_plane)
 
     insert_values = f'INSERT INTO game VALUES ({player.new_values()}), ({musk.new_values()})'
     cur = connection.cursor()

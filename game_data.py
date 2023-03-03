@@ -33,17 +33,19 @@ def load_game_table_data(connection):
     player_money = player[2]
     player_fuel = player[1]
     player_location = f'\'{player[3]}\''
+    player_turns = player[7]
     musk_id = musk[0]
     musk_name = musk[4]
     musk_money = musk[2]
     musk_fuel = musk[1]
     musk_location = f'\'{musk[3]}\''
+    musk_turns = musk[7]
 
     player_plane = load_plane(player[5], player[6])
     musk_plane = load_plane(musk[5], musk[6])
 
-    player_object = game_objects.Player(player_id, player_name, player_money, player_fuel, player_location, player_plane)
-    musk_object = game_objects.Player(musk_id, musk_name, musk_money, musk_fuel, musk_location, musk_plane)
+    player_object = game_objects.Player(player_id, player_name, player_money, player_fuel, player_location, player_turns, player_plane)
+    musk_object = game_objects.Player(musk_id, musk_name, musk_money, musk_fuel, musk_location, musk_turns, musk_plane)
 
     return player_object, musk_object
 
