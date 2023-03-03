@@ -11,11 +11,19 @@ def event(player):
 
             if what_happens == 1:
                 print('You were robbed')
-                player.money = player.money - 100   # you lose money
+                player.money = player.money - 10000   # you lose money
+                if player.money < 0:
+                    print("You lose")
+                    # Game ends here.
+                    break
 
             else:
                 print('Some of your fuel got stolen')
-                player.fuel = player.fuel - 100  # you lose some fuel
+                player.fuel = player.fuel - 10000  # you lose some fuel
+                if player.fuel < 0:
+                    print("Please refuel")
+                    # Refuel function here.
+                    break
 
     elif player.location == "'MHPR'" or player.location == "'MMMX'" or player.location == "'MMGL'":  # Honduras, 2 mexican cities
         probability = random.randint(1, 2)  # Decide your fate with a 50 / 50 chance

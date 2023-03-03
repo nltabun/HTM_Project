@@ -13,6 +13,7 @@ game_on = True
 
 
 def airport_visit(connection, musk, player=None):
+    global game_on
     if player.location != musk.location:
         location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
         print(f'Welcome to {location_name}. Select what you want to do.\n'
@@ -48,10 +49,10 @@ def airport_visit(connection, musk, player=None):
 
         # A way to end the while loop/program
         elif selection == 'F11':
-            global game_on
             game_on = False
     else:
-        print("Gongratulations! You found Elon Musk!")
+        print("Congratulations! You found Elon Musk!")
+        game_on = False
 
 
 # Start game
