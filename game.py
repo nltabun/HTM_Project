@@ -21,33 +21,33 @@ def airport_visit(connection, musk=None, player=None):
 
     location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
     print(f'Welcome to {location_name}. Select what you want to do.\n'
-            '\n'
-            '(A) Play Minigame\n'
-            '(B) Fuel management\n'
-            '(C) Buy a clue\n'
-            '(D) Select another airport\n')
+          '\n'
+          '(1) Play Minigame\n'
+          '(2) Fuel management\n'
+          '(3) Buy a clue\n'
+          '(4) Select another airport\n')
 
     while True:
-        selection = input('Selection: ').capitalize()
-        choices = ('A', 'B', 'C', 'D', 'F11')
+        selection = input('Selection: ')
+        choices = ('1', '2', '3', '4', 'F11')
         if selection in choices:
             break
         else:
-            print('Error in selection. Please use letters A, B, C or D.')
+            print('Error in selection. Please use numbers 1, 2, 3 or 4.')
             continue
 
-    if selection == 'A':
+    if selection == '1':
         game_actions.minigame(connection, player)
-    elif selection == 'B':
+    elif selection == '2':
         game_fuel.fuel_management(player)
-    elif selection == 'C':
+    elif selection == '3':
         game_actions.buy_clue(connection, player, musk)
-    elif selection == 'D':
+    elif selection == '4':
         game_movement.player_movement(connection, player)
         game_events.event(player)
-
+        
         #print(player.location)
-
+        
         # Disabled for testing loop
         '''if musk.turns_left != 0:
             print('\nElon Musk is moving.\n')
@@ -59,6 +59,7 @@ def airport_visit(connection, musk=None, player=None):
 
     # A way to end the while loop/program
     elif selection == 'F11':
+
         game_on = False
     
 
