@@ -99,7 +99,7 @@ def main():
         print('\nNo save data found.\n')
     
     # Test "main menu" # TODO func main menu
-    option = 2
+    option = 1
     if option == 1: # New game
         game_init.new_game(conn)
         play_game(conn)
