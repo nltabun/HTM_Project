@@ -17,7 +17,7 @@ def airport_visit(connection, musk=None, player=None):
     if player.current_ap <= 0:
         return
 
-    print(f'Current {player}')
+    print(f'\nCurrent {player}\n')
 
     location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
     print(f'Welcome to {location_name}. Select what you want to do.\n'
@@ -28,7 +28,7 @@ def airport_visit(connection, musk=None, player=None):
           '(4) Select another airport\n')
 
     while True:
-        selection = input('Selection: ')
+        selection = input('Selection: ').capitalize()
         choices = ('1', '2', '3', '4', 'F11')
         if selection in choices:
             break
@@ -59,7 +59,7 @@ def airport_visit(connection, musk=None, player=None):
 
     # A way to end the while loop/program
     elif selection == 'F11':
-
+        print('Closing game.')
         game_on = False
     
 
@@ -76,16 +76,15 @@ def play_game(connection):
         if player.location == musk.location:
             print("Congratulations! You found Elon Musk!")
             game_on = False
-        elif player.current_ap > 0:
-            airport_visit(connection, musk, player)
-        elif player.current_ap <= 0:
-            airport_visit(connection, player=musk)
-        elif musk.current_ap > 0:
-            airport_visit(connection, player=musk)
-        else:
+        elif player.current_ap <= 0 and musk.current_ap <= 0:
             player.current_ap = player.max_ap
             musk.current_ap = musk.max_ap
             airport_visit(connection, musk, player)
+        elif player.current_ap > 0:
+            airport_visit(connection, musk, player)
+        else:
+            airport_visit(connection, player=musk)
+
         '''if musk.current_ap <= 0: # Temporary solution so game doesn't crash when Musk is at 0 AP
             musk.current_ap = musk.max_ap
         airport_visit(connection, musk, player)'''

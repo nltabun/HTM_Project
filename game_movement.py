@@ -103,7 +103,7 @@ def player_movement(connection, player):
             airport_dic.update({i: (row[0], row[2])})
             i += 1
 
-        answer = random.randint(1, i-1)
+        answer = random.randint(1, i)
         print(f'{answer} out of {i}')
     else:
         print('Invalid player id')
