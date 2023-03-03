@@ -3,7 +3,7 @@
 from geopy import distance
 import random
 
-
+# Fetches all airports that are located in the Northen america
 def select_airport(connection):
     sql = f'SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = "NA"'
     cursor = connection.cursor(Dictionary=True)
@@ -11,7 +11,7 @@ def select_airport(connection):
     result = cursor.fetchone()
     return result
 
-
+# Fetches players ICAO code
 def player_location_name(connection, player):
     location = str(player.location).strip("''")
     sql = f'SELECT name FROM airport WHERE ident = "{location}"'
@@ -22,7 +22,7 @@ def player_location_name(connection, player):
 
     return result
 
-
+# Fetches players coordinates
 def get_player_coordinates(connection, player_loc):
     sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = {player_loc}'
 
@@ -33,7 +33,7 @@ def get_player_coordinates(connection, player_loc):
     
     return tulos
 
-
+# Fetches coordinates for all airports
 def get_all_airport_coordinates(connection):
     sql = f'SELECT name, latitude_deg, longitude_deg, ident FROM airport'
     
@@ -46,14 +46,14 @@ def get_all_airport_coordinates(connection):
     
     return airport_coordinates
 
-
+# Does the calculation between the player and an airport.
 def calculate_distance(location_data, player_location):
     player_coordinates = (player_location[0], player_location[1])
     airport_location = (location_data[0], location_data[1])
     
     return float(distance.distance(airport_location, player_coordinates).km)
 
-
+# Calculates the distance between the player and all airports
 def calculate_all_airport_distance(airport_list, player_coordinates):
     distances = []
     
@@ -64,7 +64,7 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     
     return distances
 
-
+# Makes a list of airports that are in a 1000km radius of the player
 def airports_in_range(airport_list):
     in_range = []
     
@@ -74,24 +74,25 @@ def airports_in_range(airport_list):
     
     return in_range
 
-
+# Defines the players movement
 def player_movement(connection, player):
     airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(connection, player.location))
     in_range = airports_in_range(airport_list) # TODO list shouldn't contain current airport
 
     airport_dic = dict()
     i = 1
-
+    # Prints a list of airports that are in range of the player
     if player.id == 'Player':
         for row in in_range:
             print(f'({i}) {row[0]}')
             airport_dic.update({i: row[0]})
             i += 1
-
+        # Asks for the players input on where they want to go
         answer = input(f'Choose your destination (Type "C" to cancel): ')
-
+        # Returns if the player wants to cancel the search
         if answer.capitalize() == 'C':
             return
+    # Randomly chooses an airport for musk to move to.
     elif player.id == 'Musk':
         for row in in_range:
             airport_dic.update({i: row[0]})
