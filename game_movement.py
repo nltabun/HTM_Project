@@ -29,7 +29,7 @@ def get_player_coordinates(connection, player_loc):
     cursor = connection.cursor()
     cursor.execute(sql)
     tulos = cursor.fetchone()
-    print(f'Get player coord: {tulos}\n')
+    #  print(f'Get player coord: {tulos}\n')
     
     return tulos
 
@@ -122,12 +122,13 @@ def player_movement(connection, player):
         print(f'Musk has moved to {result}\n')
  
 
-#Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
+# Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
 def clue_distance_to_musk(connection, player, musk):
     musk = get_player_coordinates(connection, musk.location)
     player = get_player_coordinates(connection, player.location)
 
-    return print(f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers')
+    return f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers'
+
 
 def decrease_turns(player):
     player.turns_left = player.turns_left - 1
