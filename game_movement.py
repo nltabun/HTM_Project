@@ -6,11 +6,20 @@ import math
 import game_actions
 
 # Fetches all airports that are located in the Northen america
-def select_airport(connection):
-    sql = f'SELECT iso_country, ident, name, latitude_deg, longitude_deg FROM airport WHERE continent = "NA"'
-    cursor = connection.cursor(Dictionary=True)
+def select_airport(connection, player):
+    sql = f'SELECT name FROM airport WHERE ident = {player.location}'
+    cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
+    return result
+
+
+def random_airports(connection, count=2):
+    sql = f'SELECT name FROM airport ORDER BY RAND() LIMIT {count}'
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    result = set(result)
     return result
 
 # Fetches players ICAO code
