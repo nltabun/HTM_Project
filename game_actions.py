@@ -97,12 +97,50 @@ def buy_clue(connection, player, musk):
         # Finally give the clue to player
         random_clue = random.randint(1, 3)  # Randomize which clue we return
 
+        # Gives the distance and bearing of musk compared to the player
         if random_clue == 1:
             print(f'{game_movement.clue_distance_to_musk(connection, player, musk)} to {get_bearing(game_movement.get_player_coordinates(connection, player.location), game_movement.get_player_coordinates(connection, musk.location))}')
+
         elif random_clue == 2:
-            print(f'No clue yet, to be implemented')
+
+            # Selects the zone where musk is located at
+            sql = f'SELECT ident, zone FROM airport WHERE ident = {musk.location}'
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            result = cursor.fetchall()
+
+            if cursor.rowcount > 0:
+                for row in result:
+                    zone = row[1]
+                    if zone == 1:
+                        print("Musk is located in the east coast")
+
+                    elif zone == 2:
+                        print("Musk is located in the central US")
+
+                    elif zone == 3:
+                        print("Musk is located in the west coast")
+
+                    elif zone == 4:
+                        print("Outside of the United States Of America")
+
+                    else:
+                        print("Musk has escaped the matrix")
+
         elif random_clue == 3:
-            print(f'No clue yet, to be implemented')
+            airports = set()
+            two_airports = game_movement.random_airports(connection)
+
+            airports.update(two_airports)
+            airports.update(game_movement.select_airport(connection, musk))
+
+            # stripped_airport = str(airports).strip('(,)')
+            print(f'Elon Musk is currently located in one of the following airports:')
+            for i in airports:
+                print(str(i).strip("('',)"))
+
+
+
 
         print(f'Your stonks have been deducted to the value of {player.money}')
         player.current_ap -= 1
