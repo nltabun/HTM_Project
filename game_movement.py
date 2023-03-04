@@ -85,13 +85,13 @@ def player_movement(connection, player):
     in_range = airports_in_range(airport_list, player.travel_speed, player.range())
 
     airport_dic = dict()
-    i = 1
+    i = 0
     # Prints a list of airports that are in range of the player
     if player.id == 'Player':
         for row in in_range:
+            i += 1
             print(f'({i}) {row[0]} | Distance: {int(row[1])} | AP Cost: {row[2]}')
             airport_dic.update({i: (row[0], row[2])})
-            i += 1
         # Asks for the players input on where they want to go
         answer = input(f'Choose your destination (Type "C" to cancel): ')
         # Returns if the player wants to cancel the search
@@ -100,11 +100,14 @@ def player_movement(connection, player):
     # Randomly chooses an airport for musk to move to.
     elif player.id == 'Musk':
         for row in in_range:
-            airport_dic.update({i: (row[0], row[2])})
             i += 1
+            airport_dic.update({i: (row[0], row[2])})
 
-        answer = random.randint(1, i)
-        print(f'{answer} out of {i}')
+        if i != 0:
+            answer = random.randint(1, i)
+        else:
+            answer = i
+
     else:
         print('Invalid player id')
     
@@ -119,15 +122,12 @@ def player_movement(connection, player):
 
             player.location = result
             player.current_ap -= airport_dic.get(int(answer))[1]
-            #print(player)
         else:
             raise Exception
     except:
-        print('\nInvalid value\n')
+        if player.id == 'Player':
+            print('\nInvalid value\n')
         player_movement(connection, player)
-
-    if player.id == 'Musk':
-        print(f'Musk has moved to {result}\n')
  
 
 # Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
