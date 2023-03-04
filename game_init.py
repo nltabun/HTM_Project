@@ -63,7 +63,7 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
 
 def reset_minigames(connection):
     cur = connection.cursor()
-    update = f'UPDATE minigame SET completed = 1'
+    update = f'UPDATE minigame SET completed = 0'
     cur.execute(update)
 
 
