@@ -61,6 +61,12 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
     return
 
 
+def reset_minigames(connection):
+    cur = connection.cursor()
+    update = f'UPDATE minigame SET completed = 1'
+    cur.execute(update)
+
+
 # Setup new game (currently also deletes old game)
 def new_game(connection):
     cur = connection.cursor()
@@ -78,6 +84,7 @@ def new_game(connection):
 
     player_name = input('Name: ')
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
-    
+    reset_minigames(connection)
+
     return
 
