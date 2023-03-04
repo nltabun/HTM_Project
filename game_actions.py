@@ -60,9 +60,7 @@ def minigame(connection, player):
 
         print(f'Your stonks have reached the value of {player.money}')
 
-    else:
-        print('Wrong answer, now you lose your pension.')
-        # penalty to be added in the near future
+    player.current_ap -= 1
 
     if cursor.rowcount > 0:
         for row in result:
@@ -107,8 +105,8 @@ def buy_clue(connection, player, musk):
             print(f'No clue yet, to be implemented')
 
         print(f'Your stonks have been deducted to the value of {player.money}')
+        player.current_ap -= 1
     else:
-
         # The player is too broke for us, show the door to him
         print(f'You do not have enough stonks, come back later')
 # buy_clue(conn)

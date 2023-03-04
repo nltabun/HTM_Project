@@ -3,6 +3,7 @@
 from geopy import distance
 import random
 import math
+import game_actions
 
 # Fetches all airports that are located in the Northen america
 def select_airport(connection):
@@ -60,7 +61,7 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     
     for row in airport_list:
         location_data = (row[1], row[2])
-        airport_distance = (row[0], calculate_distance(location_data, player_coordinates))
+        airport_distance = (row[0], calculate_distance(location_data, player_coordinates), row[1], row[2])
         if airport_distance[1] != 0:
             distances.append(airport_distance)
     
@@ -73,7 +74,7 @@ def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
     for row in airport_list:
         if row[1] <= player_range:
             ap_cost = math.ceil(row[1] / player_movement_per_ap)
-            row_with_ap = (row[0], row[1], ap_cost)
+            row_with_ap = (row[0], row[1], ap_cost, row[2], row[3])
             
             in_range.append(row_with_ap)
     
@@ -89,7 +90,8 @@ def player_movement(connection, player):
     # Prints a list of airports that are in range of the player
     if player.id == 'Player':
         for row in in_range:
-            print(f'({i}) {row[0]} | Distance: {int(row[1])} | AP Cost: {row[2]}')
+            airport_coords = (row[3], row[4])
+            print(f'({i}) {row[0]} | Distance: {int(row[1])} | AP Cost: {row[2]} | Direction: {game_actions.get_bearing(get_player_coordinates(connection, player.location), airport_coords)}')
             airport_dic.update({i: (row[0], row[2])})
             i += 1
         # Asks for the players input on where they want to go
