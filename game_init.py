@@ -80,7 +80,6 @@ def new_game(connection):
     
     player_loc = str(result[0]).strip('(,)')
     musk_loc = str(result[1]).strip('(,)')
-    print(player_loc, '|', musk_loc)
 
     player_name = input('Name: ')
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
