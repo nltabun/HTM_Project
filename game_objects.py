@@ -26,6 +26,8 @@ class Player:
         self.travel_speed = plane.speed # ap per km
         self.max_ap = 5
         self.current_ap = self.max_ap
+        self.done_minigame = 0
+        self.bought_clue = 0
 
     def range(self): # returns max single flight distance for the player
         travel_range = self.current_ap * self.travel_speed
