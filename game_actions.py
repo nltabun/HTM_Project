@@ -58,7 +58,7 @@ def minigame(connection, player):
         else:
             player.money = player.money + result_prize
 
-        print(f'Your stonks have reached the value of {player.money}')
+        print(f'\nYour stonks have reached the value of {player.money}\n')
         input('Press "Enter" to continue')
 
     player.current_ap -= 1

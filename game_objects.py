@@ -1,7 +1,7 @@
 #
 
 class Airplane:
-    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, speed=850, current_fuel=0):
+    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, speed=1000, current_fuel=0):
         self.name = name # varchar(40)
         self.fuel_capacity = fuel_capacity
         self.fuel_efficiency = fuel_efficiency # lower = better
@@ -12,7 +12,7 @@ class Airplane:
         return f'\'{self.name}\', {self.fuel_capacity}, {self.fuel_efficiency}, {self.current_fuel}'
 
     def range(self): # returns max single flight distance for the plane
-        return 1.0 * self.current_fuel * self.fuel_efficiency 
+        return 1.0 * (self.current_fuel / self.fuel_efficiency) / 12
 
 class Player:
     def __init__(self, id, name, money, fuel, location, turns_left, plane=Airplane('Default Plane')):
@@ -40,6 +40,11 @@ class Player:
     def end_turn(self):
         self.current_ap = 0
         return
+
+    def fuel_consumption(self, distance):
+        self.plane.current_fuel = int(self.plane.current_fuel - (self.plane.fuel_efficiency * 12 * distance))
+
+
         
     def __str__(self): # returns statistics for the player and their plane
         return  f'Player: {self.name}, TSLA stocks: {self.money}, Fuel: {self.fuel_reserve}, Current location: {self.location}, Current AP: {self.current_ap}\n' \
