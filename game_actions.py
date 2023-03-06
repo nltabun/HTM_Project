@@ -62,6 +62,7 @@ def minigame(connection, player):
         input('Press "Enter" to continue')
     else:
         print(f'Wrong answer')
+
         input('Press "Enter" to continue')
 
     player.current_ap -= 1

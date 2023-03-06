@@ -22,9 +22,9 @@ def saved_game_data_exists(connection):
 def generate_airplanes():
     planes = []
     
-    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000, 45000)
-    plane1 = game_objects.Airplane('Cloudbus A69', 6000, 1.0, 850, 1000)
-    plane2 = game_objects.Airplane('Boijong 420', 15000, 1.1, 900, 1000)
+    plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000, 50000)
+    plane1 = game_objects.Airplane('Cloudbus A69', 48000, 1.0, 850, 1000)
+    plane2 = game_objects.Airplane('Boijong 420', 100000, 1.1, 900, 1000)
     
     planes.append(plane_musk)
     planes.append(plane1)
@@ -36,7 +36,7 @@ def generate_airplanes():
 # Setup players when no data exists in 'game' table
 def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc):
     start_money = 250
-    start_fuel = 1000
+    start_fuel = 20000
     start_plane = planes[1]
     musk_plane = planes[0]
 
