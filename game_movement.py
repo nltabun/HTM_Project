@@ -102,7 +102,7 @@ def player_movement(connection, player):
             airport_coords = (row[3], row[4])
             print(f'({i}) {row[0]} | Distance: {int(row[1])} | AP Cost: {row[2]} | Direction: {game_actions.get_bearing(get_player_coordinates(connection, player.location), airport_coords)}')
 
-            airport_dic.update({i: (row[0], row[2])})
+            airport_dic.update({i: (row[0], row[2], row[1])})
         # Asks for the players input on where they want to go
         answer = input(f'Choose your destination (Type "C" to cancel): ')
         # Returns if the player wants to cancel the search
@@ -112,7 +112,7 @@ def player_movement(connection, player):
     elif player.id == 'Musk':
         for row in in_range:
             i += 1
-            airport_dic.update({i: (row[0], row[2])})
+            airport_dic.update({i: (row[0], row[2], row[1])})
 
         if i != 0:
             answer = random.randint(1, i)
@@ -131,14 +131,21 @@ def player_movement(connection, player):
             result = cursor.fetchall()
             result = str(result).strip('[('',)]')
 
+            if result == player.enemy_location:
+                raise Exception
+
             player.location = result
             player.current_ap -= airport_dic.get(int(answer))[1]
+            player.fuel_consumption(airport_dic.get(int(answer))[2])
+
         else:
             raise Exception
     except:
         if player.id == 'Player':
             print('\nInvalid value\n')
         player_movement(connection, player)
+
+
  
 
 # Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
