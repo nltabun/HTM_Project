@@ -43,7 +43,7 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
     while True:
         game_len = input('Short or long game?: ')
         if game_len.capitalize() == 'Short' or 'S':
-            turns = random.randint(15, 20)
+            turns = random.randint(10, 15)
             break
         elif game_len.capitalize() == 'Long' or 'L':
             turns = random.randint(30, 40)
