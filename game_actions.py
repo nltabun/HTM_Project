@@ -60,6 +60,9 @@ def minigame(connection, player):
 
         print(f'You now have {player.money} stocks')
         input('Press "Enter" to continue')
+    else:
+        print(f'Wrong answer')
+        input('Press "Enter" to continue')
 
     player.current_ap -= 1
     player.done_minigame = 1
