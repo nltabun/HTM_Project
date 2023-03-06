@@ -8,8 +8,6 @@ import game_actions
 import game_data
 import game_events
 
-# A little variable to keep the game going for testing purposes
-game_on = True
 
 def airport_visit(connection, musk=None, player=None):
     global game_on
@@ -17,86 +15,147 @@ def airport_visit(connection, musk=None, player=None):
     if player.current_ap <= 0:
         return
 
-    print(f'\nCurrent {player}\n')
+    if player.id == 'Player':
+        print(f'\nCurrent {player}\n')
 
-    location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
-    print(f'Welcome to {location_name}. Select what you want to do.\n'
-          '\n'
-          '(1) Play Minigame\n'
-          '(2) Fuel management\n'
-          '(3) Buy a clue\n'
-          '(4) Select another airport\n')
+        location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
+        print(f'Welcome to {location_name}. Select what you want to do.\n'
+            '\n'
+            '(1) Play Minigame\n'
+            '(2) Fuel management\n'
+            '(3) Buy a clue\n'
+            '(4) Fly to another location\n'
+            '(5) End turn\n'
+            '(C) Quit to main menu\n')
 
-    while True:
-        selection = input('Selection: ').capitalize()
-        choices = ('1', '2', '3', '4', 'F11')
-        if selection in choices:
-            break
-        else:
-            print('Error in selection. Please use numbers 1, 2, 3 or 4.')
-            continue
+        while True:
+            selection = input('Selection: ').capitalize()
+            choices = ('1', '2', '3', '4', 'F11', 'C')
+            if selection in choices:
+                break
+            else:
+                print('Error in selection. Please use numbers 1, 2, 3, 4, 5 or letter "C" to return to main menu')
+                continue
 
-    if selection == '1':
-        game_actions.minigame(connection, player)
-    elif selection == '2':
-        game_fuel.fuel_management(player)
-    elif selection == '3':
-        game_actions.buy_clue(connection, player, musk)
-    elif selection == '4':
-        game_movement.player_movement(connection, player)
-        game_events.event(player)
-        
-        #print(player.location)
-        
-        # Disabled for testing loop
-        '''if musk.turns_left != 0:
-            print('\nElon Musk is moving.\n')
-            game_movement.player_movement(connection, musk)
-            game_movement.decrease_turns(musk)
-        else:
-            print("Elon Musk found his Tesla and escaped, you lost the game...")
-            game_on = False'''
-
-    # A way to end the while loop/program
-    elif selection == 'F11':
-        print('Closing game.')
-        game_on = False
+        if selection == '1':
+            game_actions.minigame(connection, player)
+        elif selection == '2':
+            game_fuel.fuel_management(player)
+        elif selection == '3':
+            game_actions.buy_clue(connection, player, musk)
+        elif selection == '4':
+            game_movement.player_movement(connection, player)
+            game_events.event(player)
+        elif selection == '5':
+            player.end_turn()
+        # Return to main menu
+        elif selection == 'F11' or 'C':
+            print('Returning to main menu.')
+            game_on = False
     
+    elif player.id == 'Musk':           
+        if player.plane.current_fuel < 5000:
+            print('Musk is managing fuel.')
+            game_fuel.fuel_management(player)
+        else:
+            print('Musk is moving.')
+            game_movement.player_movement(connection, player)
+            print('\nMusk is going to sleep.')
+            player.end_turn()
 
+    else:
+        print('\nInvalid Player ID\n')           
 
+     
 # Start game
 def play_game(connection):
-    player, musk = game_data.load_game_table_data(connection) # Loads player and Musk as "Player" objects from the game table
+    # Loads player and Musk as "Player" objects from the game table
+    player, musk = game_data.load_game_table_data(connection)
 
     global game_on
-    #print(f'{player}') # Test print loaded player
-    #print(f'{musk}\n') # Test print loaded musk
-    # A loop made for testing purposes
+
+    # Game loop
     while game_on:
+        # Player win condition
         if player.location == musk.location:
-            print("Congratulations! You found Elon Musk!")
+            print('\nCongratulations! You found Elon Musk!\n')
             game_on = False
-        elif player.current_ap <= 0 and musk.current_ap <= 0:
+            input('Press "Enter" to return to the main menu')
+            game_data.save_to_game_table(connection, player, musk)
+            return
+        # Musk win condition
+        elif musk.turns_left <= 0:
+            print('\nElon Musk found his Tesla and escaped, you lost the game...\n')
+            game_on = False
+            input('Press "Enter" to return to the main menu')
+            game_data.save_to_game_table(connection, player, musk)
+            return
+
+        # Both player and Musk are out of AP, which means both have fully taken their turns.
+        if player.current_ap <= 0 and musk.current_ap <= 0:
+            # Save game data back to the database after both players have taken their turns.
+            game_data.save_to_game_table(connection, player, musk)
             player.current_ap = player.max_ap
             musk.current_ap = musk.max_ap
             airport_visit(connection, musk, player)
+        # Player takes their turn first, so it's their turn until they are out of AP.
         elif player.current_ap > 0:
             airport_visit(connection, musk, player)
+            if player.current_ap <= 0:
+                game_movement.decrease_turns(player)
+                print('\nYour turn has ended.\n')
+        # Otherwise Musk takes his turn.
         else:
+            if musk.current_ap == musk.max_ap:
+                print('Musk will make his moves now.\n')
+            
             airport_visit(connection, player=musk)
+            if musk.current_ap <= 0:
+                game_movement.decrease_turns(musk)
 
-        '''if musk.current_ap <= 0: # Temporary solution so game doesn't crash when Musk is at 0 AP
-            musk.current_ap = musk.max_ap
-        airport_visit(connection, musk, player)'''
+    
+def main_menu(connection):
+    global game_on
 
-        #print(f'\n{player}')
-        #print(f'{musk}')
+    while True:
+        # Check if save data exists
+        save_data = game_init.saved_game_data_exists(connection)
+        # Valid options
+        options = {'1', '4'}
+        # Add continue game option if save data exists
+        if save_data:
+            options.add('2')
 
-    game_data.save_to_game_table(connection, player, musk)
+        # Print options and the player which one they choose
+        print('\n(1) NEW GAME')
+        if '2' in options:
+            print('(2) CONTINUE GAME')
+        print('(4) QUIT GAME')
+        option = input('\n> ')
 
-
-def main_menu(connection): # TODO
-    pass
+        # Verify the option exists
+        if option in options:
+            if option == '1': # New game
+                print('\nStarting new game\n')
+                # Create new game
+                game_init.new_game(connection) 
+                # Make sure the game is on
+                game_on = True 
+                # Start game
+                play_game(connection)
+            elif option == '2': # Continue game
+                print('\nContinuing Game\n')
+                # Make sure the game is on
+                game_on = True
+                # Start game
+                play_game(connection)                
+            elif option == '4': # Quit game
+                print('\nQuitting Game\n')
+                break
+        # Go back and ask again if the option doesn't exist
+        else:
+            print('\nOption doen\'t exist.\n')
+            continue  
 
 
 def main():
@@ -117,18 +176,12 @@ def main():
     else:
         print('\nNo save data found.\n')
     
-    # Test "main menu" # TODO func main menu
-    option = 1
-    if option == 1: # New game
-        game_init.new_game(conn)
-        play_game(conn)
-    elif option == 2: # Continue game (TODO Hide if no save to load maybe?)
-        if save_data: 
-            play_game(conn)
-        else: # No save
-            pass
-    elif option == 4: # Quit game
-        pass
+    # A little variable to keep the game going for testing purposes
+    global game_on
+    game_on = True
+
+    # Start main menu
+    main_menu(conn)
     
     # Close database connection
     conn.close()

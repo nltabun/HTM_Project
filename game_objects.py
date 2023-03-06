@@ -34,6 +34,10 @@ class Player:
         else: # if ap and speed are the limiting factor
             return travel_range
         
+    def end_turn(self):
+        self.current_ap = 0
+        return
+        
     def __str__(self): # returns statistics for the player and their plane
         return  f'Player: {self.name}, TSLA stocks: {self.money}, Fuel: {self.fuel_reserve}, Current location: {self.location}, Current AP: {self.current_ap}\n' \
                 f'Plane: {self.plane.name}, Current Fuel: {self.plane.current_fuel}, Fuel Capacity: {self.plane.fuel_capacity}, Fuel Efficiency: {self.plane.fuel_efficiency}'

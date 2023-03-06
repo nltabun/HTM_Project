@@ -13,7 +13,6 @@ def minigame(connection, player):
     result = cursor.fetchall()
     if cursor.rowcount > 0:
         for row in result:
-            completed = row[7]
             correct_answer = row[6]
             difficulty = row[8]
             print(f"{row[1]} \n"
