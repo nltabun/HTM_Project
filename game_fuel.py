@@ -15,6 +15,8 @@ def buy_fuel(player):
         player.money = new_player_money
 
         print(f'\nYou now have {new_player_money} TSLA stock and {new_player_fuel}km of range\n')
+        player.current_ap -= 1
+        input('Press "Enter" to continue')
 
 
 def load_fuel(player):
@@ -80,6 +82,8 @@ def load_fuel(player):
             player.plane.current_fuel += empty_space
             player.fuel_reserve -= empty_space
     
+    player.current_ap -= 1
+
     if player.id == 'Player':
         print(f'Plane fuel tank: {old_current_fuel} -> {player.plane.current_fuel}\n'
             f'Player fuel reserve: {old_fuel_reserve} -> {player.fuel_reserve}\n')
