@@ -7,6 +7,7 @@ import game_movement
 import game_actions
 import game_data
 import game_events
+import game_planes
 
 
 def airport_visit(connection, musk=None, player=None):
@@ -25,16 +26,17 @@ def airport_visit(connection, musk=None, player=None):
             '(2) Fuel management\n'
             '(3) Buy a clue\n'
             '(4) Fly to another location\n'
-            '(5) End turn\n'
+            '(5) Plane Market\n'
+            '(6) End turn\n'
             '(C) Quit to main menu\n')
 
         while True:
             selection = input('Selection: ').capitalize()
-            choices = ('1', '2', '3', '4', '5', 'F11', 'C')
+            choices = ('1', '2', '3', '4', '5', '6', 'F11', 'C')
             if selection in choices:
                 break
             else:
-                print('Error in selection. Please use numbers 1, 2, 3, 4, 5 or letter "C" to return to main menu')
+                print('Error in selection. Please use numbers 1, 2, 3, 4, 5, 6 or letter "C" to return to main menu')
                 continue
 
         if selection == '1':
@@ -47,6 +49,8 @@ def airport_visit(connection, musk=None, player=None):
             game_movement.player_movement(connection, player)
             game_events.event(player)
         elif selection == '5':
+            game_planes.plane_market(player)
+        elif selection == '6':
             player.end_turn()
         # Return to main menu
         elif selection == 'F11' or 'C':
