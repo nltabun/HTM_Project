@@ -34,6 +34,9 @@ class Player:
         else: # if ap and speed are the limiting factor
             return travel_range
         
+    def decrease_turns(self):
+        self.turns_left = self.turns_left - 1
+        
     def end_turn(self):
         self.current_ap = 0
         return

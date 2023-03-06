@@ -102,8 +102,9 @@ def play_game(connection):
         elif player.current_ap > 0:
             airport_visit(connection, musk, player)
             if player.current_ap <= 0:
-                game_movement.decrease_turns(player)
+                player.decrease_turns()
                 print('\nYour turn has ended.\n')
+                input('Press "Enter" to continue')
         # Otherwise Musk takes his turn.
         else:
             if musk.current_ap == musk.max_ap:
@@ -111,7 +112,7 @@ def play_game(connection):
             
             airport_visit(connection, player=musk)
             if musk.current_ap <= 0:
-                game_movement.decrease_turns(musk)
+                musk.decrease_turns()
 
     
 def main_menu(connection):

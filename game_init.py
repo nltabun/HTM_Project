@@ -42,10 +42,10 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
 
     while True:
         game_len = input('Short or long game?: ')
-        if game_len.capitalize() == 'Short':
-            turns = random.randint(10, 25)
+        if game_len.capitalize() == 'Short' or 'S':
+            turns = random.randint(15, 20)
             break
-        elif game_len.capitalize() == 'Long':
+        elif game_len.capitalize() == 'Long' or 'L':
             turns = random.randint(30, 40)
             break
         else:
@@ -81,7 +81,7 @@ def new_game(connection):
     player_loc = str(result[0]).strip('(,)')
     musk_loc = str(result[1]).strip('(,)')
 
-    player_name = input('Name: ')
+    player_name = input('\nName: ')
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
     reset_minigames(connection)
 

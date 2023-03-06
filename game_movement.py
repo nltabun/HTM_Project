@@ -40,7 +40,6 @@ def get_player_coordinates(connection, player_loc):
     cursor = connection.cursor()
     cursor.execute(sql)
     tulos = cursor.fetchone()
-    #  print(f'Get player coord: {tulos}\n')
     
     return tulos
 
@@ -150,6 +149,6 @@ def clue_distance_to_musk(connection, player, musk):
     return f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers'
 
 
-def decrease_turns(player):
-    player.turns_left = player.turns_left - 1
+#def decrease_turns(player):
+#    player.turns_left = player.turns_left - 1
 

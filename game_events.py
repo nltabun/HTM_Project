@@ -42,3 +42,4 @@ def event(player):
                 if player.plane.current_fuel < 0:
                     player.plane.current_fuel = 0
 
+    input('Press "Enter" to continue')

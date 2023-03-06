@@ -32,6 +32,7 @@ def minigame(connection, player):
                 correct_answer = '4'
     else:
         print("You've gone through all of the questions, theres nothing left here")
+        input('Press "Enter" to continue')
         return
     # Waiting for the correct answer format
     while True:
@@ -43,7 +44,7 @@ def minigame(connection, player):
 
     # Checking if answer was correct
     if answer == correct_answer:
-        print("Correct, here's your money, now get out.")
+        print("Correct, here's your money, now get out.")        
         # Getting the value of the questions prize
         sql = f'SELECT value FROM prize WHERE id IN(SELECT difficulty FROM minigame WHERE difficulty = {difficulty})'
         cursor = connection.cursor()
@@ -58,6 +59,7 @@ def minigame(connection, player):
             player.money = player.money + result_prize
 
         print(f'Your stonks have reached the value of {player.money}')
+        input('Press "Enter" to continue')
 
     player.current_ap -= 1
 
@@ -66,13 +68,8 @@ def minigame(connection, player):
             update = f'UPDATE minigame SET completed = 1 WHERE id = {row[0]}'
             cursor.execute(update)
 
-# minigame(conn, player)
-
-################################################## Clue buying section below, be aware of eye cancer
 
 # Function for buying clues
-
-
 def buy_clue(connection, player, musk):
     while True:
         you_sure = input(f'Currently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
@@ -80,7 +77,7 @@ def buy_clue(connection, player, musk):
         if you_sure in choices:
             break
         else:
-            print("Error in selection. Please use letters Y or N.")
+            print('Error in selection. Please use letters "Y" or "N".')
 
     if you_sure == 'Y':
         pass
@@ -133,20 +130,18 @@ def buy_clue(connection, player, musk):
             airports.update(two_airports)
             airports.update(game_movement.select_airport(connection, musk))
 
-            # stripped_airport = str(airports).strip('(,)')
             print(f'Elon Musk is currently located in one of the following airports:')
             for i in airports:
                 print(str(i).strip("('',)"))
 
-
-
+        player.current_ap -= 1
 
         print(f'Your stonks have been deducted to the value of {player.money}')
-        player.current_ap -= 1
+        input('Press "Enter" to continue')
     else:
         # The player is too broke for us, show the door to him
         print(f'You do not have enough stonks, come back later')
-# buy_clue(conn)
+        input('Press "Enter" to continue')
 
 
 def get_bearing(player_coords, comp_coords):  # function found in https://www.programcreek.com/python/example/93521/geopy.Point
