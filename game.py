@@ -30,7 +30,7 @@ def airport_visit(connection, musk=None, player=None):
 
         while True:
             selection = input('Selection: ').capitalize()
-            choices = ('1', '2', '3', '4', 'F11', 'C')
+            choices = ('1', '2', '3', '4', '5', 'F11', 'C')
             if selection in choices:
                 break
             else:
@@ -114,6 +114,7 @@ def play_game(connection):
             if player.current_ap <= 0:
                 player.decrease_turns()
                 print('\nYour turn has ended.\n')
+                musk.epitaph(player.location)
                 input('Press "Enter" to continue')
         # Otherwise Musk takes his turn.
         else:

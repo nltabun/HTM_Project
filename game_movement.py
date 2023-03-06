@@ -131,6 +131,9 @@ def player_movement(connection, player):
             result = cursor.fetchall()
             result = str(result).strip('[('',)]')
 
+            if result == player.enemy_location:
+                raise Exception
+
             player.location = result
             player.current_ap -= airport_dic.get(int(answer))[1]
         else:
