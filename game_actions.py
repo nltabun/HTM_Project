@@ -93,9 +93,9 @@ def buy_clue(connection, player, musk):
         # Finally give the clue to player
         random_clue = random.randint(1, 3)  # Randomize which clue we return
 
-        # Gives the distance and bearing of musk compared to the player
+        # Gives the bearing of musk compared to the player
         if random_clue == 1:
-            print(f'{game_movement.clue_distance_to_musk(connection, player, musk)} to {get_bearing(game_movement.get_player_coordinates(connection, player.location), game_movement.get_player_coordinates(connection, musk.location))}')
+            print(f'Musk is currently to the {get_bearing(game_movement.get_player_coordinates(connection, player.location), game_movement.get_player_coordinates(connection, musk.location))} of you.')
 
         elif random_clue == 2:
 
