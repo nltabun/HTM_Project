@@ -50,8 +50,6 @@ def load_fuel(player):
             active = True
             return active
         
-        print(fuel_amount, player.fuel_reserve)
-        print(type(fuel_amount), type(player.fuel_reserve))
         if fuel_amount > player.fuel_reserve:
             do_max = input('You don\'t have that much fuel. Load as much as you can? ("Y" to confirm)\n> ')
         
