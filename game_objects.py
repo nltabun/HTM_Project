@@ -1,12 +1,13 @@
 #
 
 class Airplane:
-    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, speed=850, current_fuel=0):
+    def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, speed=850, current_fuel=0, cost=0):
         self.name = name # varchar(40)
         self.fuel_capacity = fuel_capacity
         self.fuel_efficiency = fuel_efficiency # lower = better
         self.current_fuel = current_fuel # int(8)
         self.speed = speed
+        self.cost = cost
 
     def stats(self): # returns plane statistics
         return f'\'{self.name}\', {self.fuel_capacity}, {self.fuel_efficiency}, {self.current_fuel}'
