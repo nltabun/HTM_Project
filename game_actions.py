@@ -44,7 +44,7 @@ def minigame(connection, player):
 
     # Checking if answer was correct
     if answer == correct_answer:
-        print("Correct, here's your money, now get out.")        
+        print("Correct, here's your money.")
         # Getting the value of the questions prize
         sql = f'SELECT value FROM prize WHERE id IN(SELECT difficulty FROM minigame WHERE difficulty = {difficulty})'
         cursor = connection.cursor()
@@ -58,10 +58,14 @@ def minigame(connection, player):
         else:
             player.money = player.money + result_prize
 
-        print(f'Your stonks have reached the value of {player.money}')
+        print(f'You now have {player.money} stocks')
+        input('Press "Enter" to continue')
+    else:
+        print(f'Wrong answer')
         input('Press "Enter" to continue')
 
     player.current_ap -= 1
+    player.done_minigame = 1
 
     if cursor.rowcount > 0:
         for row in result:
@@ -135,12 +139,13 @@ def buy_clue(connection, player, musk):
                 print(str(i).strip("('',)"))
 
         player.current_ap -= 1
+        player.bought_clue = 1
 
         print(f'Your stonks have been deducted to the value of {player.money}')
         input('Press "Enter" to continue')
     else:
         # The player is too broke for us, show the door to him
-        print(f'You do not have enough stonks, come back later')
+        print(f'You do not have enough stocks, come back later')
         input('Press "Enter" to continue')
 
 
