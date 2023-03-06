@@ -28,6 +28,9 @@ class Player:
         self.current_ap = self.max_ap
         self.done_minigame = 0
         self.bought_clue = 0
+        self.enemy_location = ''
+    def epitaph(self, player_loc):
+        self.enemy_location = player_loc
 
     def range(self): # returns max single flight distance for the player
         travel_range = self.current_ap * self.travel_speed

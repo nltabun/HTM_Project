@@ -114,6 +114,7 @@ def play_game(connection):
             if player.current_ap <= 0:
                 player.decrease_turns()
                 print('\nYour turn has ended.\n')
+                musk.epitaph(player.location)
                 input('Press "Enter" to continue')
         # Otherwise Musk takes his turn.
         else:
