@@ -38,11 +38,19 @@ def airport_visit(connection, musk=None, player=None):
                 continue
 
         if selection == '1':
-            game_actions.minigame(connection, player)
+            if player.done_minigame == 1:
+                print("You've already played a minigame, try again next round")
+                input('Press "Enter" to continue')
+            else:
+                game_actions.minigame(connection, player)
         elif selection == '2':
             game_fuel.fuel_management(player)
         elif selection == '3':
-            game_actions.buy_clue(connection, player, musk)
+            if player.bought_clue == 1:
+                print("You've already bought 1 clue, try again next round")
+                input('Press "Enter" to continue')
+            else:
+                game_actions.buy_clue(connection, player, musk)
         elif selection == '4':
             game_movement.player_movement(connection, player)
             game_events.event(player)
@@ -97,6 +105,8 @@ def play_game(connection):
             game_data.save_to_game_table(connection, player, musk)
             player.current_ap = player.max_ap
             musk.current_ap = musk.max_ap
+            player.bought_clue = 0
+            player.done_minigame = 0
             airport_visit(connection, musk, player)
         # Player takes their turn first, so it's their turn until they are out of AP.
         elif player.current_ap > 0:
