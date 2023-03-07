@@ -16,7 +16,7 @@ def event(player):
                     player.money = 0
             else:
                 print('Some of your fuel got stolen')
-                player.plane.current_fuel = player.plane.current_fuel - 100  # you lose some fuel
+                player.plane.current_fuel = player.plane.current_fuel - 5000  # you lose some fuel
                 if player.plane.current_fuel < 0:
                     player.plane.current_fuel = 0
 
@@ -37,7 +37,7 @@ def event(player):
 
             else:
                 print('Some of your fuel got stolen')
-                player.plane.current_fuel = player.plane.current_fuel - 100  # you lose some fuel
+                player.plane.current_fuel = player.plane.current_fuel - 5000  # you lose some fuel
 
                 if player.plane.current_fuel < 0:
                     player.plane.current_fuel = 0

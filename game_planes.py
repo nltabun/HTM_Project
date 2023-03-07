@@ -31,8 +31,14 @@ def plane_market(player):
             print(f'({i}) | {plane.stats()} | Cost: {plane.cost} Stocks')
             i += 1
         print(f'\nYou currently have {player.money} Stocks.\n')
+        while True:
+            choices = (1,2,3,4,5,'C')
+            choice = input('Enter the number of the plane you wish buy. (Type "C" to Cancel)\n> ')
+            if choice in choices:
+                break
+            else:
+                print('Please enter one of the following: 1, 2, 3, 4, 5, C\n')
 
-        choice = input('Enter the number of the plane you wish buy. (Type "C" to Cancel)\n> ')
         if choice.capitalize() == 'C':
             return
         else:
