@@ -1,7 +1,6 @@
 #
 
 class Airplane:
-
     def __init__(self, name, fuel_capacity=10000, fuel_efficiency=1.0, speed=850, current_fuel=0, cost=0):
         self.name = name # varchar(40)
         self.fuel_capacity = fuel_capacity
@@ -11,7 +10,7 @@ class Airplane:
         self.cost = cost
 
     def stats(self): # returns plane statistics
-        return f'\'{self.name}\', {self.fuel_capacity}, {self.fuel_efficiency}, {self.current_fuel}'
+        return f'\'{self.name}\' | {self.fuel_capacity} | {self.fuel_efficiency} | {self.speed}'
 
     def range(self): # returns max single flight distance for the plane
         return 1.0 * (self.current_fuel / self.fuel_efficiency) / 12
@@ -55,8 +54,8 @@ class Player:
 
         
     def __str__(self): # returns statistics for the player and their plane
-        return  f'Player: {self.name}, TSLA stocks: {self.money}, Fuel: {self.fuel_reserve}, Current location: {self.location}, Current AP: {self.current_ap}\n' \
-                f'Plane: {self.plane.name}, Current Fuel: {self.plane.current_fuel}, Fuel Capacity: {self.plane.fuel_capacity}, Fuel Efficiency: {self.plane.fuel_efficiency}'
+        return  f'Player: {self.name} | TSLA stocks: {self.money} | Fuel Reserve: {self.fuel_reserve} | Current location: {self.location} | Current AP: {self.current_ap}\n' \
+                f'Plane: {self.plane.name} | Current Fuel: {self.plane.current_fuel} | Fuel Capacity: {self.plane.fuel_capacity} | Fuel Efficiency: {self.plane.fuel_efficiency}'
 
     def new_values(self): # returns player statistics in the correct format for inserting a new player into the database 
         return f'\'{self.id}\', {self.fuel_reserve}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}, {self.turns_left}'

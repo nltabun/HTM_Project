@@ -22,13 +22,13 @@ def plane_market(player):
     planes = game_init.generate_airplanes()
 
     while True:
-        print(f'\nPLANE MARKET\n\nYour current plane is:\n{player.plane.stats()}\nFollowing planes are currently available:')
+        print(f'\nPLANE MARKET\n\nYour current plane is:\n{player.plane.stats()}\nFollowing planes are currently available:\n(n) | Name | Fuel Capacity | Fuel Efficiency | Speed | Price')
         i = 0
         for plane in planes:
             if i == 0:
                 i += 1
                 continue
-            print(f'({i}) {plane.stats()} | Cost: {plane.cost} Stocks')
+            print(f'({i}) | {plane.stats()} | Cost: {plane.cost} Stocks')
             i += 1
         print(f'\nYou currently have {player.money} Stocks.\n')
 
@@ -43,6 +43,7 @@ def plane_market(player):
                     player.fuel_reserve += player.plane.current_fuel # Return fuel from old plane to reserve
                     player.plane = planes[int(choice)]
                     player.money -= planes[int(choice)].cost
+                    player.travel_speed = planes[int(choice)].speed
                     player.current_ap -= 1
                     break
             else:

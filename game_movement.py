@@ -143,10 +143,10 @@ def player_movement(connection, player):
     except:
         if player.id == 'Player':
             print('\nInvalid value\n')
-        player_movement(connection, player)
+            player_movement(connection, player)
+        else:
+            return
 
-
- 
 
 # Determine the distance between the player and Elon Musk, this was defined as one the clues for the game
 def clue_distance_to_musk(connection, player, musk):
@@ -154,8 +154,4 @@ def clue_distance_to_musk(connection, player, musk):
     player = get_player_coordinates(connection, player.location)
 
     return f'Your distance to musk is {int(distance.distance(musk, player).km)} kilometers'
-
-
-#def decrease_turns(player):
-#    player.turns_left = player.turns_left - 1
 
