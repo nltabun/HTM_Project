@@ -192,7 +192,7 @@ def main():
     else:
         print('\nNo save data found.\n')
     
-    # A little variable to keep the game going for testing purposes
+    # A little variable to keep the game going
     global game_on
     game_on = True
 
