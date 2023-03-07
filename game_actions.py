@@ -44,7 +44,7 @@ def minigame(connection, player):
 
     # Checking if answer was correct
     if answer == correct_answer:
-        print("Correct, here's your money.")
+        print("\nCorrect, here's your money.")
         # Getting the value of the questions prize
         sql = f'SELECT value FROM prize WHERE id IN(SELECT difficulty FROM minigame WHERE difficulty = {difficulty})'
         cursor = connection.cursor()
@@ -58,12 +58,12 @@ def minigame(connection, player):
         else:
             player.money = player.money + result_prize
 
-        print(f'You now have {player.money} stocks')
-        input('Press "Enter" to continue')
+        print(f'\nYou now have {player.money} stocks')
+        input('\nPress "Enter" to continue')
     else:
-        print(f'Wrong answer')
+        print(f'\nWrong answer')
 
-        input('Press "Enter" to continue')
+        input('\nPress "Enter" to continue')
 
     player.current_ap -= 1
     player.done_minigame = 1
@@ -77,14 +77,14 @@ def minigame(connection, player):
 # Function for buying clues
 def buy_clue(connection, player, musk):
     # Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
-    if player.money > 100:
+    if player.money >= 100:
         while True:
-            you_sure = input(f'Currently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
+            you_sure = input(f'\nCurrently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
             choices = ('Y', 'N')
             if you_sure in choices:
                 break
             else:
-                print('Error in selection. Please use letters "Y" or "N".')
+                print('\nError in selection. Please use letters "Y" or "N".\n')
 
         if you_sure == 'Y':
             pass
@@ -99,7 +99,7 @@ def buy_clue(connection, player, musk):
 
         # Gives the bearing of musk compared to the player
         if random_clue == 1:
-            print(f'Musk is currently to the {get_bearing(game_movement.get_player_coordinates(connection, player.location), game_movement.get_player_coordinates(connection, musk.location))} of you.')
+            print(f'\nMusk is currently to the {get_bearing(game_movement.get_player_coordinates(connection, player.location), game_movement.get_player_coordinates(connection, musk.location))} of you.')
 
         elif random_clue == 2:
 
@@ -113,19 +113,19 @@ def buy_clue(connection, player, musk):
                 for row in result:
                     zone = row[1]
                     if zone == 1:
-                        print("Musk is located in the east coast")
+                        print("\nMusk is located in the east coast")
 
                     elif zone == 2:
-                        print("Musk is located in the central US")
+                        print("\nMusk is located in the central US")
 
                     elif zone == 3:
-                        print("Musk is located in the west coast")
+                        print("\nMusk is located in the west coast")
 
                     elif zone == 4:
-                        print("Outside of the United States Of America")
+                        print("\nOutside of the United States Of America")
 
                     else:
-                        print("Musk has escaped the matrix")
+                        print("\nMusk has escaped the matrix")
 
         elif random_clue == 3:
             airports = set()
@@ -134,19 +134,19 @@ def buy_clue(connection, player, musk):
             airports.update(two_airports)
             airports.update(game_movement.select_airport(connection, musk))
 
-            print(f'Elon Musk is currently located in one of the following airports:')
+            print(f'\nElon Musk is currently located in one of the following airports:')
             for i in airports:
                 print(str(i).strip("('',)"))
 
         player.current_ap -= 1
         player.bought_clue = 1
 
-        print(f'Your stonks have been deducted to the value of {player.money}')
-        input('Press "Enter" to continue')
+        print(f'\nYour stonks have been deducted to the value of {player.money}')
+        input('\nPress "Enter" to continue')
     else:
         # The player is too broke for us, show the door to him
-        print(f'You do not have enough stocks, come back later')
-        input('Press "Enter" to continue')
+        print(f'\nYou do not have enough stocks, come back later')
+        input('\nPress "Enter" to continue')
 
 
 def get_bearing(player_coords, comp_coords):  # function found in https://www.programcreek.com/python/example/93521/geopy.Point
