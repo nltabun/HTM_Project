@@ -36,21 +36,21 @@ def airport_visit(connection, musk=None, player=None):
             if selection in choices:
                 break
             else:
-                print('Error in selection. Please use numbers 1, 2, 3, 4, 5, 6 or letter "C" to return to main menu')
+                print('\nError in selection. Please use numbers 1, 2, 3, 4, 5, 6 or letter "C" to return to main menu')
                 continue
 
         if selection == '1':
             if player.done_minigame == 1:
-                print("You've already played a minigame, try again next round")
-                input('Press "Enter" to continue')
+                print("\nYou've already played a minigame, try again next round")
+                input('\nPress "Enter" to continue')
             else:
                 game_actions.minigame(connection, player)
         elif selection == '2':
             game_fuel.fuel_management(player)
         elif selection == '3':
             if player.bought_clue == 1:
-                print("You've already bought 1 clue, try again next round")
-                input('Press "Enter" to continue')
+                print("\nYou've already bought 1 clue, try again next round")
+                input('\nPress "Enter" to continue')
             else:
                 game_actions.buy_clue(connection, player, musk)
         elif selection == '4':
@@ -62,16 +62,20 @@ def airport_visit(connection, musk=None, player=None):
             player.end_turn()
         # Return to main menu
         elif selection == 'F11' or 'C':
-            print('Returning to main menu.')
+            print('\nReturning to main menu.\n')
             game_on = False
     
     elif player.id == 'Musk':           
-        if player.plane.current_fuel < 5000:
-            print('Musk is managing fuel.')
+        if player.plane.current_fuel < 25000:
+            print('\nMusk is managing fuel.')
             game_fuel.fuel_management(player)
         else:
-            print('Musk is moving.')
+            print('\nMusk is moving.')
             game_movement.player_movement(connection, player)
+
+            if player.current_ap == player.max_ap:
+                print('\nMusk is apparently having troubles.')
+                game_fuel.fuel_management(player)
             print('\nMusk is going to sleep.')
             player.end_turn()
 
@@ -92,14 +96,14 @@ def play_game(connection):
         if player.location == musk.location:
             print('\nCongratulations! You found Elon Musk!\n')
             game_on = False
-            input('Press "Enter" to return to the main menu')
+            input('Press "Enter" to return to the main menu\n')
             game_data.save_to_game_table(connection, player, musk)
             return
         # Musk win condition
         elif musk.turns_left <= 0:
             print('\nElon Musk found his Tesla and escaped, you lost the game...\n')
             game_on = False
-            input('Press "Enter" to return to the main menu')
+            input('Press "Enter" to return to the main menu\n')
             game_data.save_to_game_table(connection, player, musk)
             return
 
@@ -119,7 +123,7 @@ def play_game(connection):
                 player.decrease_turns()
                 print('\nYour turn has ended.\n')
                 musk.epitaph(player.location)
-                input('Press "Enter" to continue')
+                input('Press "Enter" to continue\n')
         # Otherwise Musk takes his turn.
         else:
             if musk.current_ap == musk.max_ap:
