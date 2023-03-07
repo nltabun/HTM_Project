@@ -76,21 +76,20 @@ def minigame(connection, player):
 
 # Function for buying clues
 def buy_clue(connection, player, musk):
-    while True:
-        you_sure = input(f'Currently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
-        choices = ('Y', 'N')
-        if you_sure in choices:
-            break
-        else:
-            print('Error in selection. Please use letters "Y" or "N".')
-
-    if you_sure == 'Y':
-        pass
-    else:
-        return
-
     # Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
     if player.money > 100:
+        while True:
+            you_sure = input(f'Currently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
+            choices = ('Y', 'N')
+            if you_sure in choices:
+                break
+            else:
+                print('Error in selection. Please use letters "Y" or "N".')
+
+        if you_sure == 'Y':
+            pass
+        else:
+            return
 
         # Player has enough stonks, now we deduct the price
         player.money = player.money - 100
