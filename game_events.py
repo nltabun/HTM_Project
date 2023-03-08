@@ -28,6 +28,7 @@ def event(player):
 
             if what_happens < 10:
                 print('You were kidnapped by the cartel, you lose 1 whole round')  # rip 1 round
+                player.end_turn()
 
             elif 10 < what_happens < 55:
                 print('You were robbed')
