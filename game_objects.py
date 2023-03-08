@@ -50,8 +50,6 @@ class Player:
 
     def fuel_consumption(self, distance):
         self.plane.current_fuel = int(self.plane.current_fuel - (self.plane.fuel_efficiency * 12 * distance))
-
-
         
     def __str__(self): # returns statistics for the player and their plane
         return  f'Player: {self.name} | TSLA stocks: {self.money} | Fuel Reserve: {self.fuel_reserve} | Current location: {self.location} | Current AP: {self.current_ap}\n' \
