@@ -21,7 +21,7 @@ def buy_fuel(player):
 
 def load_fuel(player):
     active = True
-    if player.id == 'Player':
+    if player.name != 'Elon Musk':
         print(f'\nLoad Fuel\n{player.fuel_status()}\n')
         if player.plane.current_fuel >= player.plane.fuel_capacity:
             print('Fuel tank is already full. Returning...')
@@ -34,12 +34,8 @@ def load_fuel(player):
         if fuel_amount.capitalize() == 'C':
             active = False
             return active
-    elif player.id == 'Musk':
-        fuel_amount = ''
     else:
-        print('Invalid player id. Cannot execute "load fuel".')
-        active = False
-        return active
+        fuel_amount = ''
     
     old_current_fuel = player.plane.current_fuel
     old_fuel_reserve = player.fuel_reserve 
@@ -84,7 +80,7 @@ def load_fuel(player):
     
     player.current_ap -= 1
 
-    if player.id == 'Player':
+    if player.name != 'Elon Musk':
         print(f'Plane fuel tank: {old_current_fuel} -> {player.plane.current_fuel}\n'
             f'Player fuel reserve: {old_fuel_reserve} -> {player.fuel_reserve}\n')
         input('Press "Enter" to continue')
@@ -95,7 +91,7 @@ def load_fuel(player):
 
 def fuel_management(player):
     options = ('1','2','4')
-    if player.id == 'Player':
+    if player.name != 'Elon Musk':
         while True:
             print('Fuel Management\n\nDo you want to..\n(1) Buy fuel\n(2) Load fuel\n(4) Cancel')
             option = input('> ')
@@ -114,6 +110,5 @@ def fuel_management(player):
                     break
         elif option == '4':
             return
-    
-    if player.id == 'Musk':
+    else:
         load_fuel(player)

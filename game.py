@@ -16,7 +16,7 @@ def airport_visit(connection, musk=None, player=None):
     if player.current_ap <= 0:
         return
 
-    if player.id == 'Player':
+    if player.name != 'Elon Musk':
         print(f'\nCurrent {player}\n')
 
         location_name = str(game_movement.player_location_name(connection, player)).strip("[('',)]")
@@ -44,7 +44,9 @@ def airport_visit(connection, musk=None, player=None):
                 print("\nYou've already played a minigame, try again next round")
                 input('\nPress "Enter" to continue')
             else:
-                game_actions.minigame(connection, player)
+                mgame = game_actions.minigame(connection, player)
+                if mgame == -1:
+                    game_init.reset_minigames()
         elif selection == '2':
             game_fuel.fuel_management(player)
         elif selection == '3':
@@ -65,7 +67,7 @@ def airport_visit(connection, musk=None, player=None):
             print('\nReturning to main menu.\n')
             game_on = False
     
-    elif player.id == 'Musk':           
+    elif player.name == 'Elon Musk':
         if player.plane.current_fuel < 25000:
             print('\nMusk is managing fuel.')
             game_fuel.fuel_management(player)
@@ -80,13 +82,13 @@ def airport_visit(connection, musk=None, player=None):
             player.end_turn()
 
     else:
-        print('\nInvalid Player ID\n')           
+        print('\nInvalid Player ID\n')      
 
      
 # Start game
-def play_game(connection):
+def play_game(connection, save_slot):
     # Loads player and Musk as "Player" objects from the game table
-    player, musk = game_data.load_game_table_data(connection)
+    player, musk = game_data.load_game_table_data(connection, save_slot)
 
     global game_on
 
@@ -158,17 +160,35 @@ def main_menu(connection):
             if option == '1': # New game
                 print('\nStarting new game\n')
                 # Create new game
-                game_init.new_game(connection) 
-                # Make sure the game is on
-                game_on = True 
-                # Start game
-                play_game(connection)
-            elif option == '2': # Continue game
-                print('\nContinuing Game\n')
+                game_init.new_game(connection)
+                #
+                saves = game_data.saved_games(connection)
                 # Make sure the game is on
                 game_on = True
                 # Start game
-                play_game(connection)                
+                # print(saves[len(saves)-1]) # Correct
+                play_game(connection, saves[len(saves)-1])
+            elif option == '2': # Continue game
+                print('\nSaved Games\n')
+                saves = game_data.saved_games(connection)
+
+                i = 1
+                for save in saves:
+                    print(f'({i}) {save[1]}')
+                    i += 1
+                while True:
+                    choice = input('Select the save you want to load. (Use numbers) ("C" to cancel)')
+                    if choice.capitalize() == 'C':
+                        break
+                    elif 0 < int(choice) < len(saves):
+                        saved_game = saves[choice]
+                        # Make sure the game is on
+                        game_on = True
+                        # Start game
+                        play_game(connection, saved_game)
+                    else:
+                        print('Invalid input. Try again')
+                          
             elif option == '4': # Quit game
                 print('\nQuitting Game\n')
                 break

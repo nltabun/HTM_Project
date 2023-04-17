@@ -17,7 +17,7 @@ class Airplane:
 
 class Player:
     def __init__(self, id, name, money, fuel, location, turns_left, plane=Airplane('Default Plane')):
-        self.id = id # varchar(40)
+        self.id = id # int(4)
         self.name = name # varchar(40)
         self.money = money # int(8)
         self.fuel_reserve = fuel # int(8)
@@ -56,7 +56,7 @@ class Player:
                 f'Plane: {self.plane.name} | Current Fuel: {self.plane.current_fuel} | Fuel Capacity: {self.plane.fuel_capacity} | Fuel Efficiency: {self.plane.fuel_efficiency}'
 
     def new_values(self): # returns player statistics in the correct format for inserting a new player into the database 
-        return f'\'{self.id}\', {self.fuel_reserve}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}, {self.turns_left}'
+        return f'{self.fuel_reserve}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}, {self.turns_left}'
     
     def update_values(self): # returns player statistics in the correct format to update a player in the database
         return f'fuel = {self.fuel_reserve}, stonks = {self.money}, location = {self.location}, plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}, turns_left = {self.turns_left}'
