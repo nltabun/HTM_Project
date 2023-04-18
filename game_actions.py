@@ -33,7 +33,7 @@ def minigame(connection, player):
     else:
         print("You've gone through all of the questions, theres nothing left here")
         input('Press "Enter" to continue')
-        return
+        return -1
     # Waiting for the correct answer format
     while True:
         answer = input('Answer: ')

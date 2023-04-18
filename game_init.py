@@ -44,6 +44,8 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
     start_money = 250
     start_fuel = 20000
     start_plane = planes[1]
+    musk_money = 1000000 
+    musk_fuel = 9999999
     musk_plane = planes[0]
 
     while True:
@@ -57,10 +59,13 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
         else:
             print('Invalid value')
 
-    player = game_objects.Player('Player', player_name, start_money, start_fuel, start_loc, turns, start_plane)
-    musk = game_objects.Player('Musk', 'Elon Musk', 1000000, 9999999, musk_start_loc, turns, musk_plane)
+    player = f'{start_fuel}, {start_money}, \'{start_loc}\', \'{player_name}\', \'{start_plane.name}\', {start_plane.current_fuel} , {turns}'
+    musk = f'{musk_fuel}, {musk_money}, \'{musk_start_loc}\', \'Elon Musk\', \'{musk_plane.name}\', {musk_plane.current_fuel}, {turns}'
+    #print(player)
+    #print(musk)
 
-    insert_values = f'INSERT INTO game VALUES ({player.new_values()}), ({musk.new_values()})'
+    insert_values = f'INSERT INTO game(fuel, stonks, location, screen_name, plane, plane_fuel, turns_left) VALUES ({player}), ({musk})'
+    #print(insert_values)
     cur = connection.cursor()
     cur.execute(insert_values)
 
@@ -77,16 +82,19 @@ def reset_minigames(connection):
 # Setup new game (currently also deletes old game)
 def new_game(connection):
     cur = connection.cursor()
-    if saved_game_data_exists(connection):
-        delete_save = f'DELETE FROM game'
-        cur.execute(delete_save)
+    #if saved_game_data_exists(connection):
+    #    delete_save = f'DELETE FROM game'
+    #    cur.execute(delete_save)
 
     query_ident = f'SELECT ident FROM airport ORDER BY RAND() LIMIT 2'
     cur.execute(query_ident)
     result = cur.fetchall()
     
-    player_loc = str(result[0]).strip('(,)')
-    musk_loc = str(result[1]).strip('(,)')
+    player_loc = str(result[0]).strip('(\',)')
+    musk_loc = str(result[1]).strip('(\',)')
+
+    print(player_loc)
+    print(musk_loc)
 
     player_name = input('\nName: ')
     setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)

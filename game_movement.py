@@ -96,7 +96,7 @@ def player_movement(connection, player):
     airport_dic = dict()
     i = 0
     # Prints a list of airports that are in range of the player
-    if player.id == 'Player':
+    if player.name != 'Elon Musk':
         for row in in_range:
             i += 1
             airport_coords = (row[3], row[4])
@@ -109,7 +109,7 @@ def player_movement(connection, player):
         if answer.capitalize() == 'C':
             return
     # Randomly chooses an airport for musk to move to.
-    elif player.id == 'Musk':
+    else:
         for row in in_range:
             i += 1
             airport_dic.update({i: (row[0], row[2], row[1])})
@@ -118,9 +118,6 @@ def player_movement(connection, player):
             answer = random.randint(1, i)
         else:
             answer = i
-
-    else:
-        print('Invalid player id')
     
     try:
         if 0 < int(answer) <= len(in_range): 
@@ -141,7 +138,7 @@ def player_movement(connection, player):
         else:
             raise Exception
     except:
-        if player.id == 'Player':
+        if player.name != 'Elon Musk':
             print('\nInvalid value\n')
             player_movement(connection, player)
         else:

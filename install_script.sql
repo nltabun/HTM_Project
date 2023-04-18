@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS `game`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game` (
-  `id` varchar(40) NOT NULL,
+  `id` int(8) NOT NULL AUTO_INCREMENT,
   `fuel` int(8) DEFAULT NULL,
   `stonks` int(8) DEFAULT NULL,
   `location` varchar(10) DEFAULT NULL,
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `airport_reached`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `airport_reached` (
-  `game_id` varchar(40) NOT NULL,
+  `game_id` int(8) NOT NULL,
   `airport_icao` varchar(40) NOT NULL,
   `minigame_id` int(11) NOT NULL,
   PRIMARY KEY (`game_id`,`airport_icao`,`minigame_id`),
