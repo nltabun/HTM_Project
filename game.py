@@ -179,13 +179,16 @@ def main_menu(connection):
                 while True:
                     choice = input('Select the save you want to load. (Use numbers) ("C" to cancel)')
                     if choice.capitalize() == 'C':
+                        print('f')
                         break
                     elif 0 < int(choice) < len(saves):
-                        saved_game = saves[choice]
+                        print('elif')
+                        saved_game = saves[int(choice)-1]
                         # Make sure the game is on
                         game_on = True
                         # Start game
                         play_game(connection, saved_game)
+                        break
                     else:
                         print('Invalid input. Try again')
                           
