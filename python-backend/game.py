@@ -230,5 +230,11 @@ def main():
     conn.close()
 
 
-if __name__ == "__main__":
-    main()
+def test_play_game(connection, save):
+    save_data = game_init.saved_game_data_exists(connection)
+    # Loads player and Musk as "Player" objects from the game table
+    player, musk = game_data.load_game_table_data(connection, save)
+
+
+#if __name__ == "__main__":
+#    main()
