@@ -13,6 +13,10 @@ body {
     background-color: #343434;
 }
 
+.hide {
+  display: none;
+}
+
 .container {
     width: 100%;
     position: relative;
@@ -24,17 +28,16 @@ header {
     justify-content: space-between;
 }
 
-@media screen and (min-width: 770px) {
-    #map {
-        height: 90vh;
-        width: 140vh;
+@media screen and (min-width: 770px){
+    #map{
+    height:90vh;
+    width:140vh;
     }
 }
-
-#map {
-    border-radius: 6px;
-    box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
-    margin-bottom: 1rem;
+#map{
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
+  margin-bottom: 1rem;
 }
 
 #main-menu {
@@ -89,6 +92,7 @@ header {
   margin: 1rem 10vh;
 }
 
+
 .formBtn {
   width: 200px;
   background: black;
@@ -98,3 +102,18 @@ header {
   border: 2px solid white;
   margin: 1rem auto;
 }
+
+.blue-icon {
+    background-color: indianred;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+.player-icon {
+    background-color: lightblue;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+
+
