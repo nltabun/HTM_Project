@@ -1,6 +1,6 @@
 'use strict'
 // icons
-const airportIcon = L.divIcon({className: 'blue-icon'});
+const airportIcon = L.divIcon({className: 'red-icon'});
 const playerIcon = L.divIcon({className: 'player-icon'});
 
 // global variables
@@ -12,7 +12,7 @@ document.querySelector('#menu-form').addEventListener('submit', async function (
     evt.preventDefault();
     const playerName = document.querySelector('#menu-input').value;
     const gameLength = document.querySelector('input[name=game_length]').value;
-    document.querySelector('#main-menu').classList.add('hide');
+    document.querySelector('#new-game').classList.add('hide');
     const gameId = await fetchData(`${url}new-game/${playerName}&${gameLength}`);
     console.log(gameId);
     await fetchData(`${url}load-game/${gameId}`);

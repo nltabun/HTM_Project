@@ -14,7 +14,7 @@ body {
 }
 
 .hide {
-  display: none;
+    display: none;
 }
 
 .container {
@@ -28,82 +28,86 @@ header {
     justify-content: space-between;
 }
 
-@media screen and (min-width: 770px){
-    #map{
-    height:90vh;
-    width:140vh;
+@media screen and (min-width: 770px) {
+    #map {
+        height: 90vh;
+        width: 140vh;
     }
 }
-#map{
-  border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
-  margin-bottom: 1rem;
+
+#map {
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
+    margin-bottom: 1rem;
 }
 
-#main-menu {
-  width: 225vh;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  position: absolute;
-  top: 0;
-  z-index: 9999;
-  color: white;
+#new-game,
+#main-menu{
+    width: 225vh;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+    color: white;
 }
 
 #menu-form {
-  display: flex;
-  width: 35%;
-  margin: 4rem auto;
-  flex-direction: column;
-  color: white;
-  border: 2px solid white;
-  background-color: black;
+    display: flex;
+    width: 35%;
+    margin: 4rem auto;
+    flex-direction: column;
+    color: white;
+    border: 2px solid white;
+    background-color: black;
 }
 
 #menu-form input {
-  padding: 2vh;
-  background-color: black;
-  color: white;
-  border: 2px solid white;
+    padding: 2vh;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
 }
 
 #menu-form .radio {
-  display: flex;
-  margin: 0.5rem 15vh;
-  width: 10vh;
+    display: flex;
+    margin: 0.5rem 15vh;
+    width: 10vh;
 }
 
 #menu-form p {
-  margin: 2vh 10vh;
+    margin: 2vh 10vh;
 }
 
 #menu-form h1 {
-  margin: 1rem 25vh;;
+    margin: 1rem 25vh;;
 }
 
 .label {
-  display: inline-block;
-  margin: 1rem 10vh;
+    display: inline-block;
+    margin: 1rem 10vh;
 }
 
 .name {
-  display: flex;
-  width: 35%;
-  margin: 1rem 10vh;
+    display: flex;
+    width: 35%;
+    margin: 1rem 10vh;
 }
 
 
 .formBtn {
-  width: 200px;
-  background: black;
-  color: #fff;
-  font-weight: 100;
-  font-size: 1.2em;
-  border: 2px solid white;
-  margin: 1rem auto;
+    width: 200px;
+    background: black;
+    color: #fff;
+    font-weight: 100;
+    font-size: 1.2em;
+    border: 2px solid white;
+    margin: 2rem auto;
 }
 
-.blue-icon {
+button:hover, input:hover, label:hover { cursor: pointer; }
+
+.red-icon {
     background-color: indianred;
     border-radius: 50%;
     border: black 2px solid;
