@@ -22,13 +22,6 @@ header {
 }
 
 @media screen and (min-width: 770px){
-    .boxes {
-        width: 60%;
-        padding-left: 1rem;
-        box-sizing: border-box;
-    }
-    .box{
-        font-size: initial;
     }
     #map{
     height:90vh;
