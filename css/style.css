@@ -16,6 +16,7 @@ body {
     position: relative;
 }
 
+
 header {
     display: flex;
     justify-content: space-between;
@@ -33,9 +34,9 @@ header {
   box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
   margin-bottom: 1rem;
 }
-/* WIP Menu
+
 #main-menu {
-  width: 100%;
+  width: 225vh;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   position: absolute;
@@ -45,7 +46,7 @@ header {
 
 #menu-form {
   display: flex;
-  width: 50%;
+  width: 35%;
   margin: 4rem auto;
   flex-direction: column;
 }
@@ -53,5 +54,5 @@ header {
 #menu-form input {
   padding: 1rem;
 }
-*/
+
 
