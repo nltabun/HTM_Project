@@ -1,11 +1,13 @@
 @font-face {
-  font-family: Arial;
-  src: url('https://fonts.cdnfonts.com/css/arial-2');
+    font-family: Arial;
+    src: url('https://fonts.cdnfonts.com/css/arial-2');
 }
+
 html {
     font-family: Arial;
     color: white;
 }
+
 body {
     width: 80%;
     background-color: #343434;
@@ -45,6 +47,7 @@ header {
   position: absolute;
   top: 0;
   z-index: 9999;
+  color: white;
 }
 
 #menu-form {
@@ -52,12 +55,53 @@ header {
   width: 35%;
   margin: 4rem auto;
   flex-direction: column;
+  color: white;
+  border: 2px solid white;
+  background-color: black;
 }
 
 #menu-form input {
-  padding: 1rem;
+  padding: 2vh;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
 }
 
+#menu-form .radio {
+  display: flex;
+  margin: 0.5rem 15vh;
+  width: 10vh;
+}
+
+#menu-form p {
+  margin: 2vh 10vh;
+}
+
+#menu-form h1 {
+  margin: 1rem 25vh;;
+}
+
+.label {
+  display: inline-block;
+  margin: 1rem 10vh;
+}
+
+.name {
+  display: flex;
+  width: 35%;
+  margin: 1rem 10vh;
+}
+
+
+.formBtn {
+  width: 200px;
+  background: black;
+  color: #fff;
+  font-weight: 100;
+  font-size: 1.2em;
+  border: 2px solid white;
+  margin: 1rem auto;
+}
 
 .blue-icon {
     background-color: indianred;
@@ -70,5 +114,6 @@ header {
     border-radius: 50%;
     border: black 2px solid;
 }
+
 
 
