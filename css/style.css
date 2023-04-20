@@ -1,11 +1,13 @@
 @font-face {
-  font-family: Arial;
-  src: url('https://fonts.cdnfonts.com/css/arial-2');
+    font-family: Arial;
+    src: url('https://fonts.cdnfonts.com/css/arial-2');
 }
+
 html {
     font-family: Arial;
     color: white;
 }
+
 body {
     width: 80%;
     background-color: #343434;
@@ -22,37 +24,80 @@ header {
     justify-content: space-between;
 }
 
-@media screen and (min-width: 770px){
+@media screen and (min-width: 770px) {
+
+    #map {
+        height: 90vh;
+        width: 140vh;
     }
-    #map{
-    height:90vh;
-    width:140vh;
 }
-}
-#map{
-  border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
-  margin-bottom: 1rem;
+
+#map {
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
+    margin-bottom: 1rem;
 }
 
 #main-menu {
-  width: 225vh;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  position: absolute;
-  top: 0;
-  z-index: 9999;
+    width: 225vh;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+
+    z-index: 9999;
+    color: white;
+
+
 }
 
 #menu-form {
-  display: flex;
-  width: 35%;
-  margin: 4rem auto;
-  flex-direction: column;
+    display: flex;
+    width: 35%;
+    margin: 4rem auto;
+    flex-direction: column;
+    color: white;
+    border: 2px solid white;
+    background-color: black;
 }
 
 #menu-form input {
-  padding: 1rem;
+    padding: 1rem;
 }
 
+.name{
+    display: flex;
+    width: 35%;
+    margin: 1rem 10vh;
+}
 
+.radio{
+    display: flex;
+    width: 35%;
+    margin: 1rem auto;
+
+}
+
+p{
+    margin: 1rem 10vh;
+}
+
+h1{
+    margin: 1rem auto;;
+}
+
+.label{
+    margin: 1rem 10vh;
+}
+
+.formBtn {
+    width: 200px;
+
+    background: black;
+    color: #fff;
+    font-weight: 100;
+    font-size: 1.2em;
+    border: 2px solid white;
+    margin: 1rem auto;
+
+}
