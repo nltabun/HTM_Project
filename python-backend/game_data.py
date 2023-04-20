@@ -20,7 +20,7 @@ def load_plane(plane_name, current_fuel=0):
 
 # Load currently present saved game data from game table in the database and return player and Musk as "Player" objects
 def load_game_table_data(connection, save_slot):
-    query = f'SELECT * FROM game WHERE id = {save_slot[0]} OR id = {save_slot[0]+1} ORDER BY id ASC'
+    query = f'SELECT * FROM game WHERE id = {save_slot} OR id = {save_slot+1} ORDER BY id ASC'
     cur = connection.cursor()
     cur.execute(query)
     result = cur.fetchall()
