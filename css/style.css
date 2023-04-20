@@ -23,18 +23,17 @@ header {
 }
 
 @media screen and (min-width: 770px){
-    }
     #map{
     height:90vh;
     width:140vh;
-}
+    }
 }
 #map{
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
   margin-bottom: 1rem;
 }
-
+/*
 #main-menu {
   width: 225vh;
   height: 100%;
@@ -53,6 +52,13 @@ header {
 
 #menu-form input {
   padding: 1rem;
+}
+*/
+
+.blue-icon {
+    background-color: lightblue;
+    border-radius: 50%;
+    border: black 2px solid;
 }
 
 

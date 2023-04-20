@@ -74,5 +74,5 @@ def movement(player_id, location):
     except Exception:
         return 'Error'
 
-def run_app():
+if __name__ == "__main__":
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
