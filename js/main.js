@@ -7,14 +7,15 @@ const playerIcon = L.divIcon({className: 'player-icon'});
 const url = 'http://127.0.0.1:5000/';
 
 //new game form
-document.querySelector('#menu-form').addEventListener('submit', function (evt){
+
+document.querySelector('#menu-form').addEventListener('submit', async function (evt){
     evt.preventDefault();
     const playerName = document.querySelector('#menu-input').value;
     const gameLength = document.querySelector('input[name=game_length]').value;
     document.querySelector('#main-menu').classList.add('hide');
-    const gameId = fetchData(`${url}new-game/${playerName}&${gameLength}`);
+    const gameId = await fetchData(`${url}new-game/${playerName}&${gameLength}`);
     console.log(gameId);
-    //fetchData(`${url}load-game/${gameId}`);
+    await fetchData(`${url}load-game/${gameId}`);
 })
 async function fetchData(url) {
     try {
