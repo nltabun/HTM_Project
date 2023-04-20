@@ -6,7 +6,9 @@ from flask import Flask
 from flask_cors import CORS
 
 #import game
+import game_init
 import game_data
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -19,6 +21,42 @@ def test():
     print(musk)
 
     return 'test'
+
+
+@app.route('/save-data/<param>')
+def check_for_save_data(param):
+    if param == 'info':
+        query = f'SELECT screen_name, id FROM game WHERE NOT screen_name = "Elon Musk"'
+
+        cursor = config.conn.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        
+        return result
+    elif param == 'max-id':
+        query = f'SELECT MAX(id) FROM game'
+
+        cursor = config.conn.cursor()
+        cursor.execute(query)
+        result = str(cursor.fetchone()).strip('(,)')
+        
+        return result
+    else:
+
+        result = ''
+
+        return result
+    
+
+@app.route('/new-game/<name>&<game_length>')
+def new_game(name, game_length):
+    saves = int(check_for_save_data('count'))
+    new_game_id = str(saves + 1)
+    game_init.new_game(config.conn, name, game_length)
+    
+    print(f'New game created with id {new_game_id}')
+    return new_game_id
+
 
 @app.route('/load-game/<id>')
 def load_game(id):
@@ -37,12 +75,19 @@ def load_game(id):
     return [player.name, musk.name]
 
 
+@app.route('/save-game')
+def save_game():
+    game_data.save_to_game_table()
+
+    return 'saved'
+
+
 @app.route('/airport/name/<location>')
 def select_airport(location):
     sql = f'SELECT name FROM airport WHERE ident = {location}'
-    cursor = config.conn.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
+    cur = config.conn.cursor()
+    cur.execute(sql)
+    result = cur.fetchall()
 
     return result
 
@@ -78,6 +123,7 @@ def random_airports(count=2):
 
     return result
 
+
 @app.route('/airport/coordinates/all')
 # Fetches coordinates for all airports
 def get_all_airport_coordinates():
@@ -93,10 +139,11 @@ def get_all_airport_coordinates():
     
     return airport_coordinates
 
-@app.route('/movement/<player_id>/<location>')
+
+@app.route('/movement/<player_id>&<location>')
 def movement(player_id, location):
     try:
-        player = player_id
+        
         print(location)
         query = f'SELECT ident FROM airport WHERE name LIKE "{location}"'
 
@@ -114,6 +161,7 @@ def movement(player_id, location):
 
     except Exception:
         return 'Error'
+
 
 if __name__ == "__main__":
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
