@@ -50,7 +50,7 @@ def check_for_save_data(param):
 
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
-    saves = int(check_for_save_data('count'))
+    saves = int(check_for_save_data('max-id'))
     new_game_id = str(saves + 1)
     game_init.new_game(config.conn, name, game_length)
     
