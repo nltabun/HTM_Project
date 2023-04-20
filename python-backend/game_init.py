@@ -40,7 +40,7 @@ def generate_airplanes():
 
 
 # Setup players when no data exists in 'game' table
-def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc):
+def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc, game_len):
     start_money = 250
     start_fuel = 20000
     start_plane = planes[1]
@@ -48,16 +48,12 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc)
     musk_fuel = 9999999
     musk_plane = planes[0]
 
-    while True:
-        game_len = input('Short or long game? (S/L): ')
-        if game_len.capitalize() == 'Short' or game_len.capitalize() == 'S':
-            turns = random.randint(10, 15)
-            break
-        elif game_len.capitalize() == 'Long' or game_len.capitalize() == 'L':
-            turns = random.randint(30, 40)
-            break
-        else:
-            print('Invalid value')
+    if game_len.capitalize() == 'Short' or game_len.capitalize() == 'S':
+        turns = random.randint(10, 15)
+    elif game_len.capitalize() == 'Long' or game_len.capitalize() == 'L':
+        turns = random.randint(30, 40)
+    else:
+        print('Invalid game length value')
 
     player = f'{start_fuel}, {start_money}, \'{start_loc}\', \'{player_name}\', \'{start_plane.name}\', {start_plane.current_fuel} , {turns}'
     musk = f'{musk_fuel}, {musk_money}, \'{musk_start_loc}\', \'Elon Musk\', \'{musk_plane.name}\', {musk_plane.current_fuel}, {turns}'
@@ -80,7 +76,7 @@ def reset_minigames(connection):
 
 
 # Setup new game (currently also deletes old game)
-def new_game(connection):
+def new_game(connection, name, game_len):
     cur = connection.cursor()
     #if saved_game_data_exists(connection):
     #    delete_save = f'DELETE FROM game'
@@ -96,8 +92,7 @@ def new_game(connection):
     print(player_loc)
     print(musk_loc)
 
-    player_name = input('\nName: ')
-    setup_game_table(connection, player_name, player_loc, generate_airplanes(), musk_loc)
+    setup_game_table(connection, name, player_loc, generate_airplanes(), musk_loc, game_len)
     reset_minigames(connection)
 
     return
