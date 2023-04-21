@@ -40,7 +40,7 @@ def generate_airplanes():
 
 
 # Setup players when no data exists in 'game' table
-def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc, game_len):
+def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc, game_len, id_key):
     start_money = 250
     start_fuel = 20000
     start_plane = planes[1]
@@ -54,13 +54,13 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc,
         turns = random.randint(30, 40)
     else:
         print('Invalid game length value')
-
-    player = f'{start_fuel}, {start_money}, \'{start_loc}\', \'{player_name}\', \'{start_plane.name}\', {start_plane.current_fuel} , {turns}'
-    musk = f'{musk_fuel}, {musk_money}, \'{musk_start_loc}\', \'Elon Musk\', \'{musk_plane.name}\', {musk_plane.current_fuel}, {turns}'
+    
+    player = f'{id_key}, {start_fuel}, {start_money}, \'{start_loc}\', \'{player_name}\', \'{start_plane.name}\', {start_plane.current_fuel} , {turns}'
+    musk = f'{id_key+1}, {musk_fuel}, {musk_money}, \'{musk_start_loc}\', \'Elon Musk\', \'{musk_plane.name}\', {musk_plane.current_fuel}, {turns}'
     #print(player)
     #print(musk)
 
-    insert_values = f'INSERT INTO game(fuel, stonks, location, screen_name, plane, plane_fuel, turns_left) VALUES ({player}), ({musk})'
+    insert_values = f'INSERT INTO game(id, fuel, stonks, location, screen_name, plane, plane_fuel, turns_left) VALUES ({player}), ({musk})'
     #print(insert_values)
     cur = connection.cursor()
     cur.execute(insert_values)
@@ -76,12 +76,8 @@ def reset_minigames(connection):
 
 
 # Setup new game (currently also deletes old game)
-def new_game(connection, name, game_len):
+def new_game(connection, name, game_len, id_key):
     cur = connection.cursor()
-    #if saved_game_data_exists(connection):
-    #    delete_save = f'DELETE FROM game'
-    #    cur.execute(delete_save)
-
     query_ident = f'SELECT ident FROM airport ORDER BY RAND() LIMIT 2'
     cur.execute(query_ident)
     result = cur.fetchall()
@@ -92,7 +88,7 @@ def new_game(connection, name, game_len):
     print(player_loc)
     print(musk_loc)
 
-    setup_game_table(connection, name, player_loc, generate_airplanes(), musk_loc, game_len)
+    setup_game_table(connection, name, player_loc, generate_airplanes(), musk_loc, game_len, id_key)
     reset_minigames(connection)
 
     return
