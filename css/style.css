@@ -14,8 +14,8 @@ body {
 }
 
 .flex-wrap {
-    display: flex;
     flex-wrap: wrap;
+    width: 100rem;
 }
 
 .hide {
@@ -23,8 +23,7 @@ body {
 }
 
 .container {
-    width: 100%;
-    position: relative;
+    width: 40%;
 }
 
 .page-title {
@@ -34,21 +33,22 @@ body {
 
 .page-header,
 .page-footer {
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(black);
+    color: var(white);
     padding: 1rem;
+    text-align: center;
 }
-
 
 header {
     display: flex;
     justify-content: space-between;
+    text-align: center;
 }
 
-@media screen and (min-width: 770px) {
+@media screen and (min-width: 800px) {
     #map {
-        height: 90vh;
-        width: 140vh;
+        height: 50rem;
+        width: 100%;
     }
 }
 
@@ -56,6 +56,8 @@ header {
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
     margin-bottom: 1rem;
+    width: 60rem;
+    float: left;
 }
 
 
@@ -129,7 +131,6 @@ header {
 /*    margin: 1rem auto;*/
 /*}*/
 
-
 .menu-form .radio {
     display: flex;
     margin: 0.5rem 15vh;
@@ -178,5 +179,46 @@ button:hover, input:hover, label:hover {
     border: black 2px solid;
 }
 
+.select {
+    padding: 1rem;
+    font-size: small;
+    border-radius: 6px;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+    width: 35%;
+    height: 50%;
+    margin-bottom: 1rem;
+    background-color: #595959;
+    float: right;
+}
+.select h2,
+.select figure {
+    margin: 0.5rem;
+    padding: 0;
+}
 
+.select table {
+    width: 100%;
+    text-align: center;
+}
+
+.select li {
+    list-style-type: none;
+    height: 4rem;
+    width: 2rem;
+    text-align: justify-all;
+    padding: 0.1rem;
+    margin: 0.2rem;
+}
+
+#game-actions .formBtn {
+    height: 50px;
+    width: 200px;
+    background: #868585;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    border: 1px gray;
+    margin: 2rem auto;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+}
 
