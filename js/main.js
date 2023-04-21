@@ -15,25 +15,55 @@ document.querySelector('#newGameMenu-form').addEventListener('submit', async fun
     const gameId = await fetchData(`${url}new-game/${playerName}&${gameLength}`);
     console.log(gameId);
     await fetchData(`${url}load-game/${gameId}`);
-    gameSetup(url)
+    await gameSetup(url)
+
+
 })
 
-//main menu functionality
-document.querySelector('#mainMenu-form').addEventListener('submit', function (evt) {
+//load an old game
+document.querySelector('#load-button').addEventListener('click', async function (evt) {
     evt.preventDefault();
-})
-document.querySelector('#load-button').addEventListener('click', async function () {
-    document.querySelector('#load-game').classList.remove('hide');
-    document.querySelector('#main-menu').classList.add('hide');
     const target = document.querySelector('#loadGame-ol');
     const response = await fetchData(`${url}save-data/info`);
     for (let session of response) {
-        target.innerHTML += '<li> <input class="loadBtn" type="submit"  value= '+ session[0] + '>' + '</li';
+        target.innerHTML += '<li> <button class="loadBtn" type="submit" id="' + session[1] + '">' + session[0] + '</button>' + '</li';
     }
 })
-document.querySelector('#new-button').addEventListener('click', function () {
+
+document.querySelector('#loadGameMenu-form').addEventListener('submit', async function(evt){
+    evt.preventDefault();
+
+    list.addEventListener('click', (event) => {
+  const isButton = event.target.nodeName === 'BUTTON';
+  if (!isButton) {
+    return;
+  }
+  const id = event.target.id;
+})
+    document.querySelector('#load-game').classList.add('hide');
+    await fetchData(`${url}load-game/${id}`);
+    await gameSetup(url);
+})
+
+//main menu functionality
+document.querySelector('#new-button').addEventListener('click', async function (evt) {
+    evt.preventDefault();
     document.querySelector('#main-menu').classList.add('hide');
     document.querySelector('#new-game').classList.remove('hide');
+})
+document.querySelector('#load-button').addEventListener('click', function (evt) {
+    evt.preventDefault();
+    document.querySelector('#load-game').classList.remove('hide');
+    document.querySelector('#main-menu').classList.add('hide');
+})
+
+const list = document.querySelector('#loadGame-list');
+list.addEventListener('click', (event) => {
+  const isButton = event.target.nodeName === 'BUTTON';
+  if (!isButton) {
+    return;
+  }
+  console.log(event.target.id);
 })
 
 //fetch the json data from the desired url
@@ -78,5 +108,3 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
 }).addTo(map);
 map.setView([45, -108], 4);
-
-
