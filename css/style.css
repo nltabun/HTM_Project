@@ -4,7 +4,7 @@
 }
 
 html {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     color: white;
 }
 
@@ -99,15 +99,36 @@ header {
     border: 2px solid white;
     background-color: black;
 }
-
-.menu-form input {
-    padding: 2vh;
-    background-color: black;
-    color: white;
+.formBtn {
+    width: 200px;
+    background: black;
+    color: #fff;
+    font-weight: 100;
+    font-size: 1.2em;
     border: 2px solid white;
-    width: 45%;
+    margin: 2rem auto;
+}
+
+.loadBtn {
+    width: 100px;
+    height: 50px;
+    background: black;
+    color: #fff;
+    font-weight: 100;
+    font-size: 1rem;
+    border: 2px solid white;
     margin: 1rem auto;
 }
+
+/*.menu-form input {*/
+/*    padding: 2vh;*/
+/*    background-color: black;*/
+/*    color: white;*/
+/*    border: 2px solid white;*/
+/*    width: 45%;*/
+/*    margin: 1rem auto;*/
+/*}*/
+
 
 .menu-form .radio {
     display: flex;
@@ -123,6 +144,12 @@ header {
     margin: 1rem 25vh;;
 }
 
+.menu-form ol {
+    max-height: 270px;
+    overflow-y: scroll;
+}
+
+
 .label {
     display: inline-block;
     margin: 1rem 10vh;
@@ -134,16 +161,6 @@ header {
     margin: 1rem 10vh;
 }
 
-
-.formBtn {
-    width: 200px;
-    background: black;
-    color: #fff;
-    font-weight: 100;
-    font-size: 1.2em;
-    border: 2px solid white;
-    margin: 2rem auto;
-}
 
 button:hover, input:hover, label:hover {
     cursor: pointer;
