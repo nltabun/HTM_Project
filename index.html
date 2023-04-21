@@ -22,15 +22,14 @@
         <div id="map"></div>
 
         <div id="main-menu">
-            <form id="menu-form">
+            <form id="mainMenu-form" class="menu-form">
                 <h1>HUNT THE MUSK</h1>
                 <input id="new-button" class="formBtn" type="submit" value="New Game">
                 <input id="load-button" class="formBtn" type="submit" value="Load Game">
             </form>
         </div>
-        <div id="new-game">
-            <form id="menu-form">
-
+        <div id="new-game" class="hide">
+            <form id="newGameMenu-form" class="menu-form">
                 <h1>HUNT THE MUSK</h1>
                 <p>Please enter your name</p>
                 <input id="menu-input" type="text" name="playerName" placeholder="Player name" required>
@@ -43,13 +42,12 @@
             </form>
         </div>
 
-        <div id="load-game">
-            <form id="menu-form">
-
+        <div id="load-game" class="hide">
+            <form id="loadGameMenu-form" class="menu-form">
                 <h1>HUNT THE MUSK</h1>
                 <p>Please enter your name to load a save</p>
-                <input id="menu-input" type="text" name="loadGame" placeholder="Player name" required>
-                <input id="load-button" class="formBtn" type="submit" value="Load Game">
+                <input id="name-input" type="text" name="loadGame" placeholder="Player name" required>
+                <input id="actualLoad-button" class="formBtn" type="submit" value="Load Game">
             </form>
         </div>
 

@@ -6,9 +6,8 @@ const playerIcon = L.divIcon({className: 'player-icon'});
 // global variables
 const url = 'http://127.0.0.1:5000/';
 
-//new game form
-
-document.querySelector('#menu-form').addEventListener('submit', async function (evt){
+//create a new game after entering name and desired game length
+document.querySelector('#newGameMenu-form').addEventListener('submit', async function (evt){
     evt.preventDefault();
     const playerName = document.querySelector('#menu-input').value;
     const gameLength = document.querySelector('input[name=game_length]').value;
@@ -16,7 +15,23 @@ document.querySelector('#menu-form').addEventListener('submit', async function (
     const gameId = await fetchData(`${url}new-game/${playerName}&${gameLength}`);
     console.log(gameId);
     await fetchData(`${url}load-game/${gameId}`);
+    gameSetup(url)
 })
+
+//main menu functionality
+document.querySelector('#mainMenu-form').addEventListener('submit',function (evt){
+    evt.preventDefault();
+})
+document.querySelector('#load-button').addEventListener('click', function (){
+        document.querySelector('#load-game').classList.remove('hide');
+        document.querySelector('#main-menu').classList.add('hide');
+    })
+document.querySelector('#new-button').addEventListener('click', function (){
+        document.querySelector('#main-menu').classList.add('hide');
+        document.querySelector('#new-game').classList.remove('hide');
+    })
+
+//fetch the json data from the desired url
 async function fetchData(url) {
     try {
         const response = await fetch(url);
@@ -26,6 +41,7 @@ async function fetchData(url) {
     }
 }
 
+//right now only creates the markers for all airports and the player
 async function gameSetup(url) {
     try {
         const airports = await fetchData(`${url}airport/coordinates/all`);
@@ -49,8 +65,9 @@ async function gameSetup(url) {
     }
 }
 
-gameSetup(url)
+//gameSetup(url)
 
+//the map
 const map = L.map('map', {tap: false});
     L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
         maxZoom: 50,

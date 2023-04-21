@@ -90,7 +90,7 @@ header {
     color: white;
 }
 
-#menu-form {
+.menu-form {
     display: flex;
     width: 35%;
     margin: 4rem auto;
@@ -100,7 +100,7 @@ header {
     background-color: black;
 }
 
-#menu-form input {
+.menu-form input {
     padding: 2vh;
     background-color: black;
     color: white;
@@ -109,17 +109,17 @@ header {
     margin: 1rem auto;
 }
 
-#menu-form .radio {
+.menu-form .radio {
     display: flex;
     margin: 0.5rem 15vh;
     width: 10vh;
 }
 
-#menu-form p {
+.menu-form p {
     margin: 2vh 10vh;
 }
 
-#menu-form h1 {
+.menu-form h1 {
     margin: 1rem 25vh;;
 }
 
