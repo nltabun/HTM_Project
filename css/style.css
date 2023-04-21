@@ -13,6 +13,11 @@ body {
     background-color: #343434;
 }
 
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .hide {
     display: none;
 }
@@ -20,6 +25,18 @@ body {
 .container {
     width: 100%;
     position: relative;
+}
+
+.page-title {
+    margin: 0;
+    text-align: center;
+}
+
+.page-header,
+.page-footer {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 1rem;
 }
 
 
@@ -42,7 +59,7 @@ header {
 }
 
 
-#main-menu{
+#main-menu {
     width: 225vh;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
@@ -52,7 +69,7 @@ header {
     color: white;
 }
 
-#new-game{
+#new-game {
     width: 225vh;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
@@ -63,7 +80,7 @@ header {
 }
 
 
-#load-game{
+#load-game {
     width: 225vh;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
@@ -128,7 +145,9 @@ header {
     margin: 2rem auto;
 }
 
-button:hover, input:hover, label:hover { cursor: pointer; }
+button:hover, input:hover, label:hover {
+    cursor: pointer;
+}
 
 .red-icon {
     background-color: indianred;
