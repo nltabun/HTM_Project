@@ -1,9 +1,7 @@
 #
 
 from geopy import distance
-import random
 import math
-import game_actions
 
 # Fetches airport name with an ICAO code
 def select_airport(connection, location):
@@ -51,6 +49,7 @@ def get_all_airport_coordinates(connection):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
+    
     airport_coordinates = []
     for row in result:
         airport_coordinates.append(row)
@@ -91,60 +90,24 @@ def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
 
 
 # Defines the players movement
-def player_movement(connection, player):
-    airport_list = calculate_all_airport_distance(get_all_airport_coordinates(connection), get_player_coordinates(connection, player.location))
-    in_range = airports_in_range(airport_list, player.travel_speed, player.range())
-
-    airport_dic = dict()
-    i = 0
-    # Prints a list of airports that are in range of the player
-    if player.name != 'Elon Musk':
-        for row in in_range:
-            i += 1
-            airport_coords = (row[3], row[4])
-            print(f'({i}) {row[0]} | Distance: {int(row[1])} | AP Cost: {row[2]} | Direction: {game_actions.get_bearing(get_player_coordinates(connection, player.location), airport_coords)}')
-
-            airport_dic.update({i: (row[0], row[2], row[1])})
-        # Asks for the players input on where they want to go
-        answer = input(f'Choose your destination (Type "C" to cancel): ')
-        # Returns if the player wants to cancel the search
-        if answer.capitalize() == 'C':
-            return
-    # Randomly chooses an airport for musk to move to.
-    else:
-        for row in in_range:
-            i += 1
-            airport_dic.update({i: (row[0], row[2], row[1])})
-
-        if i != 0:
-            answer = random.randint(1, i)
-        else:
-            answer = i
-    
+def player_movement(connection, player, location_info):  
     try:
-        if 0 < int(answer) <= len(in_range): 
-            query = f'SELECT ident FROM airport WHERE name LIKE "{airport_dic.get(int(answer))[0]}"'
-    
-            cursor = connection.cursor()
-            cursor.execute(query)
-            result = cursor.fetchall()
-            result = str(result).strip('[('',)]')
+        query = f'SELECT ident FROM airport WHERE name = "{location_info[0]}"'
 
-            if result == player.enemy_location:
-                raise Exception
+        cursor = connection.cursor()
+        cursor.execute(query)
+        result = cursor.fetchone()
 
-            player.location = result
-            player.current_ap -= airport_dic.get(int(answer))[1]
-            player.fuel_consumption(airport_dic.get(int(answer))[2])
-
-        else:
+        if result == player.enemy_location:
             raise Exception
+
+        player.location = result[0]
+        player.current_ap -= int(location_info[2])
+        player.fuel_consumption(int(location_info[1]))
+
+        return True
     except:
-        if player.name != 'Elon Musk':
-            print('\nInvalid value\n')
-            player_movement(connection, player)
-        else:
-            return
+        return False
 
 
 # Determine the distance between the player and Elon Musk, this was defined as one the clues for the game

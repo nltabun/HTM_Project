@@ -1,19 +1,14 @@
 
-
 import config
 import json
-import math
-import game_movement
 
-
-from flask import Flask, request
+from flask import Flask
 from flask_cors import CORS
-from geopy import distance
 
-#import game
 import game_init
 import game_data
 import game_movement
+import game_fuel
 
 
 app = Flask(__name__)
@@ -45,6 +40,9 @@ def check_for_save_data(param):
         cursor = config.conn.cursor()
         cursor.execute(query)
         result = str(cursor.fetchone()).strip('(,)')
+
+        if result == 'None':
+            result = '0'
         
         return result
     else:
@@ -57,11 +55,11 @@ def check_for_save_data(param):
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
-    new_game_id = str(saves + 1)
-    game_init.new_game(config.conn, name, game_length)
+    new_game_id = saves + 1
+    game_init.new_game(config.conn, name, game_length, new_game_id)
     
     print(f'New game created with id {new_game_id}')
-    return new_game_id
+    return str(new_game_id)
 
 
 @app.route('/load-game/<id>')
@@ -71,12 +69,6 @@ def load_game(id):
     player = player_obj
     global musk
     musk = musk_obj
-
-    #test
-    #print(player)
-    #print(musk)
-
-    save = []
 
     return [player.name, musk.name]
 
@@ -134,40 +126,45 @@ def random_airports(count=2):
 
 
 @app.route('/airport/coordinates/all')
-# Fetches coordinates for all airports
-def get_all_airport_coordinates():
-    sql = f'SELECT name, latitude_deg, longitude_deg, ident FROM airport'
-    
-    cursor = config.conn.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    
-    airport_coordinates = []
-    for row in result:
-        airport_coordinates.append(row)
-    
-    return airport_coordinates
+def all_airport_coordinates():
+    return game_movement.get_all_airport_coordinates(config.conn)
 
 
 @app.route('/movement/<location>')
 def movement(location):
     try:
-        query = f'SELECT ident FROM airport WHERE name = "{location}"'
+        in_range = airports_in_range()
 
-        cursor = config.conn.cursor()
-        cursor.execute(query)
-        result = cursor.fetchall()
-
-        player.location = result[0][0]
-
-        #player.current_ap -= 1
-        #player.fuel_consumption(distance=1)
-
-        return 'New location ' + player.location
-
-
+        legal_move = False
+        for airport in in_range:
+            if airport[0] == location:
+                legal_move = True
+                target = airport
+                break
+        if legal_move == False:
+            raise Exception('Illegal move')
+        
+        print(target)
+        move = game_movement.player_movement(config.conn, player, target)
+        if move:
+            return 'New location ' + player.location
+        else:
+            raise Exception('Failed to move')
     except Exception:
-        return 'Error'
+        return 'No move made'
+    
+
+@app.route('/fuel-management/<action>=<amount>')
+def fuel_management(action, amount):
+    try:
+        if action == 'buy':
+            return game_fuel.buy_fuel(player, int(amount))
+        elif action == 'load':
+            return game_fuel.load_fuel(player, int(amount))
+        else:
+            raise Exception('Invalid action')
+    except Exception:
+        return 'Error with fuel management system'
 
 
 if __name__ == "__main__":

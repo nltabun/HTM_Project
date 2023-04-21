@@ -1,22 +1,17 @@
 #
 
-def buy_fuel(player):
-    print(f'You are now buying fuel\n'
-          f'\nYou have {player.money} TSLA Stock')
-
-    fuel = int(input('How much fuel do you want to buy? 1 TSLA Stock = 25 liters of fuel. Enter the amount you want to buy: '))
-    if fuel > player.money:
-        print(f'\nYou cannot afford that amount of fuel.\n')
+def buy_fuel(player, fuel_amount):
+    if fuel_amount / 25 > player.money:
+        return 'Cannot afford that amount of fuel.'
     else:
-        new_player_money = player.money - fuel
-        new_player_fuel = player.fuel_reserve + (fuel * 25)
+        new_player_money = player.money - fuel_amount / 25
+        new_player_fuel = player.fuel_reserve + fuel_amount
 
         player.fuel_reserve = new_player_fuel
         player.money = new_player_money
-
-        print(f'\nYou now have {new_player_money} TSLA stock and {new_player_fuel} liters of fuel.\n')
         player.current_ap -= 1
-        input('Press "Enter" to continue')
+
+        return f'You now have {new_player_money} TSLA stock and {new_player_fuel} liters of fuel.'
 
 
 def load_fuel(player):
