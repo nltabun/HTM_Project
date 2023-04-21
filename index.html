@@ -12,22 +12,47 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>Hunt The Musk</h1>
+    <header class="page-header">
+        <h1 class="page-title">
+            Hunt The Musk
+        </h1>
     </header>
-    <div id="map"></div>
+    <main class="flex-wrap">
 
-    <div id="main-menu">
-        <form id="menu-form">
-            <input id="menu-input" type="text" placeholder="Player name" required>
-                <p>Do you want to play a short or long game?:</p>
-                <input type="radio" id="html" name="game_lenght" value="Short">
-                <label for="short">Short</label>
-                <input type="radio" id="css" name="game_lenght" value="Long">
-                <label for="long">Long</label>
-                <input type="submit" value="Start Game">
+        <div id="map"></div>
+
+        <div id="main-menu">
+            <form id="mainMenu-form" class="menu-form">
+                <h1>HUNT THE MUSK</h1>
+                <input id="new-button" class="formBtn" type="submit" value="New Game">
+                <input id="load-button" class="formBtn" type="submit" value="Load Game">
             </form>
-    </div>
+        </div>
+        <div id="new-game" class="hide">
+            <form id="newGameMenu-form" class="menu-form">
+                <h1>HUNT THE MUSK</h1>
+                <p>Please enter your name</p>
+                <input id="menu-input" type="text" name="playerName" placeholder="Player name" required>
+                <p>Do you want to play a short or long game?:</p>
+                <input type="radio" id="short" name="game_length" value="Short">
+                <label for="short">Short</label>
+                <input type="radio" id="long" name="game_length" value="Long">
+                <label for="long">Long</label>
+                <input id="new-game-button" class="formBtn" type="submit" value="Start Game">
+            </form>
+        </div>
+
+        <div id="load-game" class="hide">
+            <form id="loadGameMenu-form" class="menu-form">
+                <h1>HUNT THE MUSK</h1>
+                <p>Please enter your name to load a save</p>
+                <input id="name-input" type="text" name="loadGame" placeholder="Player name" required>
+                <input id="actualLoad-button" class="formBtn" type="submit" value="Load Game">
+            </form>
+        </div>
+
+    </main>
+
 
 </div>
 </body>
