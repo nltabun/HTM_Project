@@ -75,7 +75,7 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     
     return distances
 
-# Makes a list of airports that are in range
+ #Makes a list of airports that are in range
 def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
     in_range = []
 
@@ -83,10 +83,11 @@ def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
         if row[1] <= player_range:
             ap_cost = math.ceil(row[1] / player_movement_per_ap)
             row_with_ap = (row[0], row[1], ap_cost, row[2], row[3])
-            
+
             in_range.append(row_with_ap)
-    
+
     return in_range
+
 
 # Defines the players movement
 def player_movement(connection, player):

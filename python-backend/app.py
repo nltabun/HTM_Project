@@ -1,9 +1,14 @@
 
+
 import config
 import json
+import math
+import game_movement
 
-from flask import Flask
+
+from flask import Flask, request
 from flask_cors import CORS
+from geopy import distance
 
 #import game
 import game_data
@@ -35,6 +40,16 @@ def load_game(id):
     save = []
 
     return [player.name, musk.name]
+
+
+@app.route('/airport-in-range/')
+def airports_in_range():
+    airport_list = game_movement.get_all_airport_coordinates(config.conn)
+    player_loc = game_movement.get_player_coordinates(config.conn, player.location)
+    airports = game_movement.calculate_all_airport_distance(airport_list, player_loc)
+
+    return game_movement.airports_in_range(airports, player.travel_speed, player.range())
+
 
 
 @app.route('/airport/name/<location>')
