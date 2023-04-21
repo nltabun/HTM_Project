@@ -8,6 +8,7 @@ from flask_cors import CORS
 #import game
 import game_init
 import game_data
+import game_movement
 
 
 app = Flask(__name__)
@@ -82,32 +83,26 @@ def save_game():
     return 'saved'
 
 
-@app.route('/airport/name/<location>')
-def select_airport(location):
-    sql = f'SELECT name FROM airport WHERE ident = {location}'
-    cur = config.conn.cursor()
-    cur.execute(sql)
-    result = cur.fetchall()
-
-    return result
+@app.route('/airport/name/<ident>')
+def select_airport(ident):
+    return game_movement.select_airport(config.conn, ident)
 
 
 @app.route('/locate/<pid>')
 def player_location_name(pid):
     
     if pid == '0':
-        location = player.location
-        print(location)
+        ident = player.location
     elif pid == '1':
-        location = musk.location
+        ident = musk.location
     else:
         pass
 
-    airport = select_airport(location)
+    airport = select_airport(ident)
     print(airport)
 
     data = {
-        "location": location,
+        "location": ident,
         "name": airport[0]
     }
 
@@ -140,24 +135,22 @@ def get_all_airport_coordinates():
     return airport_coordinates
 
 
-@app.route('/movement/<player_id>&<location>')
-def movement(player_id, location):
+@app.route('/movement/<location>')
+def movement(location):
     try:
-        
-        print(location)
-        query = f'SELECT ident FROM airport WHERE name LIKE "{location}"'
+        query = f'SELECT ident FROM airport WHERE name = "{location}"'
 
         cursor = config.conn.cursor()
         cursor.execute(query)
         result = cursor.fetchall()
-        #result = str(result).strip('[(\',)]')
 
-        #if result == player.enemy_location:
-        #    raise Exception
-        
-        return result
-        #player.current_ap -= 1 #temp
-        #player.fuel_consumption(distance=1) #temp
+        player.location = result[0][0]
+
+        #player.current_ap -= 1
+        #player.fuel_consumption(distance=1)
+
+        return 'New location ' + player.location
+
 
     except Exception:
         return 'Error'
