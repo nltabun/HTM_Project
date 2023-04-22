@@ -48,7 +48,7 @@ header {
 @media screen and (min-width: 800px) {
     #map {
         height: 50rem;
-        width: 100%;
+        width: 70rem;
     }
 }
 
@@ -221,4 +221,18 @@ button:hover, input:hover, label:hover {
     margin: 2rem auto;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
+#game-actions ul{
+    padding: 1rem;
+    font-size: small;
+    border-radius: 6px;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+    width: 35%;
+    height: 50%;
+    margin-bottom: 1rem;
+    background-color: #595959;
+    float: right;
+}
 
+#game-actions{
+    width: 30%;
+}
