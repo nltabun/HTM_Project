@@ -5,7 +5,6 @@ import math
 
 # Fetches airport name with an ICAO code
 def select_airport(connection, location):
-    print(location)
     sql = f'SELECT name FROM airport WHERE ident = {location}'
     cursor = connection.cursor()
     cursor.execute(sql)
