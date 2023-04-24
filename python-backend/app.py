@@ -1,10 +1,13 @@
 
+
 import config
 import json
 import random
+import math
 
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
+from geopy import distance
 
 import game_init
 import game_data
@@ -41,9 +44,6 @@ def check_for_save_data(param):
         cursor = config.conn.cursor()
         cursor.execute(query)
         result = str(cursor.fetchone()).strip('(,)')
-
-        if result == 'None':
-            result = '0'
         
         return result
     else:
@@ -56,11 +56,11 @@ def check_for_save_data(param):
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
-    new_game_id = saves + 1
-    game_init.new_game(config.conn, name, game_length, new_game_id)
+    new_game_id = str(saves + 1)
+    game_init.new_game(config.conn, name, game_length)
     
     print(f'New game created with id {new_game_id}')
-    return str(new_game_id)
+    return new_game_id
 
 
 @app.route('/load-game/<id>')
@@ -105,8 +105,9 @@ def airports_in_range(current_player = 1):
     airport_list = game_movement.get_all_airport_coordinates(config.conn)
     start_loc = game_movement.get_player_coordinates(config.conn, current_player.location)
     airports = game_movement.calculate_all_airport_distance(airport_list, start_loc)
+    airport_name = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
 
-    return game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
+    return json.dumps(airport_name)
 
 
 @app.route('/save-game')
@@ -118,7 +119,14 @@ def save_game():
 
 @app.route('/airport/name/<ident>')
 def select_airport(ident):
-    return game_movement.select_airport(config.conn, ident)
+    airport = game_movement.select_airport(config.conn, ident)
+
+    data = {
+        "icao": ident,
+        "name": str(airport[0]).strip("(),'")
+    }
+
+    return json.dumps(data)
 
 
 @app.route('/locate/<pid>')
@@ -133,12 +141,7 @@ def start_location_name(pid):
 
     airport = select_airport(ident)
 
-    data = {
-        "location" : ident,
-        "name" : airport[0]
-    }
-
-    return json.dumps(data)
+    return json.dumps(airport)
 
 
 @app.route('/airport/name/random/<count>')
@@ -148,12 +151,28 @@ def random_airports(count=2):
     cursor.execute(sql)
     result = cursor.fetchall()
 
-    return result
+    return json.dumps(result)
 
 
 @app.route('/airport/coordinates/all')
-def all_airport_coordinates():
-    return game_movement.get_all_airport_coordinates(config.conn)
+# Fetches coordinates for all airports
+def get_all_airport_coordinates():
+    sql = f'SELECT name, latitude_deg, longitude_deg, ident FROM airport'
+    
+    cursor = config.conn.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    
+    airport_coordinates = []
+    for row in result:
+        airport_coordinates.append({
+            "name": row[0],
+            "latitude_deg": row[1],
+            "longitude_deg": row[2],
+            "ident": row[3]
+        })
+    
+    return json.dumps(airport_coordinates)
 
 
 @app.route('/movement/<location>')
@@ -198,7 +217,7 @@ def fuel_management(action, amount):
         else:
             raise Exception('Invalid action')
     except Exception:
-        return 'Error with fuel management system'
+        return 'Error'
 
 
 # Ends the players turn and plays out Musks turn.
