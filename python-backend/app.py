@@ -105,7 +105,6 @@ def player_location_name(pid):
         pass
 
     airport = select_airport(ident)
-    print(airport)
 
     data = {
         "location": ident,
