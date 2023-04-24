@@ -17,9 +17,7 @@ document.querySelector('#newGameMenu-form').addEventListener('submit', async fun
     const gameId = await fetchData(`${url}new-game/${playerName}&${gameLength}`);
     await fetchData(`${url}load-game/${gameId}`);
     await gameSetup(url)
-
-
-})
+});
 
 //load the old game list in the load game tab
 document.querySelector('#load-button').addEventListener('click', async function (evt) {
@@ -30,7 +28,7 @@ document.querySelector('#load-button').addEventListener('click', async function 
         target.innerHTML += '<li> <input type="radio" id="' + session[1] + '" name="choice" value="' + session[1] + '" /> ' +
             '<label for="' + session[1] + '"> ' + session[0] + ' </label> </li>';
     }
-})
+});
 
 //actually load the selected save file
 document.querySelector('#loadGameMenu-form').addEventListener('submit', async function(evt) {
@@ -39,7 +37,7 @@ document.querySelector('#loadGameMenu-form').addEventListener('submit', async fu
     document.querySelector('#load-game').classList.add('hide');
     await fetchData(`${url}load-game/${gameId}`);
     await gameSetup(url);
-})
+});
 
 //main menu functionality
 //load the new game tab
@@ -47,13 +45,13 @@ document.querySelector('#new-button').addEventListener('click', async function (
     evt.preventDefault();
     document.querySelector('#main-menu').classList.add('hide');
     document.querySelector('#new-game').classList.remove('hide');
-})
+});
 //load the old games tab
 document.querySelector('#load-button').addEventListener('click', function (evt) {
     evt.preventDefault();
     document.querySelector('#load-game').classList.remove('hide');
     document.querySelector('#main-menu').classList.add('hide');
-})
+});
 
 //fetch the json data from the desired url
 async function fetchData(url) {
@@ -74,34 +72,58 @@ async function playerMarker()  {
         if (playerLoc.location === `'${airport[3]}'`) {
             const marker = L.marker([airport[1], airport[2]], {icon: playerIcon}).addTo(map);
             marker.bindPopup(`<b>${airport[0]}</b>`);
-        } else {
-            const marker = L.marker([airport[1], airport[2]], {icon: airportIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport[0]}</b>`);
+            marker.setZIndexOffset(1000);
         }
     }
 }
 
 //draw the airports in range
-async function airportMarker() {
+async function airportInRngMarker() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const inRange = await fetchData(`${url}airport-in-range/`)
     for (let airport of airports) {
         for (let airportInRange of inRange) {
             if (airportInRange[0] === airport[0]) {
                 const marker = L.marker([airport[1], airport[2]], {icon: inRangeIcon}).addTo(map);
-                marker.bindPopup(`<b>${airport[0]}</b>`);
+                marker.bindPopup(`<b>${airport[0]}<form></form> <input class="flyHere" id="${airport[0]}" 
+                type="submit" value="Fly here"></b>`);
+                marker.setZIndexOffset(999);
+                const popupContent = document.createElement('div');
+                const h4 = document.createElement('h4');
+                h4.innerHTML = airport[0];
+                popupContent.append(h4);
+                const goButton = document.createElement('button');
+                goButton.classList.add('button');
+                goButton.innerHTML = 'Fly here';
+                popupContent.append(goButton);
+                marker.bindPopup(popupContent);
+                goButton.addEventListener('click', async function () {
+                    await fetchData(`${url}/movement/${airport[0]}`);
+                    console.log(airport[0]);
+                    await gameSetup();
+                });
             }
         }
+    }
+}
+//fly to new airport
+
+
+//create the airport markers
+async function airportsMarkers() {
+    const airports = await fetchData(`${url}airport/coordinates/all`);
+    for (let airport of airports) {
+            const marker = L.marker([airport[1], airport[2]], {icon: airportIcon}).addTo(map);
+            marker.bindPopup(`<b>${airport[0]} </b>`);
     }
 }
 
 //right now only creates the markers for all airports and the player
 async function gameSetup() {
     try {
-
         await playerMarker();
-        await airportMarker();
-
+        await airportInRngMarker();
+        await airportsMarkers()
     } catch (error) {
         console.log(error);
     }
