@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,39 +20,98 @@
     </header>
     <main class="flex-wrap">
 
-        <div id="map"></div>
 
-        <div id="main-menu">
-            <form class="menu-form" id="mainMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <input class="formBtn" id="new-button" type="submit" value="New Game">
-                <input class="formBtn" id="load-button" type="submit" value="Load Game">
-            </form>
-        </div>
-        <div class="hide" id="new-game">
-            <form class="menu-form" id="newGameMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <p>Please enter your name</p>
-                <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
-                <p>Do you want to play a short or long game?:</p>
-                <input id="short" name="game_length" type="radio" value="Short">
-                <label for="short">Short</label>
-                <input id="long" name="game_length" type="radio" value="Long">
-                <label for="long">Long</label>
-                <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
-            </form>
-        </div>
+            <div id="map"></div>
 
-        <div class="hide" id="load-game">
-            <form class="menu-form" id="loadGameMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <div id="loadGame-list">
-                    <ol id="loadGame-ol">
-                        <input class="formBtn" type="submit" value="Continue Game">
-                    </ol>
-                </div>
-            </form>
-        </div>
+            <div class="game-info">
+                <section class="select">
+                    <header>
+                        <h2>Info</h2>
+                    </header>
+                    <table>
+                        <tr>
+                            <td>Stonks: <span id="stock">500</span> TSLA</td>
+                            <td>Action points: <span id="actionpoints">5</span></td>
+                            <td>Range: <span id="range">5000</span>Km</td>
+                            <td>Fuel: <span id="fuel">25000</span></td>
+                            <td>Location: <span id="player-location">Boston</span></td>
+                        </tr>
+                    </table>
+                </section>
+                <section class="select">
+                    <header>
+                        <h2>Game actions</h2>
+                    </header>
+                    <ul class="flex-wrap" id="game-actions">
+                        <li>
+                            <figure>
+                                <input class="formBtn" id="action-move" type="submit" value="Move to another airport">
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
+                            </figure>
+                        </li>
+                        <li>
+                            <figure>
+                                <input class="formBtn" id="action-plane" type="submit" value="Plane market">
+                            </figure>
+                        </li>
+                        <li class="done">
+                            <figure>
+                                <input class="formBtn" id="action-end" type="submit" value="End turn">
+                            </figure>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+
+            <div id="main-menu">
+                <form class="menu-form" id="mainMenu-form">
+                    <h1>HUNT THE MUSK</h1>
+                    <input class="formBtn" id="new-button" type="submit" value="New Game">
+                    <input class="formBtn" id="load-button" type="submit" value="Load Game">
+
+                </form>
+            </div>
+            <div class="hide" id="new-game">
+                <form class="menu-form" id="newGameMenu-form">
+                    <h1>HUNT THE MUSK</h1>
+                    <p>Please enter your name</p>
+                    <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
+                    <p>Do you want to play a short or long game?:</p>
+                    <input id="short" name="game_length" type="radio" value="Short">
+                    <label for="short">Short</label>
+                    <input id="long" name="game_length" type="radio" value="Long">
+                    <label for="long">Long</label>
+                    <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
+                    <input class="formBtn" id="back-button" type="submit" value="Back">
+                </form>
+            </div>
+
+            <div class="hide" id="load-game">
+                <form class="menu-form" id="loadGameMenu-form">
+                    <h1>HUNT THE MUSK</h1>
+                    <p>Please enter your name to load a save</p>
+                    <div id="loadGame-list">
+                        <ol id="loadGame-ol">
+                        </ol>
+                        <input class="formBtn" id="back-button" type="submit" value="Back">
+                    </div>
+                </form>
+            </div>
     </main>
 
 
