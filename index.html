@@ -85,11 +85,14 @@
                 <p>Please enter your name</p>
                 <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
                 <p>Do you want to play a short or long game?:</p>
+                <div id="options">
                 <input id="short" name="game_length" type="radio" value="Short">
-                <label for="short">Short</label>
+                <label for="short">Short</label> <br>
                 <input id="long" name="game_length" type="radio" value="Long">
                 <label for="long">Long</label>
+                </div>
                 <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
+                <input class="formBtn" id="back-button" type="submit" value="Back">
             </form>
         </div>
 
@@ -100,6 +103,7 @@
                     <ol id="loadGame-ol">
                         <input class="formBtn" type="submit" value="Continue Game">
                     </ol>
+                    <input class="formBtn" id="back-button" type="submit" value="Back">
                 </div>
             </form>
         </div>
