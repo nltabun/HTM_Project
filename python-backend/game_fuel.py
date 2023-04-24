@@ -1,72 +1,42 @@
 #
 
-def buy_fuel(player):
-    print(f'You are now buying fuel\n'
-          f'\nYou have {player.money} TSLA Stock')
-
-    fuel = int(input('How much fuel do you want to buy? 1 TSLA Stock = 25 liters of fuel. Enter the amount you want to buy: '))
-    if fuel > player.money:
-        print(f'\nYou cannot afford that amount of fuel.\n')
+def buy_fuel(player, fuel_amount):
+    if fuel_amount / 25 > player.money:
+        return 'Cannot afford that amount of fuel.'
     else:
-        new_player_money = player.money - fuel
-        new_player_fuel = player.fuel_reserve + (fuel * 25)
+        new_player_money = player.money - fuel_amount / 25
+        new_player_fuel = player.fuel_reserve + fuel_amount
 
         player.fuel_reserve = new_player_fuel
         player.money = new_player_money
-
-        print(f'\nYou now have {new_player_money} TSLA stock and {new_player_fuel} liters of fuel.\n')
         player.current_ap -= 1
-        input('Press "Enter" to continue')
+
+        return f'You now have {new_player_money} TSLA stock and {new_player_fuel} liters of fuel.'
 
 
-def load_fuel(player):
-    active = True
-    if player.name != 'Elon Musk':
-        print(f'\nLoad Fuel\n{player.fuel_status()}\n')
-        if player.plane.current_fuel >= player.plane.fuel_capacity:
-            print('Fuel tank is already full. Returning...')
-            active = False
-            return active
-        else:
-            #fuel_amount = ''
-            fuel_amount = input('How much fuel do you want to load? (Type "C" to cancel) (Default: max)\n> ')
-
-        if fuel_amount.capitalize() == 'C':
-            active = False
-            return active
-    else:
-        fuel_amount = ''
+def load_fuel(player, fuel_amount):
+    if player.plane.current_fuel >= player.plane.fuel_capacity:
+        print('Fuel tank is already full.')
+        return 'Fuel tank is already full.'
     
     old_current_fuel = player.plane.current_fuel
-    old_fuel_reserve = player.fuel_reserve 
+    old_fuel_reserve = player.fuel_reserve
+
+    try:
+        fuel_amount = int(fuel_amount)
+    except Exception:
+        print('Invalid value.')
+        return 'Invalid value.'
     
-    if fuel_amount != '':
-        try:
-            fuel_amount = int(fuel_amount)
-        except Exception:
-            print('\nInvalid value.\n')
-            active = True
-            return active
-        
-        if fuel_amount > player.fuel_reserve:
-            do_max = input('You don\'t have that much fuel. Load as much as you can? ("Y" to confirm)\n> ')
-        
-            if do_max.capitalize() == 'Y':
-                fuel_amount = ''
-            else:
-                active = True
-                return active
-        elif player.plane.current_fuel + fuel_amount > player.plane.fuel_capacity:
-            do_max = input('Can\'t load that much fuel. Load as much as you can? ("Y" to confirm)\n> ')
-            
-            if do_max.capitalize() == 'Y':
-                fuel_amount = ''
-            else:
-                active = True
-                return active
-        else:
-            player.plane.current_fuel += fuel_amount
-            player.fuel_reserve -= fuel_amount
+    if fuel_amount > player.fuel_reserve:
+        print('Not enough fuel.')
+        return 'Not enough fuel.'
+    elif player.plane.current_fuel + fuel_amount > player.plane.fuel_capacity:
+        print('Can\'t load that much fuel.')
+        return 'Can\'t load that much fuel.'
+    else:
+        player.plane.current_fuel += fuel_amount
+        player.fuel_reserve -= fuel_amount
 
     if fuel_amount == '':
         empty_space = player.plane.fuel_capacity - player.plane.current_fuel
@@ -79,14 +49,8 @@ def load_fuel(player):
             player.fuel_reserve -= empty_space
     
     player.current_ap -= 1
-
-    if player.name != 'Elon Musk':
-        print(f'Plane fuel tank: {old_current_fuel} -> {player.plane.current_fuel}\n'
-            f'Player fuel reserve: {old_fuel_reserve} -> {player.fuel_reserve}\n')
-        input('Press "Enter" to continue')
     
-    active = False
-    return active
+    return f'Plane fuel tank: {old_current_fuel} -> {player.plane.current_fuel}\nPlayer fuel reserve: {old_fuel_reserve} -> {player.fuel_reserve}\n'
 
 
 def fuel_management(player):

@@ -174,7 +174,13 @@ button:hover, input:hover, label:hover {
 }
 
 .player-icon {
-    background-color: lightblue;
+    background-color: dodgerblue;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+.inRange-icon {
+    background-color: lawngreen;
     border-radius: 50%;
     border: black 2px solid;
 }
