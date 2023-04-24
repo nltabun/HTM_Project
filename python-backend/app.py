@@ -73,6 +73,29 @@ def load_game(id):
     return [player.name, musk.name]
 
 
+@app.route('/refresh-player-data')
+def refresh_player_data():
+    data = {
+        "id" : player.id,
+        "name" : player.name,
+        "location" : player.location,
+        "money" : player.money,
+        "fuelReserve" : player.fuel_reserve,
+        "ap" : player.current_ap,
+        "minigameDone" : player.done_minigame,
+        "clueBought" : player.bought_clue,
+        "turns" : player.turns_left,
+        "plane" : player.plane.name,
+        "fuelCurrent" : player.plane.current_fuel,
+        "fuelCapacity" : player.plane.fuel_capacity,
+        "fuelEfficiency" : player.plane.fuel_efficiency,
+        "speed" : player.plane.speed,
+        "range" : player.range()
+    }
+
+    return json.dumps(data)
+
+
 @app.route('/airport-in-range/')
 def airports_in_range():
     airport_list = game_movement.get_all_airport_coordinates(config.conn)
@@ -107,8 +130,8 @@ def player_location_name(pid):
     airport = select_airport(ident)
 
     data = {
-        "location": ident,
-        "name": airport[0]
+        "location" : ident,
+        "name" : airport[0]
     }
 
     return json.dumps(data)
