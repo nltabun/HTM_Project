@@ -74,6 +74,7 @@ def minigame(connection, player):
             cursor.execute(update)
 
 
+
 # Function for buying clues
 def buy_clue(connection, player, musk):
     # Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
