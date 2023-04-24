@@ -70,7 +70,7 @@ def load_game(id):
     global musk
     musk = musk_obj
 
-    return [player.name, musk.name]
+    return refresh_player_data()
 
 
 @app.route('/refresh-player-data')
