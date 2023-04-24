@@ -21,7 +21,7 @@ class Player:
         self.name = name # varchar(40)
         self.money = money # int(8)
         self.fuel_reserve = fuel # int(8)
-        self.location = location # varchar(10)
+        self.location = location.strip('\'') # varchar(10)
         self.turns_left = turns_left # int(4)
         self.plane = plane # plane.name: varchar(40)
         self.travel_speed = plane.speed # ap per km
