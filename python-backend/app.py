@@ -72,13 +72,30 @@ def load_game(id):
     global musk
     musk = musk_obj
 
-    #test
-    #print(player)
-    #print(musk)
+    return refresh_player_data()
 
-    save = []
 
-    return [player.name, musk.name]
+@app.route('/refresh-player-data')
+def refresh_player_data():
+    data = {
+        "id" : player.id,
+        "name" : player.name,
+        "location" : player.location,
+        "money" : player.money,
+        "fuelReserve" : player.fuel_reserve,
+        "ap" : player.current_ap,
+        "minigameDone" : player.done_minigame,
+        "clueBought" : player.bought_clue,
+        "turns" : player.turns_left,
+        "plane" : player.plane.name,
+        "fuelCurrent" : player.plane.current_fuel,
+        "fuelCapacity" : player.plane.fuel_capacity,
+        "fuelEfficiency" : player.plane.fuel_efficiency,
+        "speed" : player.plane.speed,
+        "range" : player.range()
+    }
+
+    return json.dumps(data)
 
 
 @app.route('/airport-in-range/')
