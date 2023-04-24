@@ -21,7 +21,7 @@ document.querySelector('#newGameMenu-form').addEventListener('submit', async fun
 
 })
 
-//load an old game
+//load the old game list in the load game tab
 document.querySelector('#load-button').addEventListener('click', async function (evt) {
     evt.preventDefault();
     const target = document.querySelector('#loadGame-ol');
@@ -32,23 +32,23 @@ document.querySelector('#load-button').addEventListener('click', async function 
     }
 })
 
-document.querySelector('#loadGameMenu-form').addEventListener('submit', async function() {
+//actually load the selected save file
+document.querySelector('#loadGameMenu-form').addEventListener('submit', async function(evt) {
+    evt.preventDefault();
     const gameId = document.querySelector('input[name=choice]:checked').value;
+    document.querySelector('#load-game').classList.add('hide');
     await fetchData(`${url}load-game/${gameId}`);
     await gameSetup(url);
 })
 
-document.querySelector('#loadGameMenu-form').addEventListener('submit', async function(evt){
-    evt.preventDefault();
-    document.querySelector('#load-game').classList.add('hide');
-})
-
 //main menu functionality
+//load the new game tab
 document.querySelector('#new-button').addEventListener('click', async function (evt) {
     evt.preventDefault();
     document.querySelector('#main-menu').classList.add('hide');
     document.querySelector('#new-game').classList.remove('hide');
 })
+//load the old games tab
 document.querySelector('#load-button').addEventListener('click', function (evt) {
     evt.preventDefault();
     document.querySelector('#load-game').classList.remove('hide');
@@ -96,24 +96,16 @@ async function airportMarker() {
 }
 
 //right now only creates the markers for all airports and the player
-async function gameSetup(url) {
+async function gameSetup() {
     try {
-        const airports = await fetchData(`${url}airport/coordinates/all`);
-        const inRange = await fetchData(`${url}airport-in-range/`)
-        const playerLoc = await fetchData(`${url}locate/0`);
 
         await playerMarker();
         await airportMarker();
-
-
-
 
     } catch (error) {
         console.log(error);
     }
 }
-
-//gameSetup(url)
 
 //the map
 const map = L.map('map', {tap: false});
