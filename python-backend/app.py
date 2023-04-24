@@ -1,6 +1,7 @@
 
 import config
 import json
+import random
 
 from flask import Flask
 from flask_cors import CORS
@@ -97,12 +98,15 @@ def refresh_player_data():
 
 
 @app.route('/airport-in-range/')
-def airports_in_range():
-    airport_list = game_movement.get_all_airport_coordinates(config.conn)
-    player_loc = game_movement.get_player_coordinates(config.conn, player.location)
-    airports = game_movement.calculate_all_airport_distance(airport_list, player_loc)
+def airports_in_range(current_player = 1):
+    if current_player == 1: # If default then use globally defined player
+        current_player = player
 
-    return game_movement.airports_in_range(airports, player.travel_speed, player.range())
+    airport_list = game_movement.get_all_airport_coordinates(config.conn)
+    start_loc = game_movement.get_player_coordinates(config.conn, current_player.location)
+    airports = game_movement.calculate_all_airport_distance(airport_list, start_loc)
+
+    return game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
 
 
 @app.route('/save-game')
@@ -118,7 +122,7 @@ def select_airport(ident):
 
 
 @app.route('/locate/<pid>')
-def player_location_name(pid):
+def start_location_name(pid):
     
     if pid == '0':
         ident = player.location
@@ -169,7 +173,15 @@ def movement(location):
         print(target)
         move = game_movement.player_movement(config.conn, player, target)
         if move:
-            return 'New location ' + player.location
+            if player.location == musk.location: # Player wins the game
+                status = 0
+            else: # Game continues
+                status = 1
+            data = {
+                "location" : player.location,
+                "status" : status
+            }
+            return json.dumps(data)
         else:
             raise Exception('Failed to move')
     except Exception:
@@ -180,13 +192,67 @@ def movement(location):
 def fuel_management(action, amount):
     try:
         if action == 'buy':
-            return game_fuel.buy_fuel(player, int(amount))
+            return json.dumps(game_fuel.buy_fuel(player, int(amount)))
         elif action == 'load':
             return game_fuel.load_fuel(player, int(amount))
         else:
             raise Exception('Invalid action')
     except Exception:
         return 'Error with fuel management system'
+
+
+# Ends the players turn and plays out Musks turn.
+@app.route('/end-turn')
+def end_turn():
+    player.decrease_turns()
+    
+    musk_status = musk_actions()
+    
+    if musk_status == 0: # Musk wins the game
+        return json.dumps({"status" : 0}) # Display lost game screen
+    else: # Game continues
+        # Reset player ap
+        player.current_ap = player.max_ap
+        # Reset minigame and clue checks
+        player.done_minigame = 0
+        player.bought_clue = 0
+
+        return json.dumps({"status" : 1}) # Refresh player data and continue game normally
+
+
+
+# Defines the actions Musk takes during his turn. Returns whether or not he has won the game: 0 = win, 1 = game continues
+def musk_actions():
+    if musk.turns_left <= 1: # Player can't catch Musk anymore so he wins.
+        return 0
+
+    musk.current_ap = musk.max_ap # Reset Musk ap
+    musk.epitaph(player.location) # Refresh Musks future sight
+    
+    # Fuel up if currently low
+    if musk.plane.current_fuel <= 10000:
+        game_fuel.load_fuel(musk)
+
+    # Musk Movement
+    try:
+        in_range = airports_in_range(musk)
+
+        # Randomize an airport from the list
+        if len(in_range) != 0:
+            n = random.randint(0, len(in_range)-1)
+            print(str(n) + '/' + str(len(in_range)-1))
+        else:
+            raise Exception('No airports in range')
+
+        target = in_range[n] # Target airport info
+
+        game_movement.player_movement(config.conn, musk, target)
+    except Exception:
+        print('Musk encountered issues while trying to move.')
+
+    musk.decrease_turns() # Turn over
+    
+    return 1
 
 
 if __name__ == "__main__":
