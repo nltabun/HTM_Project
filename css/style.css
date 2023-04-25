@@ -241,11 +241,12 @@ button:hover, input:hover, label:hover {
     font-weight: bold;
     font-size: 1.2em;
     border: 1px gray;
-    margin: 2rem auto;
+    margin: 0.2rem auto;
+    margin-left: -2.5rem;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
 #game-actions ul{
-    padding: 1rem;
+    padding: 2rem;
     font-size: small;
     border-radius: 6px;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
@@ -268,4 +269,6 @@ button:hover, input:hover, label:hover {
 #load-game{
     text-align: center;
 }
+
+
 
