@@ -69,7 +69,7 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     
     for row in airport_list:
         location_data = (row[1], row[2])
-        airport_distance = (row[0], calculate_distance(location_data, player_coordinates), row[1], row[2])
+        airport_distance = (row[0], calculate_distance(location_data, player_coordinates), row[1], row[2], row[3])
         if airport_distance[1] != 0:
             distances.append(airport_distance)
     
@@ -82,7 +82,7 @@ def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
     for row in airport_list:
         if row[1] <= player_range:
             ap_cost = math.ceil(row[1] / player_movement_per_ap)
-            row_with_ap = (row[0], row[1], ap_cost, row[2], row[3])
+            row_with_ap = (row[0], row[1], ap_cost, row[2], row[3], row[4])
 
             in_range.append(row_with_ap)
 
