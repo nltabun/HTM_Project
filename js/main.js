@@ -4,8 +4,17 @@ const airportIcon = L.divIcon({className: 'red-icon'});
 const playerIcon = L.divIcon({className: 'player-icon'});
 const inRangeIcon = L.divIcon({className: 'inRange-icon'});
 
+//the map
+const map = L.map('map', {tap: false});
+L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 50,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+}).addTo(map);
+map.setView([45, -108], 4);
+
 // global variables
 const url = 'http://127.0.0.1:5000/';
+const layerGroup = L.layerGroup().addTo(map);
 
 //create a new game after entering name and desired game length
 document.querySelector('#newGameMenu-form').addEventListener('submit', async function (evt) {
@@ -51,6 +60,7 @@ document.querySelector('#load-button').addEventListener('click', function (evt) 
     evt.preventDefault();
     document.querySelector('#load-game').classList.remove('hide');
     document.querySelector('#main-menu').classList.add('hide');
+});
     
 //fetch the json data from the desired url
 async function fetchData(url) {
@@ -62,79 +72,94 @@ async function fetchData(url) {
     }
 }
 
-//Draw the airports and players marker/s on the map
+//load the players data
+async function playerData() {
+    const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
+
+    let stock = document.querySelector('#stock');
+    stock.innerText = playerData.money;
+
+    let AP = document.querySelector('#actionpoints');
+    AP.innerText = playerData.ap;
+
+    let range = document.querySelector('#range');
+    range.innerText = Math.round(playerData.range);
+
+    let fuel = document.querySelector('#fuel');
+    fuel.innerText = `${playerData.fuelCurrent} / ${playerData.fuelCapacity}`;
+}
+
+//Draw the airports markers on the map
 async function playerMarker()  {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const playerLoc = await fetchData(`${url}locate/0`);
 
+    let playerAirport = document.querySelector('#player-location');
+    playerAirport.innerText = playerLoc.name;
+
     for (let airport of airports) {
-        if (playerLoc.location === `'${airport[3]}'`) {
-            const marker = L.marker([airport[1], airport[2]], {icon: playerIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport[0]}</b>`);
+        if (playerLoc.name === airport.name) {
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: playerIcon}).addTo(map);
+            marker.bindPopup(`<b>${airport.name}</b>`);
             marker.setZIndexOffset(1000);
+            marker.addTo(layerGroup);
         }
     }
 }
 
-//draw the airports in range
+//draw the airports in range and have the option to move into them.
 async function airportInRngMarker() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
-    const inRange = await fetchData(`${url}airport-in-range/`)
+    const inRange = await fetchData(`${url}airport-in-range/`);
     for (let airport of airports) {
         for (let airportInRange of inRange) {
-            if (airportInRange[0] === airport[0]) {
-                const marker = L.marker([airport[1], airport[2]], {icon: inRangeIcon}).addTo(map);
-                marker.bindPopup(`<b>${airport[0]}<form></form> <input class="flyHere" id="${airport[0]}" 
+            if (airportInRange[0] === airport.name) {
+                const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: inRangeIcon}).addTo(map);
+                marker.bindPopup(`<b>${airport.name}<form></form> <input class="flyHere" id="${airport.name}" 
                 type="submit" value="Fly here"></b>`);
                 marker.setZIndexOffset(999);
                 const popupContent = document.createElement('div');
                 const h4 = document.createElement('h4');
-                h4.innerHTML = airport[0];
+                h4.innerHTML = airport.name;
                 popupContent.append(h4);
                 const goButton = document.createElement('button');
                 goButton.classList.add('button');
                 goButton.innerHTML = 'Fly here';
                 popupContent.append(goButton);
                 marker.bindPopup(popupContent);
+                marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
-                    //await fetchData(`${url}/movement/${airport[0]}`);
-                    console.log(airport[0]);
-                    //await gameSetup();
+                    await fetchData(`${url}/movement/${airport.ident}`);
+                    layerGroup.clearLayers();
+                    await gameSetup(url);
                 });
             }
         }
     }
 }
-//fly to new airport
-
 
 //create the airport markers
 async function airportsMarkers() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     for (let airport of airports) {
-            const marker = L.marker([airport[1], airport[2]], {icon: airportIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport[0]} </b>`);
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
+            marker.bindPopup(`<b>${airport.name} </b>`);
+            marker.addTo(layerGroup);
     }
 }
 
 //right now only creates the markers for all airports and the player
 async function gameSetup() {
     try {
+        await playerData();
+        await airportsMarkers()
         await playerMarker();
         await airportInRngMarker();
-        await airportsMarkers()
+
     } catch (error) {
         console.log(error);
     }
 }
-
-//the map
-const map = L.map('map', {tap: false});
-L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-    maxZoom: 50,
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-}).addTo(map);
-map.setView([45, -108], 4);
 
 //Goes back to main menu from new game
 document.querySelector('#back-button').addEventListener('click', function (evt) {
@@ -147,5 +172,4 @@ document.querySelector('#back-button2').addEventListener('click', function (evt)
     evt.preventDefault();
     document.querySelector('#load-game').classList.add('hide');
     document.querySelector('#main-menu').classList.remove('hide');
-
-
+});
