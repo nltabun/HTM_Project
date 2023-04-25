@@ -62,7 +62,7 @@ header {
 
 
 #main-menu {
-    width: 225vh;
+    width: 119rem;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -72,7 +72,7 @@ header {
 }
 
 #new-game {
-    width: 225vh;
+    width: 119rem;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -83,7 +83,7 @@ header {
 
 
 #load-game {
-    width: 225vh;
+    width: 119rem;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -102,13 +102,20 @@ header {
     background-color: black;
 }
 .formBtn {
-    width: 200px;
+    width: 45%;
+    height: 3rem;
     background: black;
     color: #fff;
     font-weight: 100;
     font-size: 1.2em;
     border: 2px solid white;
     margin: 2rem auto;
+}
+
+.formBtn:active {
+  background-color: #000000;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .loadBtn {
@@ -127,8 +134,9 @@ header {
     background-color: black;
     color: white;
     border: 2px solid white;
-    width: 45%;
+    width: 55%;
     margin: 1rem auto;
+    text-align: cetn;
 }
 
 .menu-form .radio {
@@ -142,7 +150,7 @@ header {
 }
 
 .menu-form h1 {
-    margin: 1rem 25vh;;
+    margin: 1rem auto;;
 }
 
 .menu-form ol {
@@ -243,8 +251,12 @@ button:hover, input:hover, label:hover {
     width: 30%;
 }
 
-.options{
-    width: 40%;
-
-
+#new-game #options{
+    width: 4rem;
+    text-align: center;
 }
+
+#load-game{
+    text-align: center;
+}
+
