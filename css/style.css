@@ -83,6 +83,10 @@ body {
     color: white;
 }
 
+#new-game-button .formBtn {
+    margin-top: 1rem;
+}
+
 #load-game {
     width: 119rem;
     height: 100%;
@@ -172,6 +176,9 @@ body {
     margin: 1rem 10vh;
 }
 
+.formBtn:hover {
+    background-color: #2c2c2c;
+}
 
 button:hover, input:hover, label:hover {
     cursor: pointer;
@@ -205,7 +212,6 @@ button:hover, input:hover, label:hover {
     margin-bottom: 1rem;
     background-color: #595959;
     float: right;
-
 }
 
 .select h2,
@@ -242,7 +248,7 @@ button:hover, input:hover, label:hover {
 
 }
 
-#game-actions  {
+#game-actions {
     padding: 2rem;
     font-size: small;
     border-radius: 6px;
@@ -250,7 +256,6 @@ button:hover, input:hover, label:hover {
     height: 40%;
     margin-bottom: 1rem;
     background-color: #595959;
-
 }
 
 .select #game-actions {
@@ -274,8 +279,51 @@ button:hover, input:hover, label:hover {
     width: 100%;
 }
 
-#loadGame-ol{
+#loadGame-ol {
     list-style-type: none;
+}
+
+.options {
+    margin: 25px 0 0 0;
+    padding: 0;
+
+}
+
+.options label,
+.options input {
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.options input[type="radio"] {
+    opacity: 0.01;
+    z-index: 100;
+}
+
+.options input[type="radio"]:checked + label {
+    background: #595959;
+}
+
+.options label {
+    padding: 5px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+    z-index: 90;
+}
+
+.options label:hover {
+    background: #2c2c2c;
+}
+
+.options {
+    margin: 1rem auto;
+    width: 50%;
+    height: 50%;
+    text-align: center;
+
 }
 
 

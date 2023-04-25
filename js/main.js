@@ -34,7 +34,7 @@ document.querySelector('#load-button').addEventListener('click', async function 
     const target = document.querySelector('#loadGame-ol');
     const response = await fetchData(`${url}save-data/info`);
     for (let session of response) {
-        target.innerHTML += '<li> <input type="radio" id="' + session[1] + '" name="choice" value="' + session[1] + '" /> ' +
+        target.innerHTML += '<li> <input type="radio" class="options" id="' + session[1] + '" name="choice" value="' + session[1] + '" /> ' +
             '<label for="' + session[1] + '"> ' + session[0] + ' </label> </li>';
     }
 });
