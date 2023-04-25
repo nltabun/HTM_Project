@@ -83,32 +83,31 @@
                 <h1>HUNT THE MUSK</h1>
                 <p>Please enter your name</p>
                 <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
-                <p>Do you want to play a short or long game?:</p>
-                <div id="options">
+                <p>Do you want to play a short or long game?</p>
+                <div class="options">
+                    <input checked="checked" id="short" name="game_length" type="radio" value="Short">
                     <label for="short">Short</label>
-                    <input id="short" name="game_length" type="radio" value="Short"><br>
-                    <label for="long">Long</label>
                     <input id="long" name="game_length" type="radio" value="Long">
+                    <label for="long">Long</label>
                 </div>
-                <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
                 <input class="formBtn" id="back-button" type="submit" value="Back">
+                <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
             </form>
         </div>
-
         <div class="hide" id="load-game">
             <form class="menu-form" id="loadGameMenu-form">
                 <h1>HUNT THE MUSK</h1>
                 <div id="loadGame-list">
-                    <ol id="loadGame-ol">
-                        <input class="formBtn" type="submit" value="Continue Game">
-                    </ol>
+                    <div class="options">
+                        <ol id="loadGame-ol">
+                        </ol>
+                    </div>
+                    <input class="formBtn" type="submit" value="Continue Game">
                     <input class="formBtn" id="back-button2" type="submit" value="Back">
                 </div>
             </form>
         </div>
     </main>
-
-
 </div>
 </body>
 </html>
