@@ -9,16 +9,16 @@ html {
 }
 
 .button {
-  display: block;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  border-radius: 4px;
-  text-align: center;
-  transition: all 300ms;
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 300ms;
 }
 
 body {
-    width: 80%;
+    width: 99%;
     background-color: #343434;
 }
 
@@ -32,7 +32,7 @@ body {
 }
 
 .container {
-    width: 40%;
+    width: 100%;
 }
 
 .page-title {
@@ -40,19 +40,12 @@ body {
     text-align: center;
 }
 
-.page-header,
-.page-footer {
-    background-color: var(black);
-    color: var(white);
+.page-header {
+    color: white;
     padding: 1rem;
     text-align: center;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-}
 
 @media screen and (min-width: 800px) {
     #map {
@@ -90,7 +83,6 @@ header {
     color: white;
 }
 
-
 #load-game {
     width: 119rem;
     height: 100%;
@@ -110,6 +102,7 @@ header {
     border: 2px solid white;
     background-color: black;
 }
+
 .formBtn {
     width: 45%;
     height: 3rem;
@@ -122,14 +115,14 @@ header {
 }
 
 .formBtn:active {
-  background-color: #000000;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+    background-color: #000000;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }
 
 .loadBtn {
-    width: 100px;
-    height: 50px;
+    width: 45%;
+    height: 3rem;
     background: black;
     color: #fff;
     font-weight: 100;
@@ -145,7 +138,7 @@ header {
     border: 2px solid white;
     width: 55%;
     margin: 1rem auto;
-    text-align: cetn;
+    text-align: center;
 }
 
 .menu-form .radio {
@@ -208,11 +201,13 @@ button:hover, input:hover, label:hover {
     border-radius: 6px;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
     width: 35%;
-    height: 50%;
+    height: 100%;
     margin-bottom: 1rem;
     background-color: #595959;
     float: right;
+
 }
+
 .select h2,
 .select figure {
     margin: 0.5rem;
@@ -234,8 +229,8 @@ button:hover, input:hover, label:hover {
 }
 
 #game-actions .formBtn {
-    height: 50px;
-    width: 200px;
+    width: 10rem;
+    height: 3rem;
     background: #868585;
     color: white;
     font-weight: bold;
@@ -244,30 +239,43 @@ button:hover, input:hover, label:hover {
     margin: 0.2rem auto;
     margin-left: -2.5rem;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+
 }
-#game-actions ul{
+
+#game-actions  {
     padding: 2rem;
     font-size: small;
     border-radius: 6px;
-    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
     width: 35%;
-    height: 50%;
+    height: 40%;
     margin-bottom: 1rem;
     background-color: #595959;
-    float: right;
+
 }
 
-#game-actions{
+.select #game-actions {
+    height: 33rem;
+}
+
+#game-actions {
     width: 30%;
 }
 
-#new-game #options{
+#new-game #options {
     width: 4rem;
     text-align: center;
 }
 
-#load-game{
+#load-game {
     text-align: center;
+}
+
+#game-info {
+    width: 100%;
+}
+
+#loadGame-ol{
+    list-style-type: none;
 }
 
 
