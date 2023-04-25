@@ -4,8 +4,17 @@ const airportIcon = L.divIcon({className: 'red-icon'});
 const playerIcon = L.divIcon({className: 'player-icon'});
 const inRangeIcon = L.divIcon({className: 'inRange-icon'});
 
+//the map
+const map = L.map('map', {tap: false});
+L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 50,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+}).addTo(map);
+map.setView([45, -108], 4);
+
 // global variables
 const url = 'http://127.0.0.1:5000/';
+const layerGroup = L.layerGroup().addTo(map);
 
 //create a new game after entering name and desired game length
 document.querySelector('#newGameMenu-form').addEventListener('submit', async function (evt) {
@@ -65,18 +74,35 @@ async function fetchData(url) {
 
 //load the players data
 async function playerData() {
-    await fetchData(`${url}refresh-player-data`);
+    const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
+
+    let stock = document.querySelector('#stock');
+    stock.innerText = playerData.money;
+
+    let AP = document.querySelector('#actionpoints');
+    AP.innerText = playerData.ap;
+
+    let range = document.querySelector('#range');
+    range.innerText = Math.round(playerData.range);
+
+    let fuel = document.querySelector('#fuel');
+    fuel.innerText = `${playerData.fuelCurrent} / ${playerData.fuelCapacity}`;
 }
 
 //Draw the airports markers on the map
 async function playerMarker()  {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const playerLoc = await fetchData(`${url}locate/0`);
+
+    let playerAirport = document.querySelector('#player-location');
+    playerAirport.innerText = playerLoc.name;
+
     for (let airport of airports) {
         if (playerLoc.name === airport.name) {
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: playerIcon}).addTo(map);
             marker.bindPopup(`<b>${airport.name}</b>`);
             marker.setZIndexOffset(1000);
+            marker.addTo(layerGroup);
         }
     }
 }
@@ -101,9 +127,11 @@ async function airportInRngMarker() {
                 goButton.innerHTML = 'Fly here';
                 popupContent.append(goButton);
                 marker.bindPopup(popupContent);
+                marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
                     await fetchData(`${url}/movement/${airport.ident}`);
-                    await gameSetup();
+                    layerGroup.clearLayers();
+                    await gameSetup(url);
                 });
             }
         }
@@ -116,12 +144,14 @@ async function airportsMarkers() {
     for (let airport of airports) {
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
             marker.bindPopup(`<b>${airport.name} </b>`);
+            marker.addTo(layerGroup);
     }
 }
 
 //right now only creates the markers for all airports and the player
 async function gameSetup() {
     try {
+        await playerData();
         await airportsMarkers()
         await playerMarker();
         await airportInRngMarker();
@@ -130,14 +160,6 @@ async function gameSetup() {
         console.log(error);
     }
 }
-
-//the map
-const map = L.map('map', {tap: false});
-L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-    maxZoom: 50,
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-}).addTo(map);
-map.setView([45, -108], 4);
 
 //Goes back to main menu from new game
 document.querySelector('#back-button').addEventListener('click', function (evt) {
