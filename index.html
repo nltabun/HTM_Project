@@ -41,22 +41,31 @@
                 <header>
                     <h2>Game actions</h2>
                 </header>
-                <div class="flex-wrap" id="game-actions">
-                    <figure>
-                        <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
-                    </figure>
-                    <figure>
-                        <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
-                    </figure>
-                    <figure>
-                        <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
-                    </figure>
-                    <figure>
-                        <input class="formBtn" id="action-plane" type="submit" value="Plane market">
-                    </figure>
-                    <figure>
-                        <input class="formBtn" id="action-end" type="submit" value="End turn">
-                    </figure>
+                        <figure>
+                            <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
+                        </figure>
+                        <figure>
+                            <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
+                        </figure>
+                        <figure>
+                            <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
+                        </figure>
+                        <figure>
+                            <input class="formBtn" id="action-plane" type="submit" value="Plane market">
+                        </figure>
+                        <figure>
+                            <input class="formBtn" id="action-end" type="submit" value="End turn">
+                        </figure>
+                <div>
+                    <form id="fuelForm" class="hide">
+                        <td>Fuel in reserve: <span id="fuelStorage"></span></td>
+                        <input type="radio" id="load" name="buy-load" value="load">
+                        <label for="load">load</label>
+                        <input type="radio" id="buy" name="buy-load" value="buy">
+                        <label for="buy">buy</label>
+                        <input type="text" id="how-much" placeholder="how much fuel">
+                        <input class="formBtn" type="submit" value="submit">
+                    </form>
                 </div>
             </section>
         </div>

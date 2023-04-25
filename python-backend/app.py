@@ -59,11 +59,11 @@ def check_for_save_data(param):
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
-    new_game_id = str(saves + 1)
-    game_init.new_game(config.conn, name, game_length)
-    
+    new_game_id = saves + 1
+    game_init.new_game(config.conn, name, game_length, new_game_id)
+
     print(f'New game created with id {new_game_id}')
-    return new_game_id
+    return json.dumps({"id": new_game_id})
 
 
 @app.route('/load-game/<id>')
@@ -196,7 +196,7 @@ def get_all_airport_coordinates():
 @app.route('/movement/<location>')
 def movement(location):
     try:
-        in_range = airports_in_range()
+        in_range = airports_in_range(return_format=1)
 
         legal_move = False
         for airport in in_range:
