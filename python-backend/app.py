@@ -13,6 +13,9 @@ import game_init
 import game_data
 import game_movement
 import game_fuel
+import game_actions
+import game_events
+import game_planes
 
 
 app = Flask(__name__)
@@ -98,19 +101,31 @@ def refresh_player_data():
 
 
 @app.route('/airport-in-range/')
-def airports_in_range(current_player=1, return_format=1):
+def airports_in_range(current_player=1, return_format=0):
     if current_player == 1: # If default then use globally defined player
         current_player = player
 
     airport_list = game_movement.get_all_airport_coordinates(config.conn)
     start_loc = game_movement.get_player_coordinates(config.conn, current_player.location)
     airports = game_movement.calculate_all_airport_distance(airport_list, start_loc)
-    airport_name = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
+    in_range_list = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
 
-    if return_format != 1:
-        return json.dumps(airport_name)
+    if return_format == 0:
+        formatted_list = []
+        for airport in in_range_list:
+            data = {
+                "name" : airport[0],
+                "icao" : airport[5],
+                "distance" : airport[1],
+                "apCost" : airport[2],
+                "latitude_deg" : airport[3],
+                "longitude_deg" : airport[4]
+            }
+            formatted_list.append(data)
+
+        return json.dumps(formatted_list)
     else:
-        return airport_name
+        return in_range_list
 
 
 @app.route('/save-game')
@@ -191,9 +206,8 @@ def movement(location):
                 break
         if legal_move == False:
             raise Exception('Illegal move')
-        
-        print(target)
-        move = game_movement.player_movement(config.conn, player, target)
+
+        move = game_movement.player_movement(player, target)
         if move:
             if player.location == musk.location: # Player wins the game
                 status = 0
@@ -207,7 +221,7 @@ def movement(location):
         else:
             raise Exception('Failed to move')
     except Exception:
-        return 'No move made'
+        return json.dumps({"status" : "burger"})
     
 
 @app.route('/fuel-management/<action>=<amount>')
@@ -220,7 +234,12 @@ def fuel_management(action, amount):
         else:
             raise Exception('Invalid action')
     except Exception:
-        return 'Error'
+        return json.dumps({"status" : "burger"})
+    
+
+@app.route('/minigame')
+def play_minigame():
+    pass
 
 
 # Ends the players turn and plays out Musks turn.
@@ -257,7 +276,7 @@ def musk_actions():
 
     # Musk Movement
     try:
-        in_range = airports_in_range(musk)
+        in_range = airports_in_range(musk, 1)
 
         # Randomize an airport from the list
         if len(in_range) != 0:
@@ -268,7 +287,7 @@ def musk_actions():
 
         target = in_range[n] # Target airport info
 
-        game_movement.player_movement(config.conn, musk, target)
+        game_movement.player_movement(musk, target)
     except Exception:
         print('Musk encountered issues while trying to move.')
 
