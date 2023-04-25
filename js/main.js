@@ -51,6 +51,7 @@ document.querySelector('#load-button').addEventListener('click', function (evt) 
     evt.preventDefault();
     document.querySelector('#load-game').classList.remove('hide');
     document.querySelector('#main-menu').classList.add('hide');
+});
     
 //fetch the json data from the desired url
 async function fetchData(url) {
@@ -62,34 +63,38 @@ async function fetchData(url) {
     }
 }
 
-//Draw the airports and players marker/s on the map
+//load the players data
+async function playerData() {
+    await fetchData(`${url}refresh-player-data`);
+}
+
+//Draw the airports markers on the map
 async function playerMarker()  {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const playerLoc = await fetchData(`${url}locate/0`);
-
     for (let airport of airports) {
-        if (playerLoc.location === `'${airport[3]}'`) {
-            const marker = L.marker([airport[1], airport[2]], {icon: playerIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport[0]}</b>`);
+        if (playerLoc.name === airport.name) {
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: playerIcon}).addTo(map);
+            marker.bindPopup(`<b>${airport.name}</b>`);
             marker.setZIndexOffset(1000);
         }
     }
 }
 
-//draw the airports in range
+//draw the airports in range and have the option to move into them.
 async function airportInRngMarker() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
-    const inRange = await fetchData(`${url}airport-in-range/`)
+    const inRange = await fetchData(`${url}airport-in-range/`);
     for (let airport of airports) {
         for (let airportInRange of inRange) {
-            if (airportInRange[0] === airport[0]) {
-                const marker = L.marker([airport[1], airport[2]], {icon: inRangeIcon}).addTo(map);
-                marker.bindPopup(`<b>${airport[0]}<form></form> <input class="flyHere" id="${airport[0]}" 
+            if (airportInRange[0] === airport.name) {
+                const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: inRangeIcon}).addTo(map);
+                marker.bindPopup(`<b>${airport.name}<form></form> <input class="flyHere" id="${airport.name}" 
                 type="submit" value="Fly here"></b>`);
                 marker.setZIndexOffset(999);
                 const popupContent = document.createElement('div');
                 const h4 = document.createElement('h4');
-                h4.innerHTML = airport[0];
+                h4.innerHTML = airport.name;
                 popupContent.append(h4);
                 const goButton = document.createElement('button');
                 goButton.classList.add('button');
@@ -97,32 +102,30 @@ async function airportInRngMarker() {
                 popupContent.append(goButton);
                 marker.bindPopup(popupContent);
                 goButton.addEventListener('click', async function () {
-                    //await fetchData(`${url}/movement/${airport[0]}`);
-                    console.log(airport[0]);
-                    //await gameSetup();
+                    await fetchData(`${url}/movement/${airport.ident}`);
+                    await gameSetup();
                 });
             }
         }
     }
 }
-//fly to new airport
-
 
 //create the airport markers
 async function airportsMarkers() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     for (let airport of airports) {
-            const marker = L.marker([airport[1], airport[2]], {icon: airportIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport[0]} </b>`);
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
+            marker.bindPopup(`<b>${airport.name} </b>`);
     }
 }
 
 //right now only creates the markers for all airports and the player
 async function gameSetup() {
     try {
+        await airportsMarkers()
         await playerMarker();
         await airportInRngMarker();
-        await airportsMarkers()
+
     } catch (error) {
         console.log(error);
     }
@@ -147,5 +150,4 @@ document.querySelector('#back-button2').addEventListener('click', function (evt)
     evt.preventDefault();
     document.querySelector('#load-game').classList.add('hide');
     document.querySelector('#main-menu').classList.remove('hide');
-
-
+});
