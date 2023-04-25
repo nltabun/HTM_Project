@@ -98,9 +98,9 @@ async function airportInRngMarker() {
                 popupContent.append(goButton);
                 marker.bindPopup(popupContent);
                 goButton.addEventListener('click', async function () {
-                    await fetchData(`${url}/movement/${airport[0]}`);
+                    //await fetchData(`${url}/movement/${airport[0]}`);
                     console.log(airport[0]);
-                    await gameSetup();
+                    //await gameSetup();
                 });
             }
         }
