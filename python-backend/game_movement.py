@@ -90,7 +90,7 @@ def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
 
 
 # Moves player to the desired location
-# location_info contains: [0] = airport name, [1] = distance, [2] = ap cost (and currently unused [3]&[4] = airport coordinates)
+# location_info contains: [0] = airport name, [1] = distance, [2] = ap cost (and currently unused [3]&[4] = airport coordinates), [5] = icao code
 def player_movement(player, location_info):  
     try:
         if location_info[5] == player.enemy_location: # For Musk
