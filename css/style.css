@@ -131,14 +131,14 @@ header {
     margin: 1rem auto;
 }
 
-/*.menu-form input {*/
-/*    padding: 2vh;*/
-/*    background-color: black;*/
-/*    color: white;*/
-/*    border: 2px solid white;*/
-/*    width: 45%;*/
-/*    margin: 1rem auto;*/
-/*}*/
+#menu-input {
+    padding: 2vh;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    width: 45%;
+    margin: 1rem auto;
+}
 
 .menu-form .radio {
     display: flex;
@@ -250,4 +250,10 @@ button:hover, input:hover, label:hover {
 
 #game-actions{
     width: 30%;
+}
+
+.options{
+    width: 40%;
+
+
 }

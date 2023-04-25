@@ -51,8 +51,7 @@ document.querySelector('#load-button').addEventListener('click', function (evt) 
     evt.preventDefault();
     document.querySelector('#load-game').classList.remove('hide');
     document.querySelector('#main-menu').classList.add('hide');
-});
-
+    
 //fetch the json data from the desired url
 async function fetchData(url) {
     try {
@@ -136,3 +135,17 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
 }).addTo(map);
 map.setView([45, -108], 4);
+
+//Goes back to main menu from new game
+document.querySelector('#back-button').addEventListener('click', function (evt) {
+    evt.preventDefault();
+    document.querySelector('#new-game').classList.add('hide');
+    document.querySelector('#main-menu').classList.remove('hide');
+})
+//Goes back to main menu from load game
+document.querySelector('#back-button2').addEventListener('click', function (evt) {
+    evt.preventDefault();
+    document.querySelector('#load-game').classList.add('hide');
+    document.querySelector('#main-menu').classList.remove('hide');
+
+
