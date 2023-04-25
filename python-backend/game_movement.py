@@ -91,19 +91,13 @@ def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
 
 # Moves player to the desired location
 # location_info contains: [0] = airport name, [1] = distance, [2] = ap cost (and currently unused [3]&[4] = airport coordinates)
-def player_movement(connection, player, location_info):  
+def player_movement(player, location_info):  
     try:
-        query = f'SELECT ident FROM airport WHERE name = "{location_info[0]}"'
-
-        cursor = connection.cursor()
-        cursor.execute(query)
-        result = cursor.fetchone()
-
-        if result == player.enemy_location: # For Musk
+        if location_info[5] == player.enemy_location: # For Musk
             raise Exception('Premonition triggered')
 
         # Update player location, ap and fuel
-        player.location = result[0]
+        player.location = location_info[5]
         player.current_ap -= int(location_info[2])
         player.fuel_consumption(int(location_info[1]))
 

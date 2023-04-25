@@ -98,7 +98,7 @@ def refresh_player_data():
 
 
 @app.route('/airport-in-range/')
-def airports_in_range(current_player = 1):
+def airports_in_range(current_player=1, return_format=1):
     if current_player == 1: # If default then use globally defined player
         current_player = player
 
@@ -107,7 +107,10 @@ def airports_in_range(current_player = 1):
     airports = game_movement.calculate_all_airport_distance(airport_list, start_loc)
     airport_name = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
 
-    return json.dumps(airport_name)
+    if return_format != 1:
+        return json.dumps(airport_name)
+    else:
+        return airport_name
 
 
 @app.route('/save-game')
@@ -141,7 +144,7 @@ def start_location_name(pid):
 
     airport = select_airport(ident)
 
-    return json.dumps(airport)
+    return airport
 
 
 @app.route('/airport/name/random/<count>')
@@ -182,7 +185,7 @@ def movement(location):
 
         legal_move = False
         for airport in in_range:
-            if airport[0] == location:
+            if airport[5] == location:
                 legal_move = True
                 target = airport
                 break
