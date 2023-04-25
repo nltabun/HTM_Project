@@ -193,7 +193,7 @@ def movement(location):
             raise Exception('Illegal move')
         
         print(target)
-        move = game_movement.player_movement(config.conn, player, target)
+        move = game_movement.player_movement(player, target)
         if move:
             if player.location == musk.location: # Player wins the game
                 status = 0
