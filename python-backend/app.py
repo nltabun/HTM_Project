@@ -61,11 +61,11 @@ def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
     new_game_id = saves + 1
     game_init.new_game(config.conn, name, game_length, new_game_id)
-    
+
     print(f'New game created with id {new_game_id}')
     return json.dumps({"id" : new_game_id})
 
-
+  
 @app.route('/load-game/<id>')
 def load_game(id):
     player_obj, musk_obj = game_data.load_game_table_data(config.conn, int(id))

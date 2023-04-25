@@ -24,7 +24,7 @@ document.querySelector('#newGameMenu-form').addEventListener('submit', async fun
     console.log(gameLength);
     document.querySelector('#new-game').classList.add('hide');
     const gameId = await fetchData(`${url}new-game/${playerName}&${gameLength}`);
-    await fetchData(`${url}load-game/${gameId}`);
+    await fetchData(`${url}load-game/${gameId.id}`);
     await gameSetup(url)
 });
 
@@ -34,8 +34,8 @@ document.querySelector('#load-button').addEventListener('click', async function 
     const target = document.querySelector('#loadGame-ol');
     const response = await fetchData(`${url}save-data/info`);
     for (let session of response) {
-        target.innerHTML += '<li> <input type="radio" id="' + session[1] + '" name="choice" value="' + session[1] + '" /> ' +
-            '<label for="' + session[1] + '"> ' + session[0] + ' </label> </li>';
+        target.innerHTML += '<li> <input type="radio" id="' + session[1] + '" name="choice" value="' + session[1]
+            + '" /> ' + '<label for="' + session[1] + '"> ' + session[0] + ' </label> </li>';
     }
 });
 
@@ -87,7 +87,30 @@ async function playerData() {
 
     let fuel = document.querySelector('#fuel');
     fuel.innerText = `${playerData.fuelCurrent} / ${playerData.fuelCapacity}`;
+
+     let fuelStorage = document.querySelector('#fuelStorage');
+    fuelStorage.innerText = playerData.fuelReserve;
 }
+
+//open the minigame menu
+document.querySelector('#action-minigame').addEventListener('click', async function() {
+    console.log(this);
+})
+
+//open the fuel menu
+document.querySelector('#action-fuel').addEventListener('click', function() {
+    document.querySelector('#fuelForm').classList.remove('hide');
+})
+
+//buy or load fuel
+document.querySelector('#fuelForm').addEventListener('submit', async function(evt) {
+    evt.preventDefault();
+    const buy_load = document.querySelector('input[name=buy-load]:checked').value;
+    const how_much = document.querySelector('#how-much').value;
+    document.querySelector('#fuelForm').classList.add('hide');
+    await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
+    await gameSetup();
+})
 
 //Draw the airports markers on the map
 async function playerMarker()  {
@@ -113,7 +136,7 @@ async function airportInRngMarker() {
     const inRange = await fetchData(`${url}airport-in-range/`);
     for (let airport of airports) {
         for (let airportInRange of inRange) {
-            if (airportInRange[0] === airport.name) {
+            if (airportInRange.name === airport.name) {
                 const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: inRangeIcon}).addTo(map);
                 marker.bindPopup(`<b>${airport.name}<form></form> <input class="flyHere" id="${airport.name}" 
                 type="submit" value="Fly here"></b>`);
@@ -130,6 +153,7 @@ async function airportInRngMarker() {
                 marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
                     await fetchData(`${url}/movement/${airport.ident}`);
+                    console.log(`${url}movement/${airport.ident}`)
                     layerGroup.clearLayers();
                     await gameSetup(url);
                 });
