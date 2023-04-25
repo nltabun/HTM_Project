@@ -240,7 +240,7 @@ def fuel_management(action, amount):
 # Start a minigame. Returns an id, question and four possible answers
 @app.route('/minigame/play')
 def play_minigame():
-    result = game_actions.play_minigame(config.conn, player)
+    result = game_actions.play_minigame(config.conn)
 
     # Reset minigames if all have been previously completed
     if result[1] == -1:
