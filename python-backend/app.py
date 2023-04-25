@@ -63,9 +63,9 @@ def new_game(name, game_length):
     game_init.new_game(config.conn, name, game_length, new_game_id)
 
     print(f'New game created with id {new_game_id}')
-    return json.dumps({"id": new_game_id})
+    return json.dumps({"id" : new_game_id})
 
-
+  
 @app.route('/load-game/<id>')
 def load_game(id):
     player_obj, musk_obj = game_data.load_game_table_data(config.conn, int(id))
@@ -237,9 +237,23 @@ def fuel_management(action, amount):
         return json.dumps({"status" : "burger"})
     
 
-@app.route('/minigame')
+# Start a minigame. Returns an id, question and four possible answers
+@app.route('/minigame/play')
 def play_minigame():
-    pass
+    result = game_actions.play_minigame(config.conn, player)
+
+    # Reset minigames if all have been previously completed
+    if result[1] == -1:
+        game_init.reset_minigames(config.conn)
+
+    return json.dumps(result[0])
+    
+
+# For answering questions from the minigames. Parameters: question id, inputted answer
+# Returns whether or not answer is correct and reward if correct
+@app.route('/minigame/answer/<qid>=<answer>')
+def answer_minigame(qid, answer):
+    return json.dumps(game_actions.answer_minigame(config.conn, player, qid, answer))
 
 
 # Ends the players turn and plays out Musks turn.
