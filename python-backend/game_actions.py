@@ -21,12 +21,9 @@ def play_minigame(connection):
     
     # Question data formatted
     data = {
-        "id" : result[0],
-        "question" : result[1],
-        "answer1" : result[2],
-        "answer2" : result[3],
-        "answer3" : result[4],
-        "answer4" : result[5]
+        "id": result[0],
+        "question": result[1],
+        "answers": [result[2], result[3], result[4], result[5]]
     }
    
     return data, status
