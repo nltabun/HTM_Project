@@ -256,6 +256,18 @@ def answer_minigame(qid, answer):
     return json.dumps(game_actions.answer_minigame(config.conn, player, qid, answer))
 
 
+# Buy clues. Return status (1=successful, 0=not), clue type and the clue itself
+@app.route('/clues')
+def buy_clue():
+    # Make sure the player has enough money and return status 0 (fail) if not so.
+    if player.money < 100:
+        return json.dumps({"status" : 0})
+    
+    clue = game_actions.buy_clue(config.conn, player, musk)
+
+    return json.dumps(clue)
+
+
 # Ends the players turn and plays out Musks turn.
 @app.route('/end-turn')
 def end_turn():
