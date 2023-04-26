@@ -12,6 +12,10 @@ import game_data
 import game_movement
 import game_fuel
 import game_events
+import game_actions
+import game_events
+import game_planes
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -54,13 +58,14 @@ def check_for_save_data(param):
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
-    new_game_id = str(saves + 1)
-    game_init.new_game(config.conn, name, game_length)
+    new_game_id = saves + 1
+    
+    game_init.new_game(config.conn, name, game_length, new_game_id)
 
     print(f'New game created with id {new_game_id}')
-    return new_game_id
+    return json.dumps({"id" : new_game_id})
 
-
+  
 @app.route('/load-game/<id>')
 def load_game(id):
     player_obj, musk_obj = game_data.load_game_table_data(config.conn, int(id))
@@ -96,19 +101,31 @@ def refresh_player_data():
 
 
 @app.route('/airport-in-range/')
-def airports_in_range(current_player=1, return_format=1):
-    if current_player == 1:  # If default then use globally defined player
+def airports_in_range(current_player=1, return_format=0):
+    if current_player == 1: # If default then use globally defined player
         current_player = player
 
     airport_list = game_movement.get_all_airport_coordinates(config.conn)
     start_loc = game_movement.get_player_coordinates(config.conn, current_player.location)
     airports = game_movement.calculate_all_airport_distance(airport_list, start_loc)
-    airport_name = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
+    in_range_list = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
 
-    if return_format != 1:
-        return json.dumps(airport_name)
+    if return_format == 0:
+        formatted_list = []
+        for airport in in_range_list:
+            data = {
+                "name" : airport[0],
+                "icao" : airport[5],
+                "distance" : airport[1],
+                "apCost" : airport[2],
+                "latitude_deg" : airport[3],
+                "longitude_deg" : airport[4]
+            }
+            formatted_list.append(data)
+
+        return json.dumps(formatted_list)
     else:
-        return airport_name
+        return in_range_list
 
 
 @app.route('/save-game')
@@ -178,7 +195,7 @@ def get_all_airport_coordinates():
 @app.route('/movement/<location>')
 def movement(location):
     try:
-        in_range = airports_in_range()
+        in_range = airports_in_range(return_format=1)
 
         legal_move = False
         for airport in in_range:
@@ -189,7 +206,6 @@ def movement(location):
         if legal_move == False:
             raise Exception('Illegal move')
 
-        print(target)
         move = game_movement.player_movement(player, target)
 
         if move:
@@ -205,8 +221,8 @@ def movement(location):
         else:
             raise Exception('Failed to move')
     except Exception:
-        return 'No move made'
-
+        return json.dumps({"status" : "burger"})
+        
 
 @app.route('/fuel-management/<action>=<amount>')
 def fuel_management(action, amount):
@@ -218,7 +234,26 @@ def fuel_management(action, amount):
         else:
             raise Exception('Invalid action')
     except Exception:
-        return 'Error'
+        return json.dumps({"status" : "burger"})
+    
+
+# Start a minigame. Returns an id, question and four possible answers
+@app.route('/minigame/play')
+def play_minigame():
+    result = game_actions.play_minigame(config.conn)
+
+    # Reset minigames if all have been previously completed
+    if result[1] == -1:
+        game_init.reset_minigames(config.conn)
+
+    return json.dumps(result[0])
+    
+
+# For answering questions from the minigames. Parameters: question id, inputted answer
+# Returns whether or not answer is correct and reward if correct
+@app.route('/minigame/answer/<qid>=<answer>')
+def answer_minigame(qid, answer):
+    return json.dumps(game_actions.answer_minigame(config.conn, player, qid, answer))
 
 
 @app.route('/event')
@@ -271,7 +306,7 @@ def musk_actions():
 
     # Musk Movement
     try:
-        in_range = airports_in_range(musk)
+        in_range = airports_in_range(musk, 1)
 
         # Randomize an airport from the list
         if len(in_range) != 0:
@@ -282,7 +317,7 @@ def musk_actions():
 
         target = in_range[n]  # Target airport info
 
-        game_movement.player_movement(config.conn, musk, target)
+        game_movement.player_movement(musk, target)
     except Exception:
         print('Musk encountered issues while trying to move.')
 

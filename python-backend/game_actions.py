@@ -3,76 +3,79 @@ import math
 import random
 
 
-def minigame(connection, player):
-    correct_answer = ''
-
-    # Fetching and printing a question from the database
-    sql = (f"SELECT * FROM minigame WHERE completed = 0 ORDER BY RAND() LIMIT 1")
+def play_minigame(connection):
+    # Fetch a question from the database that hasn't been completed yet
+    sql = f'SELECT * FROM minigame WHERE completed = 0 ORDER BY RAND() LIMIT 1'
     cursor = connection.cursor()
     cursor.execute(sql)
-    result = cursor.fetchall()
-    if cursor.rowcount > 0:
-        for row in result:
-            correct_answer = row[6]
-            difficulty = row[8]
-            print(f"{row[1]} \n"
-                  f"(1) {row[2]} \n"
-                  f"(2) {row[3]} \n"
-                  f"(3) {row[4]} \n"
-                  f"(4) {row[5]}")
+    result = cursor.fetchone()
+    
+    if cursor.rowcount > 0: # If a question was found
+        status = 0
+    else: # If everything has been completed then get one anyways.
+        status = -1
+        sql = f'SELECT * FROM minigame ORDER BY RAND() LIMIT 1'
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchone()
+    
+    # Question data formatted
+    data = {
+        "id" : result[0],
+        "question" : result[1],
+        "answer1" : result[2],
+        "answer2" : result[3],
+        "answer3" : result[4],
+        "answer4" : result[5]
+    }
+   
+    return data, status
 
-            # Assigning the letter for correct answer
-            if row[6] == row[2]:
-                correct_answer = '1'
-            elif row[6] == row[3]:
-                correct_answer = '2'
-            elif row[6] == row[4]:
-                correct_answer = '3'
-            else:
-                correct_answer = '4'
-    else:
-        print("You've gone through all of the questions, theres nothing left here")
-        input('Press "Enter" to continue')
-        return -1
-    # Waiting for the correct answer format
-    while True:
-        answer = input('Answer: ')
-        if answer in ('1', '2', '3', '4'):
-            break
-        else:
-            print('Answer in wrong format')
+
+def answer_minigame(connection, player, qid, answer):
+    if player.done_minigame == 1:
+        return {"status" : -1}
+
+
+    sql = f'SELECT correct_answer, difficulty FROM minigame WHERE id = {qid}'
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
 
     # Checking if answer was correct
-    if answer == correct_answer:
-        print("\nCorrect, here's your money.")
+    if answer == result[0]:
         # Getting the value of the questions prize
-        sql = f'SELECT value FROM prize WHERE id IN(SELECT difficulty FROM minigame WHERE difficulty = {difficulty})'
+        sql = f'SELECT value FROM prize WHERE id IN(SELECT difficulty FROM minigame WHERE difficulty = {result[1]})'
         cursor = connection.cursor()
         cursor.execute(sql)
         result_prize = cursor.fetchone()
-        result_prize = int(str(result_prize).strip('(,)'))
+        result_prize = int(result_prize[0])
 
-        # update the amount of stonks for player
-        if player.location == "'PHNL'":
+        # Update the players money
+        if player.location == 'PHNL':
             player.money = player.money + (result_prize * 3)  #triple the amount of money if in hawaii
         else:
             player.money = player.money + result_prize
 
-        print(f'\nYou now have {player.money} stocks')
-        input('\nPress "Enter" to continue')
+        # Set minigame status to completed
+        update = f'UPDATE minigame SET completed = 1 WHERE id = {qid}'
+        cursor.execute(update)
+        
+        data = {
+            "status" : 1,
+            "prize" : result_prize
+        }
     else:
-        print(f'\nWrong answer')
+        data = {
+            "status" : 0,
+        }
 
-        input('\nPress "Enter" to continue')
-
+    # Reduce ap by 1 and disable minigames for this turn
     player.current_ap -= 1
     player.done_minigame = 1
-
-    if cursor.rowcount > 0:
-        for row in result:
-            update = f'UPDATE minigame SET completed = 1 WHERE id = {row[0]}'
-            cursor.execute(update)
-
+            
+    return data
 
 
 # Function for buying clues
