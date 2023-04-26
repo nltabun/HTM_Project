@@ -90,17 +90,56 @@ async function playerData() {
 
      let fuelStorage = document.querySelector('#fuelStorage');
     fuelStorage.innerText = playerData.fuelReserve;
+
+    if (playerData.ap <= 0) {
+        await fetchData(`${url}/end-turn`);
+        await gameSetup();
+        alert('Your turn has ended \n A new round has begun');
+        }
 }
 
 //open the minigame menu
-document.querySelector('#action-minigame').addEventListener('click', async function() {
-    console.log(this);
-})
+document.querySelector('#action-minigame').addEventListener('click', async function(evt) {
+    evt.preventDefault();
+    const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
+    if (playerData.minigameDone === 1) {
+
+    } else {
+        let gameData = await fetchData(`${url}minigame/play`)
+        const question = document.querySelector('#question');
+        question.innerHTML = gameData.question;
+        let i = 1;
+        document.querySelector('#passIt').title = gameData.id;
+            for (let answer of gameData.answers) {
+                let id1 = 'a' + i;
+                let label = 'aa' + i;
+                //console.log(id1);
+                document.querySelector("[id=" + CSS.escape(id1) +"]").value = answer;
+                document.querySelector("[id=" + CSS.escape(label) +"]").innerHTML = answer;
+                i++;
+            }
+
+        console.log(document.querySelector("#passIt").title)
+        document.querySelector('#miniForm').classList.remove('hide');
+    }
+
+});
+
+//submitting the answer to minigame question
+        document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
+            evt.preventDefault();
+            document.querySelector('#miniForm').classList.add('hide');
+            const qId = document.querySelector("#passIt").title;
+            const answer = document.querySelector('input[name=choice1]:checked').value;
+            console.log(answer)
+            await fetchData(`${url}minigame/answer/${qId}=${answer}`);
+            await gameSetup();
+    });
 
 //open the fuel menu
 document.querySelector('#action-fuel').addEventListener('click', function() {
     document.querySelector('#fuelForm').classList.remove('hide');
-})
+});
 
 //buy or load fuel
 document.querySelector('#fuelForm').addEventListener('submit', async function(evt) {
@@ -110,7 +149,14 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     document.querySelector('#fuelForm').classList.add('hide');
     await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
     await gameSetup();
-})
+});
+
+//end round button
+document.querySelector('#action-end').addEventListener('click', async function () {
+    await fetchData(`${url}/end-turn`);
+    await gameSetup();
+    alert('Your turn has ended \n A new round has begun');
+});
 
 //Draw the airports markers on the map
 async function playerMarker()  {
@@ -143,7 +189,7 @@ async function airportInRngMarker() {
                 marker.setZIndexOffset(999);
                 const popupContent = document.createElement('div');
                 const h4 = document.createElement('h4');
-                h4.innerHTML = airport.name;
+                h4.innerHTML = `${airport.name} <br> costs: ${airportInRange.apCost} ap`;
                 popupContent.append(h4);
                 const goButton = document.createElement('button');
                 goButton.classList.add('button');
@@ -190,7 +236,7 @@ document.querySelector('#back-button').addEventListener('click', function (evt) 
     evt.preventDefault();
     document.querySelector('#new-game').classList.add('hide');
     document.querySelector('#main-menu').classList.remove('hide');
-})
+});
 //Goes back to main menu from load game
 document.querySelector('#back-button2').addEventListener('click', function (evt) {
     evt.preventDefault();
