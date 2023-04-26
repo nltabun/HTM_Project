@@ -1,5 +1,3 @@
-
-
 import config
 import json
 import random
@@ -13,7 +11,7 @@ import game_init
 import game_data
 import game_movement
 import game_fuel
-
+import game_events
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -36,7 +34,7 @@ def check_for_save_data(param):
         cursor = config.conn.cursor()
         cursor.execute(query)
         result = cursor.fetchall()
-        
+
         return result
     elif param == 'max-id':
         query = f'SELECT MAX(id) FROM game'
@@ -44,21 +42,21 @@ def check_for_save_data(param):
         cursor = config.conn.cursor()
         cursor.execute(query)
         result = str(cursor.fetchone()).strip('(,)')
-        
+
         return result
     else:
 
         result = ''
 
         return result
-    
+
 
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
     new_game_id = str(saves + 1)
     game_init.new_game(config.conn, name, game_length)
-    
+
     print(f'New game created with id {new_game_id}')
     return new_game_id
 
@@ -77,21 +75,21 @@ def load_game(id):
 @app.route('/refresh-player-data')
 def refresh_player_data():
     data = {
-        "id" : player.id,
-        "name" : player.name,
-        "location" : player.location,
-        "money" : player.money,
-        "fuelReserve" : player.fuel_reserve,
-        "ap" : player.current_ap,
-        "minigameDone" : player.done_minigame,
-        "clueBought" : player.bought_clue,
-        "turns" : player.turns_left,
-        "plane" : player.plane.name,
-        "fuelCurrent" : player.plane.current_fuel,
-        "fuelCapacity" : player.plane.fuel_capacity,
-        "fuelEfficiency" : player.plane.fuel_efficiency,
-        "speed" : player.plane.speed,
-        "range" : player.range()
+        "id": player.id,
+        "name": player.name,
+        "location": player.location,
+        "money": player.money,
+        "fuelReserve": player.fuel_reserve,
+        "ap": player.current_ap,
+        "minigameDone": player.done_minigame,
+        "clueBought": player.bought_clue,
+        "turns": player.turns_left,
+        "plane": player.plane.name,
+        "fuelCurrent": player.plane.current_fuel,
+        "fuelCapacity": player.plane.fuel_capacity,
+        "fuelEfficiency": player.plane.fuel_efficiency,
+        "speed": player.plane.speed,
+        "range": player.range()
     }
 
     return json.dumps(data)
@@ -99,7 +97,7 @@ def refresh_player_data():
 
 @app.route('/airport-in-range/')
 def airports_in_range(current_player=1, return_format=1):
-    if current_player == 1: # If default then use globally defined player
+    if current_player == 1:  # If default then use globally defined player
         current_player = player
 
     airport_list = game_movement.get_all_airport_coordinates(config.conn)
@@ -134,7 +132,6 @@ def select_airport(ident):
 
 @app.route('/locate/<pid>')
 def start_location_name(pid):
-    
     if pid == '0':
         ident = player.location
     elif pid == '1':
@@ -161,11 +158,11 @@ def random_airports(count=2):
 # Fetches coordinates for all airports
 def get_all_airport_coordinates():
     sql = f'SELECT name, latitude_deg, longitude_deg, ident FROM airport'
-    
+
     cursor = config.conn.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    
+
     airport_coordinates = []
     for row in result:
         airport_coordinates.append({
@@ -174,7 +171,7 @@ def get_all_airport_coordinates():
             "longitude_deg": row[2],
             "ident": row[3]
         })
-    
+
     return json.dumps(airport_coordinates)
 
 
@@ -191,24 +188,25 @@ def movement(location):
                 break
         if legal_move == False:
             raise Exception('Illegal move')
-        
+
         print(target)
         move = game_movement.player_movement(player, target)
+
         if move:
-            if player.location == musk.location: # Player wins the game
+            if player.location == musk.location:  # Player wins the game
                 status = 0
-            else: # Game continues
+            else:  # Game continues
                 status = 1
             data = {
-                "location" : player.location,
-                "status" : status
+                "location": player.location,
+                "status": status
             }
             return json.dumps(data)
         else:
             raise Exception('Failed to move')
     except Exception:
         return 'No move made'
-    
+
 
 @app.route('/fuel-management/<action>=<amount>')
 def fuel_management(action, amount):
@@ -223,34 +221,50 @@ def fuel_management(action, amount):
         return 'Error'
 
 
+@app.route('/event')
+def events(player):
+    try:
+        if player.location == 'KDTW' or player.location == 'KSTL' or player.location == 'KORD':
+            message = game_events.event1(player)
+            return message
+
+        elif player.location == 'MHPR' or player.location == 'MMMX' or player.location == 'MMGL':
+            message = game_events.event2(player)
+            return message
+        else:
+            raise Exception('XD')
+    except Exception:
+        return 'Error'
+
+
+
 # Ends the players turn and plays out Musks turn.
 @app.route('/end-turn')
 def end_turn():
     player.decrease_turns()
-    
+
     musk_status = musk_actions()
-    
-    if musk_status == 0: # Musk wins the game
-        return json.dumps({"status" : 0}) # Display lost game screen
-    else: # Game continues
+
+    if musk_status == 0:  # Musk wins the game
+        return json.dumps({"status": 0})  # Display lost game screen
+    else:  # Game continues
         # Reset player ap
         player.current_ap = player.max_ap
         # Reset minigame and clue checks
         player.done_minigame = 0
         player.bought_clue = 0
 
-        return json.dumps({"status" : 1}) # Refresh player data and continue game normally
-
+        return json.dumps({"status": 1})  # Refresh player data and continue game normally
 
 
 # Defines the actions Musk takes during his turn. Returns whether or not he has won the game: 0 = win, 1 = game continues
 def musk_actions():
-    if musk.turns_left <= 1: # Player can't catch Musk anymore so he wins.
+    if musk.turns_left <= 1:  # Player can't catch Musk anymore so he wins.
         return 0
 
-    musk.current_ap = musk.max_ap # Reset Musk ap
-    musk.epitaph(player.location) # Refresh Musks future sight
-    
+    musk.current_ap = musk.max_ap  # Reset Musk ap
+    musk.epitaph(player.location)  # Refresh Musks future sight
+
     # Fuel up if currently low
     if musk.plane.current_fuel <= 10000:
         game_fuel.load_fuel(musk)
@@ -261,19 +275,19 @@ def musk_actions():
 
         # Randomize an airport from the list
         if len(in_range) != 0:
-            n = random.randint(0, len(in_range)-1)
-            print(str(n) + '/' + str(len(in_range)-1))
+            n = random.randint(0, len(in_range) - 1)
+            print(str(n) + '/' + str(len(in_range) - 1))
         else:
             raise Exception('No airports in range')
 
-        target = in_range[n] # Target airport info
+        target = in_range[n]  # Target airport info
 
         game_movement.player_movement(config.conn, musk, target)
     except Exception:
         print('Musk encountered issues while trying to move.')
 
-    musk.decrease_turns() # Turn over
-    
+    musk.decrease_turns()  # Turn over
+
     return 1
 
 
