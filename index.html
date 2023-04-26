@@ -18,59 +18,58 @@
             Hunt The Musk
         </h1>
     </header>
-    <main class="flex-wrap">
-
-        <div id="map"></div>
-
+    <div id="map"></div>
+    <div class="game-info">
+        <section class="select">
+            <header>
+                <h2>Info</h2>
+            </header>
+            <table>
+                <tr>
+                    <td>Stonks: <span id="stock"></span> TSLA</td>
+                    <td>Action points: <span id="actionpoints"></span></td>
+                    <td>Range: <span id="range"></span>Km</td>
+                    <td>Fuel: <span id="fuel"></span></td>
+                    <td>Location: <span id="player-location"></span></td>
+                </tr>
+            </table>
+        </section>
         <div class="game-info">
             <section class="select">
-                <header>
-                    <h2>Info</h2>
-                </header>
-                <table>
-                    <tr>
-                        <td>Stonks: <span id="stock"></span> TSLA</td>
-                        <td>Action points: <span id="actionpoints"></span></td>
-                        <td>Range: <span id="range"></span>Km</td>
-                        <td>Fuel: <span id="fuel"></span></td>
-                        <td>Location: <span id="player-location"></span></td>
-                    </tr>
-                </table>
-            </section>
-            <section class="select">
-                <header>
-                    <h2>Game actions</h2>
-                </header>
-                        <figure>
-                            <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
-                        </figure>
-                        <figure>
-                            <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
-                        </figure>
-                        <figure>
-                            <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
-                        </figure>
-                        <figure>
-                            <input class="formBtn" id="action-plane" type="submit" value="Plane market">
-                        </figure>
-                        <figure>
-                            <input class="formBtn" id="action-end" type="submit" value="End turn">
-                        </figure>
-                <div>
-                    <form id="fuelForm" class="hide">
-                        <td>Fuel in reserve: <span id="fuelStorage"></span></td>
-                        <input type="radio" id="load" name="buy-load" value="load">
-                        <label for="load">load</label>
-                        <input type="radio" id="buy" name="buy-load" value="buy">
-                        <label for="buy">buy</label>
-                        <input type="text" id="how-much" placeholder="how much fuel">
-                        <input class="formBtn" type="submit" value="submit">
-                    </form>
+
+                <div id="game-actions">
+                    <figure>
+                        <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-plane" type="submit" value="Plane market">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-end" type="submit" value="End turn">
+                    </figure>
+                    <div class="options">
+                        <form class="hide" id="fuelForm">
+                            <td>Fuel in reserve: <span id="fuelStorage"></span></td>
+                            <input id="load" name="buy-load" type="radio" value="load">
+                            <label for="load">load</label>
+                            <input id="buy" name="buy-load" type="radio" value="buy">
+                            <label for="buy">buy</label><br>
+                            <input id="how-much" placeholder="how much fuel" type="text">
+                            <input class="formBtn" type="submit" value="submit">
+                        </form>
+                    </div>
                 </div>
             </section>
         </div>
+    </div>
 
-
+    <div class="menus">
         <div id="main-menu">
             <form class="menu-form" id="mainMenu-form">
                 <h1>HUNT THE MUSK</h1>
@@ -104,10 +103,10 @@
                     </div>
                     <input class="formBtn" id="back-button2" type="submit" value="Back">
                     <input class="formBtn" type="submit" value="Continue Game">
-
                 </div>
-            </form>
         </div>
+        </form>
+    </div>
     </main>
 </div>
 </body>
