@@ -53,13 +53,19 @@ def load_game_table_data(connection, save_slot):
 
 
 # Save game data to the database
+# Return 1 if no issues, 0 if errors
 def save_to_game_table(connection, player, musk):
-    player_update = f'UPDATE game SET {player.update_values()} WHERE id = {player.id}'
-    musk_update = f'UPDATE game SET {musk.update_values()} WHERE id = {musk.id}'
+    try:
+        player_update = f'UPDATE game SET {player.update_values()} WHERE id = {player.id}'
+        musk_update = f'UPDATE game SET {musk.update_values()} WHERE id = {musk.id}'
 
-    cur = connection.cursor()
-    cur.execute(player_update)
-    cur.execute(musk_update)
+        cur = connection.cursor()
+        cur.execute(player_update)
+        cur.execute(musk_update)
+
+        return {"status" : 1}
+    except Exception:
+        return {"status" : 0}
 
 
 # List of saved games present in the database
