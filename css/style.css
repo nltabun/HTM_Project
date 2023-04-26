@@ -337,12 +337,3 @@ button:hover, input:hover, label:hover {
     text-align: center;
 
 }
-
-/* The alert message box */
-.alert {
-    padding: 20px;
-    background-color: #f44336; /* Red */
-    color: white;
-    margin-bottom: 15px;
-    z-index: 99999999;
-}
