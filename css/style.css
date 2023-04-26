@@ -3,6 +3,23 @@
     src: url('https://fonts.cdnfonts.com/css/arial-2');
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 html {
     font-family: Arial, sans-serif;
     color: white;
@@ -81,10 +98,6 @@ body {
     top: 0;
     z-index: 9998;
     color: white;
-}
-
-#new-game-button .formBtn {
-    margin-top: 1rem;
 }
 
 #load-game {
@@ -286,7 +299,6 @@ button:hover, input:hover, label:hover {
 .options {
     margin: 25px 0 0 0;
     padding: 0;
-
 }
 
 .options label,
@@ -325,6 +337,7 @@ button:hover, input:hover, label:hover {
     text-align: center;
 
 }
+
 
 
 
