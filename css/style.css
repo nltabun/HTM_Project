@@ -25,6 +25,11 @@ html {
     color: white;
 }
 
+body {
+    width: 99%;
+    background-color: #343434;
+}
+
 .button {
     display: block;
     padding: 0.5rem 1rem;
@@ -34,15 +39,6 @@ html {
     transition: all 300ms;
 }
 
-body {
-    width: 99%;
-    background-color: #343434;
-}
-
-.flex-wrap {
-    flex-wrap: wrap;
-    width: 100rem;
-}
 
 .hide {
     display: none;
@@ -53,6 +49,7 @@ body {
 }
 
 .page-title {
+    width: 100%
     margin: 0;
     text-align: center;
 }
@@ -75,7 +72,7 @@ body {
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
     margin-bottom: 1rem;
-    width: 60rem;
+    width: 50%;
     float: left;
 }
 
@@ -88,6 +85,10 @@ body {
     top: 0;
     z-index: 9999;
     color: white;
+}
+
+.menus .formBtn{
+        margin: 2rem auto;
 }
 
 #new-game {
@@ -128,7 +129,7 @@ body {
     font-weight: 100;
     font-size: 1.2em;
     border: 2px solid white;
-    margin: 2rem auto;
+
 }
 
 .formBtn:active {
@@ -216,36 +217,40 @@ button:hover, input:hover, label:hover {
 }
 
 .select {
-    padding: 1rem;
+    padding: 1em;
     font-size: small;
     border-radius: 6px;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
-    width: 35%;
-    height: 100%;
+    width: 55rem;
+    height: 50%;
     margin-bottom: 1rem;
     background-color: #595959;
+    float: right;
+
+}
+#game-info{
+    width: 55%;
     float: right;
 }
 
 .select h2,
 .select figure {
-    margin: 0.5rem;
+    margin: 0.3rem;
     padding: 0;
 }
 
+.select figure{
+    width: 4rem;
+    float: right;
+    margin-right: 6rem;
+    text-align: center;
+    padding: 0.2rem;
+}
 .select table {
     width: 100%;
     text-align: center;
 }
 
-.select li {
-    list-style-type: none;
-    height: 4rem;
-    width: 2rem;
-    text-align: justify-all;
-    padding: 0.1rem;
-    margin: 0.2rem;
-}
 
 #game-actions .formBtn {
     width: 10rem;
@@ -255,28 +260,20 @@ button:hover, input:hover, label:hover {
     font-weight: bold;
     font-size: 1.2em;
     border: 1px gray;
-    margin: 0.2rem auto;
-    margin-left: -2.5rem;
+    margin-left: -1rem ;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
-
 }
 
 #game-actions {
-    padding: 2rem;
     font-size: small;
     border-radius: 6px;
-    width: 35%;
-    height: 40%;
+    height: 5rem;
     margin-bottom: 1rem;
-    background-color: #595959;
+    text-align: center;
 }
 
 .select #game-actions {
     height: 33rem;
-}
-
-#game-actions {
-    width: 30%;
 }
 
 #new-game #options {

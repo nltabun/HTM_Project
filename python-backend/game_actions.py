@@ -77,77 +77,67 @@ def answer_minigame(connection, player, qid, answer):
 
 # Function for buying clues
 def buy_clue(connection, player, musk):
-    # Check if player has enough stonks to buy a clue, the current clue price is just for testing purposes
-    if player.money >= 100:
-        while True:
-            you_sure = input(f'\nCurrently you have {player.money} stonks, one clue costs 100 stonks, do you wish to proceed? (Y/N)\n').capitalize()
-            choices = ('Y', 'N')
-            if you_sure in choices:
-                break
-            else:
-                print('\nError in selection. Please use letters "Y" or "N".\n')
-
-        if you_sure == 'Y':
-            pass
-        else:
-            return
-
         # Player has enough stonks, now we deduct the price
         player.money = player.money - 100
 
-        # Finally give the clue to player
-        random_clue = random.randint(1, 3)  # Randomize which clue we return
+        # Randomize which clue we return
+        random_clue = random.randint(1, 3)  
 
         # Gives the bearing of musk compared to the player
         if random_clue == 1:
-            print(f'\nMusk is currently to the {get_bearing(game_movement.get_player_coordinates(connection, player.location), game_movement.get_player_coordinates(connection, musk.location))} of you.')
-
+            player_coord = game_movement.get_player_coordinates(connection, player.location)
+            musk_coord = game_movement.get_player_coordinates(connection, musk.location)
+            data = {
+                "status" : 1,
+                "clueType" : 1,
+                "clue" : get_bearing(player_coord, musk_coord)
+            }
+        # "Zone" in which Musk currently resides
         elif random_clue == 2:
-
-            # Selects the zone where musk is located at
-            sql = f'SELECT ident, zone FROM airport WHERE ident = {musk.location}'
+            # Selects the zone where Musk is located at
+            sql = f'SELECT ident, zone FROM airport WHERE ident = \'{musk.location}\''
             cursor = connection.cursor()
             cursor.execute(sql)
             result = cursor.fetchall()
 
             if cursor.rowcount > 0:
+                data = {
+                    "status" : 1,
+                    "clueType" : 2,
+                }
                 for row in result:
                     zone = row[1]
-                    if zone == 1:
-                        print("\nMusk is located in the east coast")
-
-                    elif zone == 2:
-                        print("\nMusk is located in the central US")
-
-                    elif zone == 3:
-                        print("\nMusk is located in the west coast")
-
-                    elif zone == 4:
-                        print("\nOutside of the United States Of America")
-
-                    else:
-                        print("\nMusk has escaped the matrix")
-
+                    if zone == 1: # Musk is located in the east coast
+                        data.update({"clue" : "EC"})
+                    elif zone == 2: # Musk is located in the central US
+                        data.update({"clue" : "CU"})
+                    elif zone == 3: # Musk is located in the west coast
+                        data.update({"clue" : "WC"})
+                    elif zone == 4: # Outside of the United States of America
+                        data.update({"clue" : "OA"})
+            else:
+                data = {
+                    "status" : 0
+                }
+        # Three potential Musk locations 
         elif random_clue == 3:
-            airports = set()
-            two_airports = game_movement.random_airports(connection)
+            airports = game_movement.random_airports(connection)
+            airports.append((game_movement.select_airport(connection, musk.location)[0][0], musk.location))
+            print(airports)
 
-            airports.update(two_airports)
-            airports.update(game_movement.select_airport(connection, musk))
+            random.shuffle(airports)
+            data = {
+                "status" : 1,
+                "clueType" : 3,
+                "clue" : airports
+            }
 
-            print(f'\nElon Musk is currently located in one of the following airports:')
-            for i in airports:
-                print(str(i).strip("('',)"))
-
+        # Reduce player ap and check "bought clue" for this turn
         player.current_ap -= 1
         player.bought_clue = 1
+        print(data)
+        return data
 
-        print(f'\nYour stonks have been deducted to the value of {player.money}')
-        input('\nPress "Enter" to continue')
-    else:
-        # The player is too broke for us, show the door to him
-        print(f'\nYou do not have enough stocks, come back later')
-        input('\nPress "Enter" to continue')
 
 
 def get_bearing(player_coords, comp_coords):  # function found in https://www.programcreek.com/python/example/93521/geopy.Point
