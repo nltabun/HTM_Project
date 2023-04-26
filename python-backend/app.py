@@ -3,7 +3,7 @@ import json
 import random
 import math
 
-from flask import Flask, request
+from flask import Flask
 from flask_cors import CORS
 from geopy import distance
 
@@ -30,9 +30,11 @@ def test():
     return 'test'
 
 
+# For getting active saves or current highest game id # TODO: Maybe reformat returns
 @app.route('/save-data/<param>')
 def check_for_save_data(param):
-    if param == 'info':
+    # Return info for all active games
+    if param == 'info': 
         query = f'SELECT screen_name, id FROM game WHERE NOT screen_name = "Elon Musk"'
 
         cursor = config.conn.cursor()
@@ -40,6 +42,7 @@ def check_for_save_data(param):
         result = cursor.fetchall()
 
         return result
+    # Get current highest game id
     elif param == 'max-id':
         query = f'SELECT MAX(id) FROM game'
 
@@ -55,6 +58,9 @@ def check_for_save_data(param):
         return result
 
 
+# Create a new game
+# Parameters: player name and desired game length
+# Returns new game id
 @app.route('/new-game/<name>&<game_length>')
 def new_game(name, game_length):
     saves = int(check_for_save_data('max-id'))
@@ -65,7 +71,9 @@ def new_game(name, game_length):
     print(f'New game created with id {new_game_id}')
     return json.dumps({"id" : new_game_id})
 
-  
+
+# Loads game data from the database using game id and initializes player and musk globally
+# Also calls and returns player data in JSON using refresh_player_data function
 @app.route('/load-game/<id>')
 def load_game(id):
     player_obj, musk_obj = game_data.load_game_table_data(config.conn, int(id))
@@ -77,6 +85,7 @@ def load_game(id):
     return refresh_player_data()
 
 
+# Return player data in JSON
 @app.route('/refresh-player-data')
 def refresh_player_data():
     data = {
@@ -100,6 +109,8 @@ def refresh_player_data():
     return json.dumps(data)
 
 
+# Returns a list of all the airports in range (default: Player)
+# If parameter return_format=0 then return in JSON (default)
 @app.route('/airport-in-range/')
 def airports_in_range(current_player=1, return_format=0):
     if current_player == 1: # If default then use globally defined player
@@ -128,13 +139,17 @@ def airports_in_range(current_player=1, return_format=0):
         return in_range_list
 
 
+# Save game data back to the database
+# Return status = 1 if no issues, otherwise 0
 @app.route('/save-game')
 def save_game():
-    game_data.save_to_game_table()
+    save = game_data.save_to_game_table()
 
-    return 'saved'
+    return json.dumps(save)
 
 
+# Get airport name from airport database with icao-code
+# Return icao-code and airport name in JSON
 @app.route('/airport/name/<ident>')
 def select_airport(ident):
     airport = game_movement.select_airport(config.conn, ident)
@@ -147,18 +162,18 @@ def select_airport(ident):
     return json.dumps(data)
 
 
+# Locate a player. Pid: 0=Player; 1=Musk
+# Return icao-code and airport name in JSON
 @app.route('/locate/<pid>')
 def start_location_name(pid):
-    if pid == '0':
+    if pid == '0': # Player
         ident = player.location
-    elif pid == '1':
+    elif pid == '1': # Musk
         ident = musk.location
-    else:
-        pass
-
-    airport = select_airport(ident)
-
-    return airport
+    else: # Invalid pid
+        return json.dumps({"status" : 0})
+    
+    return select_airport(ident)
 
 
 @app.route('/airport/name/random/<count>')
@@ -256,6 +271,18 @@ def answer_minigame(qid, answer):
     return json.dumps(game_actions.answer_minigame(config.conn, player, qid, answer))
 
 
+# Buy clues. Return status (1=successful, 0=not), clue type and the clue itself
+@app.route('/clues')
+def buy_clue():
+    # Make sure the player has enough money and return status 0 (fail) if not so.
+    if player.money < 100:
+        return json.dumps({"status" : 0})
+    
+    clue = game_actions.buy_clue(config.conn, player, musk)
+
+    return json.dumps(clue)
+
+
 @app.route('/event')
 def events(player):
     try:
@@ -270,7 +297,6 @@ def events(player):
             raise Exception('XD')
     except Exception:
         return 'Error'
-
 
 
 # Ends the players turn and plays out Musks turn.

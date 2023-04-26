@@ -13,12 +13,12 @@ def select_airport(connection, location):
     return result
 
 
+# Fetch a defined number of random airports from airport database. Default 2
 def random_airports(connection, count=2):
-    sql = f'SELECT name FROM airport ORDER BY RAND() LIMIT {count}'
+    sql = f'SELECT name, ident FROM airport ORDER BY RAND() LIMIT {count}'
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    result = set(result)
     return result
 
 # Fetches players ICAO code
