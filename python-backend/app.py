@@ -72,7 +72,7 @@ def new_game(name, game_length):
     return json.dumps({"id" : new_game_id})
 
 
-# Loads game data from the database using game id and initializes player and musk globally
+# Loads game data from the database using game id and initializes player, musk and plane list globally
 # Also calls and returns player data in JSON using refresh_player_data function
 @app.route('/load-game/<id>')
 def load_game(id):
@@ -81,6 +81,9 @@ def load_game(id):
     player = player_obj
     global musk
     musk = musk_obj
+
+    global plane_list
+    plane_list = game_init.generate_airplanes()
 
     return refresh_player_data()
 
@@ -297,6 +300,36 @@ def events(player):
             raise Exception('XD')
     except Exception:
         return 'Error'
+    
+
+# For browsing all available planes
+# Returns all planes
+@app.route('/planes/browse')
+def browse_planes():
+    planes = game_planes.get_plane_data(player)
+    return json.dumps(planes)
+
+
+# Compare current plane vs selected plane
+# Parameters: current plane index, selected plane index
+# Returns stats for both planes and cost to upgrade
+@app.route('/planes/compare/<current_idx>=<selected_idx>')
+def compare_planes(current_idx, selected_idx):
+    current_plane = plane_list[int(current_idx)]
+    selected_plane = plane_list[int(selected_idx)]
+    planes = game_planes.compare_planes(current_plane, selected_plane)
+    
+    return json.dumps(planes)
+
+
+# Buy the selected plane using plane index
+# Return status = 1 if successful, 0 if not
+@app.route('/planes/buy=<index>')
+def buy_plane(index):
+    selected_plane = plane_list[int(index)]
+    purchase = game_planes.buy_plane(player, selected_plane)
+    
+    return json.dumps(purchase)
 
 
 # Ends the players turn and plays out Musks turn.
