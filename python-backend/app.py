@@ -2,6 +2,7 @@ import config
 import json
 import random
 import math
+import requests
 
 from flask import Flask
 from flask_cors import CORS
@@ -210,6 +211,29 @@ def get_all_airport_coordinates():
     return json.dumps(airport_coordinates)
 
 
+@app.route('/weather/<location>')
+def get_weather_data(location):
+    api_key = 'f08355556ae585e753c3498c6cc4756c'
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={api_key}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        weather_data = response.json()
+        temp = weather_data['main']['temp']
+        weather_desc = weather_data['weather'][0]['description']
+        wind_speed = weather_data['wind']['speed']
+        visibility = weather_data['visibility']
+        weather_data = {
+            'temperature': temp,
+            'weather_desc': weather_desc,
+            'wind_speed': wind_speed,
+            'visibility': visibility
+        }
+        return json.dumps(weather_data)
+
+    else:
+        return json.dumps('PERKELE ei tänne!')
+
+
 # Moves player to <location>
 # Returns new player location and if the player won with their move.
 # status = 2 for win, 1 to continue game, 0 if failed to move
@@ -231,6 +255,8 @@ def movement(location):
 
         # Make the actual move. Returns if successful
         move = game_movement.player_movement(player, target)
+        
+        events(player)
 
         if move: # If the move was successful
             if player.location == musk.location: # Player found Musk and wins the game

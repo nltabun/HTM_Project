@@ -12,6 +12,13 @@ def select_airport(connection, location):
 
     return result
 
+def airport_municipality(connection, location):
+    sql = f'SELECT municipality FROM airport WHERE ident = \'{location}\''
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
+    return result
 
 # Fetch a defined number of random airports from airport database. Default 2
 def random_airports(connection, count=2):

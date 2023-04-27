@@ -55,32 +55,31 @@
                         <input class="formBtn" id="action-end" type="submit" value="End turn">
                     </figure>
                     <div class="options">
-                        <form class="hide" id="fuelForm">
+                        <form class="hide plsHide" id="fuelForm">
                             <td>Fuel in reserve: <span id="fuelStorage"></span></td>
-                            <input id="load" name="buy-load" type="radio" value="load">
-                            <label for="load">load</label>
+                            <input checked="checked" id="load" name="buy-load" type="radio" value="load">
+                            <label for="load">Load</label>
                             <input id="buy" name="buy-load" type="radio" value="buy">
-                            <label for="buy">buy</label><br>
-                            <input id="how-much" placeholder="how much fuel" type="text">
-                            <input class="formBtn" type="submit" value="submit">
+                            <label for="buy">Buy</label><br>
+                            <input id="how-much" placeholder="How much fuel?" type="text">
+                            <input class="formBtn" type="submit" value="Submit">
                         </form>
+                        <div>
+                            <form class="plsHide hide" id="miniForm">
+                                <td><span id="question"></span></td>
+                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio" value="1">
+                                    <label for="a1" id="aa1"></label></td>
+                                <td><input class="options" id="a2" name="choice1" type="radio" value="2">
+                                    <label for="a2" id="aa2"></label></td>
+                                <td><input class="options" id="a3" name="choice1" type="radio" value="3">
+                                    <label for="a3" id="aa3"></label></td>
+                                <td><input class="options" id="a4" name="choice1" type="radio" value="4">
+                                    <label for="a4" id="aa4"></label></td>
+                                <input class="formBtn" id="aa" type="submit" value="Submit">
+                                <div class="hide" id="passIt" title="b"></div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <form id="miniForm" class="hide">
-                        <td><span id="question"></span></td>
-                        <td> <input type="radio" class="options" id="a1" name="choice1" value="1">
-                        <label id="aa1" for="a1"></label> </td>
-                        <td> <input type="radio" class="options" id="a2" name="choice1" value="2">
-                        <label id="aa2" for="a2"></label> </td>
-                        <td> <input type="radio" class="options" id="a3" name="choice1" value="3">
-                        <label id="aa3" for="a3"></label> </td>
-                        <td> <input type="radio" class="options" id="a4" name="choice1" value="4">
-                        <label id="aa4" for="a4"></label> </td>
-                        <input id="aa" class="formBtn" type="submit" value="submit">
-                        <div id="passIt" title="b" class="hide"></div>
-                    </form>
                 </div>
             </section>
         </div>
@@ -121,8 +120,9 @@
                     <input class="formBtn" id="back-button2" type="submit" value="Back">
                     <input class="formBtn" type="submit" value="Continue Game">
                 </div>
+            </form>
         </div>
-        </form>
+
     </div>
     </main>
 </div>
