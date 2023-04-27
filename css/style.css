@@ -251,6 +251,9 @@ button:hover, input:hover, label:hover {
     text-align: center;
 }
 
+#fuelForm .formBtn{
+    margin: 2rem auto;
+}
 
 #game-actions .formBtn {
     width: 10rem;
@@ -313,12 +316,12 @@ button:hover, input:hover, label:hover {
 }
 
 .options input[type="radio"]:checked + label {
-    background: #595959;
+    background: #803232;
 }
 
 .options label {
     padding: 5px;
-    border: 1px solid #CCC;
+    border: 1px solid #262626;
     cursor: pointer;
     z-index: 90;
 }
@@ -333,4 +336,13 @@ button:hover, input:hover, label:hover {
     height: 50%;
     text-align: center;
 
+}
+#fuelForm input{
+    padding: 2vh;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    width: 55%;
+    margin: 1rem auto;
+    text-align: center;
 }
