@@ -92,6 +92,8 @@ async function playerData() {
     fuelStorage.innerText = playerData.fuelReserve;
 
     if (playerData.ap <= 0) {
+        document.querySelector('#miniForm').classList.add('hide');
+        document.querySelector('.plsHide').classList.add('hide');
         await fetchData(`${url}/end-turn`);
         await gameSetup();
         alert('Your turn has ended \n A new round has begun');
@@ -119,7 +121,8 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
                 i++;
             }
 
-        console.log(document.querySelector("#passIt").title)
+        console.log(document.querySelector("#passIt").title);
+        document.querySelector('.plsHide').classList.add('hide');
         document.querySelector('#miniForm').classList.remove('hide');
     }
 
@@ -138,6 +141,8 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
 
 //open the fuel menu
 document.querySelector('#action-fuel').addEventListener('click', function() {
+    document.querySelector('.plsHide').classList.add('hide');
+    document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
 });
 
@@ -153,6 +158,8 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
 
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
+    document.querySelector('.plsHide').classList.add('hide');
+    document.querySelector('#miniForm').classList.add('hide');
     await fetchData(`${url}/end-turn`);
     await gameSetup();
     alert('Your turn has ended \n A new round has begun');
