@@ -9,8 +9,21 @@ class Airplane:
         self.speed = speed
         self.cost = cost
 
-    def stats(self): # returns plane statistics
-        return f'\'{self.name}\' | {self.fuel_capacity} | {self.fuel_efficiency} | {self.speed}'
+   
+    # Returns plane statistics
+    def stats(self, format=0, index=0):
+        if format == 1:
+            statistics = {
+                "index" : index,
+                "name" : self.name,
+                "fuelCapacity" : self.fuel_capacity,
+                "fuelEfficiency" : self.fuel_efficiency,
+                "speed" : self.speed,
+                "cost" : self.cost
+                }
+            return statistics
+        else:
+            return f'\'{self.name}\' | {self.fuel_capacity} | {self.fuel_efficiency} | {self.speed}'
 
     def range(self): # returns max single flight distance for the plane
         return 1.0 * (self.current_fuel / self.fuel_efficiency) / 12
