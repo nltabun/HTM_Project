@@ -26,8 +26,10 @@ html {
 }
 
 body {
-    width: 99%;
+    width: 98%;
     background-color: #343434;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .button {
@@ -231,6 +233,7 @@ button:hover, input:hover, label:hover {
 
 #game-info {
     width: 55%;
+
     float: right;
 }
 
@@ -254,7 +257,6 @@ button:hover, input:hover, label:hover {
 }
 
 
-
 #game-actions .formBtn {
     width: 10rem;
     height: 3rem;
@@ -270,13 +272,12 @@ button:hover, input:hover, label:hover {
 #game-actions {
     font-size: small;
     border-radius: 6px;
-    height: 5rem;
     margin-bottom: 1rem;
     text-align: center;
 }
 
 .select #game-actions {
-    height: 33rem;
+    height: 40.4rem;
 }
 
 #new-game #options {
@@ -286,10 +287,6 @@ button:hover, input:hover, label:hover {
 
 #load-game {
     text-align: center;
-}
-
-#game-info {
-    width: 100%;
 }
 
 #loadGame-ol {
@@ -316,7 +313,7 @@ button:hover, input:hover, label:hover {
 }
 
 .options input[type="radio"]:checked + label {
-    background: #803232;
+    background: #383838;
 }
 
 .options label {
@@ -338,12 +335,28 @@ button:hover, input:hover, label:hover {
 
 }
 
-#fuelForm input {
-    padding: 2vh;
-    background-color: black;
+#fuelForm .formBtn {
+    width: 10rem;
+    height: 3rem;
+    background: #868585;
     color: white;
-    border: 2px solid white;
-    width: 55%;
+    font-weight: bold;
+    font-size: 1.2em;
+    border: 1px gray;
     margin: 1rem auto;
     text-align: center;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+}
+
+#miniForm .formBtn {
+    width: 10rem;
+    height: 3rem;
+    background: #868585;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    border: 1px gray;
+    margin: 1rem auto;
+    text-align: center;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
