@@ -67,7 +67,28 @@ class Player:
     def __str__(self): # returns statistics for the player and their plane
         return  f'Player: {self.name} | TSLA stocks: {self.money} | Fuel Reserve: {self.fuel_reserve} | Current location: {self.location} | Current AP: {self.current_ap}\n' \
                 f'Plane: {self.plane.name} | Current Fuel: {self.plane.current_fuel} | Fuel Capacity: {self.plane.fuel_capacity} | Fuel Efficiency: {self.plane.fuel_efficiency}'
+    
+    def stats(self): # Returns player stats for refresh-player-data endpoint
+        data = {
+            "id": self.id,
+            "name": self.name,
+            "location": self.location,
+            "money": self.money,
+            "fuelReserve": self.fuel_reserve,
+            "ap": self.current_ap,
+            "minigameDone": self.done_minigame,
+            "clueBought": self.bought_clue,
+            "turns": self.turns_left,
+            "plane": self.plane.name,
+            "fuelCurrent": self.plane.current_fuel,
+            "fuelCapacity": self.plane.fuel_capacity,
+            "fuelEfficiency": self.plane.fuel_efficiency,
+            "speed": self.plane.speed,
+            "range": self.range()
+        }
 
+        return data
+    
     def new_values(self): # returns player statistics in the correct format for inserting a new player into the database 
         return f'{self.fuel_reserve}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}, {self.turns_left}'
     

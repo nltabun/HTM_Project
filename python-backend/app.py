@@ -1,12 +1,10 @@
 import config
 import json
 import random
-import math
 import requests
 
 from flask import Flask
 from flask_cors import CORS
-from geopy import distance
 
 import game_init
 import game_data
@@ -92,25 +90,13 @@ def load_game(id):
 # Return player data in JSON
 @app.route('/refresh-player-data')
 def refresh_player_data():
-    data = {
-        "id": player.id,
-        "name": player.name,
-        "location": player.location,
-        "money": player.money,
-        "fuelReserve": player.fuel_reserve,
-        "ap": player.current_ap,
-        "minigameDone": player.done_minigame,
-        "clueBought": player.bought_clue,
-        "turns": player.turns_left,
-        "plane": player.plane.name,
-        "fuelCurrent": player.plane.current_fuel,
-        "fuelCapacity": player.plane.fuel_capacity,
-        "fuelEfficiency": player.plane.fuel_efficiency,
-        "speed": player.plane.speed,
-        "range": player.range()
-    }
+    try:
+        data = player.stats()
+        data.update({"status" : 1})
 
-    return json.dumps(data)
+        return json.dumps(data)
+    except:
+        return json.dumps({"status" : 0})
 
 
 # Returns a list of all the airports in range (default: Player)
