@@ -68,27 +68,3 @@ def load_fuel(player, fuel_amount=''):
     
     return data
 
-
-def fuel_management(player):
-    options = ('1','2','4')
-    if player.name != 'Elon Musk':
-        while True:
-            print('Fuel Management\n\nDo you want to..\n(1) Buy fuel\n(2) Load fuel\n(4) Cancel')
-            option = input('> ')
-
-            if option in options:
-                break
-            else:
-                print(f'Incorrect input.\n')
-
-        if option == '1':
-            buy_fuel(player)
-        elif option == '2':
-            while True:
-                loading_fuel = load_fuel(player)
-                if loading_fuel == False:
-                    break
-        elif option == '4':
-            return
-    else:
-        load_fuel(player)

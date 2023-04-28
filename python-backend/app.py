@@ -73,7 +73,7 @@ def new_game(name, game_length):
     return json.dumps({"id" : new_game_id})
 
 
-# Loads game data from the database using game id and initializes player and musk globally
+# Loads game data from the database using game id and initializes player, musk and plane list globally
 # Also calls and returns player data in JSON using refresh_player_data function
 @app.route('/load-game/<id>')
 def load_game(id):
@@ -82,6 +82,9 @@ def load_game(id):
     player = player_obj
     global musk
     musk = musk_obj
+
+    global plane_list
+    plane_list = game_init.generate_airplanes()
 
     return refresh_player_data()
 
@@ -230,47 +233,59 @@ def get_weather_data(location):
     else:
         return json.dumps('PERKELE ei tänne!')
 
+
+# Moves player to <location>
+# Returns new player location and if the player won with their move.
+# status = 2 for win, 1 to continue game, 0 if failed to move
 @app.route('/movement/<location>')
 def movement(location):
     try:
+        # Get non-formatted version of the list with airports in range
         in_range = airports_in_range(return_format=1)
 
+        # Check that the attempted move is legal
         legal_move = False
         for airport in in_range:
-            if airport[5] == location:
+            if airport[5] == location: # Location is in range
                 legal_move = True
                 target = airport
                 break
         if legal_move == False:
             raise Exception('Illegal move')
 
+        # Make the actual move. Returns if successful
         move = game_movement.player_movement(player, target)
-
+        
         events(player)
 
-        if move:
-            if player.location == musk.location:  # Player wins the game
-                status = 0
-            else:  # Game continues
+        if move: # If the move was successful
+            if player.location == musk.location: # Player found Musk and wins the game
+                status = 2
+            else: # Otherwise continue game
                 status = 1
+            
             data = {
                 "location": player.location,
                 "status": status
             }
+
             return json.dumps(data)
         else:
             raise Exception('Failed to move')
     except Exception:
-        return json.dumps({"status" : "burger"})
+        return json.dumps({"status" : 0})
         
 
+# For buying and loading fuel
+# Parameters: action = whether to buy or load
+# amount = how much to buy or load
 @app.route('/fuel-management/<action>=<amount>')
 def fuel_management(action, amount):
     try:
-        if action == 'buy':
+        if action == 'buy': # Returns if successful and both old and new fuel & money values
             return json.dumps(game_fuel.buy_fuel(player, int(amount)))
-        elif action == 'load':
-            return game_fuel.load_fuel(player, int(amount))
+        elif action == 'load': # Returns if successful and both old and new fuel values
+            return json.dumps(game_fuel.load_fuel(player, int(amount)))
         else:
             raise Exception('Invalid action')
     except Exception:
@@ -322,14 +337,44 @@ def events(player):
             raise Exception('XD')
     except Exception:
         return 'Error'
+    
+
+# For browsing all available planes
+# Returns all planes
+@app.route('/planes/browse')
+def browse_planes():
+    planes = game_planes.get_plane_data(player)
+    return json.dumps(planes)
+
+
+# Compare current plane vs selected plane
+# Parameters: current plane index, selected plane index
+# Returns stats for both planes and cost to upgrade
+@app.route('/planes/compare/<current_idx>=<selected_idx>')
+def compare_planes(current_idx, selected_idx):
+    current_plane = plane_list[int(current_idx)]
+    selected_plane = plane_list[int(selected_idx)]
+    planes = game_planes.compare_planes(current_plane, selected_plane)
+    
+    return json.dumps(planes)
+
+
+# Buy the selected plane using plane index
+# Return status = 1 if successful, 0 if not
+@app.route('/planes/buy=<index>')
+def buy_plane(index):
+    selected_plane = plane_list[int(index)]
+    purchase = game_planes.buy_plane(player, selected_plane)
+    
+    return json.dumps(purchase)
 
 
 # Ends the players turn and plays out Musks turn.
 @app.route('/end-turn')
 def end_turn():
-    player.decrease_turns()
+    player.decrease_turns() # Player turns_left -1
 
-    musk_status = musk_actions()
+    musk_status = musk_actions() # Musk plays his turn
 
     if musk_status == 0:  # Musk wins the game
         return json.dumps({"status": 0})  # Display lost game screen
@@ -346,7 +391,7 @@ def end_turn():
 # Defines the actions Musk takes during his turn. Returns whether or not he has won the game: 0 = win, 1 = game continues
 def musk_actions():
     if musk.turns_left <= 1:  # Player can't catch Musk anymore so he wins.
-        return 0
+        return 0 # End game
 
     musk.current_ap = musk.max_ap  # Reset Musk ap
     musk.epitaph(player.location)  # Refresh Musks future sight
@@ -374,7 +419,7 @@ def musk_actions():
 
     musk.decrease_turns()  # Turn over
 
-    return 1
+    return 1 # Continue game
 
 
 if __name__ == "__main__":
