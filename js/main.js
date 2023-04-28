@@ -157,7 +157,12 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
 
     let how_much = 0;
     if (buy_load === 'max') {
-        how_much = playerData.fuelReserve;
+        let max_fuel = playerData.fuelCapacity - playerData.fuelCurrent;
+        if (playerData.fuelReserve > max_fuel) {
+            how_much = max_fuel;
+        } else {
+            how_much = playerData.fuelReserve;
+        }
         buy_load = 'load';
     } else {
         how_much = document.querySelector('#how-much').value;
