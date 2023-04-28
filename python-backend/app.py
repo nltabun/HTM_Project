@@ -1,12 +1,10 @@
 import config
 import json
 import random
-import math
 import requests
 
 from flask import Flask
 from flask_cors import CORS
-from geopy import distance
 
 import game_init
 import game_data
@@ -99,6 +97,7 @@ def refresh_player_data():
         return json.dumps(data)
     except:
         return json.dumps({"status" : 0})
+
 
 # Returns a list of all the airports in range (default: Player)
 # If parameter return_format=0 then return in JSON (default)

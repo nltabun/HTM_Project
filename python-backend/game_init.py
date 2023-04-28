@@ -1,5 +1,5 @@
 #
-
+import config
 import game_objects
 import random
 
@@ -19,7 +19,7 @@ def saved_game_data_exists(connection):
 
 
 # Create planes and return them in a list
-def generate_airplanes(format=0, show_current=1):
+def generate_airplanes(format=0):
     planes = []
 
     plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000, 50000, 999999)
@@ -54,27 +54,25 @@ def generate_airplanes(format=0, show_current=1):
 
 # Setup players when no data exists in 'game' table
 def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc, game_len, id_key):
-    start_money = 250
-    start_fuel = 20000
-    start_plane = planes[1]
-    musk_money = 1000000 
-    musk_fuel = 9999999
-    musk_plane = planes[0]
+    start_money = config.player_money
+    start_fuel = config.player_fuel
+    start_plane = planes[config.player_plane]
+    musk_money = config.musk_money
+    musk_fuel = config.musk_fuel
+    musk_plane = planes[config.musk_plane]
 
     if game_len.capitalize() == 'Short' or game_len.capitalize() == 'S':
-        turns = random.randint(10, 15)
+        turns = random.randint(config.short_min, config.short_max)
     elif game_len.capitalize() == 'Long' or game_len.capitalize() == 'L':
-        turns = random.randint(30, 40)
+        turns = random.randint(config.long_min, config.long_max)
     else:
         print('Invalid game length value')
     
     player = f'{id_key}, {start_fuel}, {start_money}, \'{start_loc}\', \'{player_name}\', \'{start_plane.name}\', {start_plane.current_fuel} , {turns}'
     musk = f'{id_key+1}, {musk_fuel}, {musk_money}, \'{musk_start_loc}\', \'Elon Musk\', \'{musk_plane.name}\', {musk_plane.current_fuel}, {turns}'
-    #print(player)
-    #print(musk)
 
     insert_values = f'INSERT INTO game(id, fuel, stonks, location, screen_name, plane, plane_fuel, turns_left) VALUES ({player}), ({musk})'
-    #print(insert_values)
+
     cur = connection.cursor()
     cur.execute(insert_values)
 
@@ -88,7 +86,7 @@ def reset_minigames(connection):
     cur.execute(update)
 
 
-# Setup new game (currently also deletes old game)
+# Setup new game
 def new_game(connection, name, game_len, id_key):
     cur = connection.cursor()
     query_ident = f'SELECT ident FROM airport ORDER BY RAND() LIMIT 2'
@@ -97,9 +95,6 @@ def new_game(connection, name, game_len, id_key):
     
     player_loc = str(result[0]).strip('(\',)')
     musk_loc = str(result[1]).strip('(\',)')
-
-    print(player_loc)
-    print(musk_loc)
 
     setup_game_table(connection, name, player_loc, generate_airplanes(), musk_loc, game_len, id_key)
     reset_minigames(connection)
