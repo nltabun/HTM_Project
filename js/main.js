@@ -76,6 +76,9 @@ async function fetchData(url) {
 async function playerData() {
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
 
+    let name = document.querySelector('#name');
+    name.innerText = playerData.name;
+
     let stock = document.querySelector('#stock');
     stock.innerText = playerData.money;
 
@@ -149,8 +152,18 @@ document.querySelector('#action-fuel').addEventListener('click', function() {
 //buy or load fuel
 document.querySelector('#fuelForm').addEventListener('submit', async function(evt) {
     evt.preventDefault();
-    const buy_load = document.querySelector('input[name=buy-load]:checked').value;
-    const how_much = document.querySelector('#how-much').value;
+    const playerData = await fetchData(`${url}refresh-player-data`);
+    let buy_load = document.querySelector('input[name=buy-load]:checked').value;
+
+    let how_much = 0;
+    if (buy_load === 'max') {
+        how_much = playerData.fuelReserve;
+        buy_load = 'load';
+    } else {
+        how_much = document.querySelector('#how-much').value;
+    }
+    console.log(how_much, buy_load);
+    console.log(`${url}fuel-management/${buy_load}=${how_much}`);
     document.querySelector('#fuelForm').classList.add('hide');
     await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
     await gameSetup();
