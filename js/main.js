@@ -79,9 +79,6 @@ async function playerData() {
     let name = document.querySelector('#name');
     name.innerText = playerData.name;
 
-    let clue = document.querySelector('#playerClue');
-    clue.innerText = playerData.clueBought;
-
     let stock = document.querySelector('#stock');
     stock.innerText = playerData.money;
 
@@ -101,23 +98,33 @@ async function playerData() {
         document.querySelector('#fuelForm').classList.add('hide');
         document.querySelector('#miniForm').classList.add('hide');
         document.querySelector('#clue-form').classList.add('hide');
-        await fetchData(`${url}/end-turn`);
-        await gameSetup();
-        alert('Your turn has ended \n A new round has begun');
+        const game_end = await fetchData(`${url}/end-turn`);
+
+        document.querySelector('#alerts').classList.remove('hide');
+        if (game_end.status === 0) {
+            alert.innerText = 'Musk found his car, you LOSE';
+        } else {
+            document.querySelector('#alerts').classList.remove('hide');
+            alert.innerText = 'Your turn has ended \n Starting new Round';
         }
+        await gameSetup();
+    }
 }
 
 //open the minigame menu
 document.querySelector('#action-minigame').addEventListener('click', async function(evt) {
     evt.preventDefault();
+    let alert = document.querySelector('#alerts-p');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
-    document.querySelector('#miniForm').classList.remove('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
-
+        document.querySelector('#alerts').classList.remove('hide');
+        alert.innerText = `You've already done a minigame this round`;
     } else {
+        document.querySelector('#miniForm').classList.remove('hide');
+        console.log(playerData.minigameDone);
         let gameData = await fetchData(`${url}minigame/play`)
         const question = document.querySelector('#question');
         question.innerHTML = gameData.question;
@@ -139,11 +146,18 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
 //submitting the answer to minigame question
         document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
             evt.preventDefault();
+            let alert = document.querySelector('#alerts-p');
             document.querySelector('#miniForm').classList.add('hide');
             const qId = document.querySelector("#passIt").title;
             const answer = document.querySelector('input[name=choice1]:checked').value;
-            console.log(answer)
-            await fetchData(`${url}minigame/answer/${qId}=${answer}`);
+            const result = await fetchData(`${url}minigame/answer/${qId}=${answer}`);
+
+            document.querySelector('#alerts').classList.remove('hide');
+            if (result.status === 1) {
+                alert.innerText = `Your answer was correct, you earned ${result.prize} stock`;
+            }else {
+                alert.innerText = `Your answer was incorrect. Better luck next time.`;
+            }
             await gameSetup();
     });
 
@@ -160,7 +174,7 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     const playerData = await fetchData(`${url}refresh-player-data`);
     let buy_load = document.querySelector('input[name=buy-load]:checked').value;
 
-    let how_much = 0;
+    let how_much;
     if (buy_load === 'max') {
         let max_fuel = playerData.fuelCapacity - playerData.fuelCurrent;
         if (playerData.fuelReserve > max_fuel) {
@@ -175,8 +189,26 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     console.log(how_much, buy_load);
     console.log(`${url}fuel-management/${buy_load}=${how_much}`);
     document.querySelector('#fuelForm').classList.add('hide');
-    await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
+    const fuel = await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
     await gameSetup();
+
+    document.querySelector('#alerts').classList.remove('hide');
+    let alert = document.querySelector('#alerts-p');
+    const spent = fuel.oldMoney - fuel.newMoney;
+
+    if (buy_load === 'load') {
+        if (how_much > playerData.fuelReserve) {
+            alert.innerText = `You do not have that much fuel in reserve.`;
+        } else {
+            alert.innerText = `You loaded ${how_much} fuel into your plane.`;
+        }
+    } else {
+        if (fuel.success === true) {
+            alert.innerText = `You bought ${how_much} fuel, it cost you ${spent} stock.`;
+        }else {
+            alert.innerText = `You cannot afford that much fuel.`;
+        }
+    }
 });
 
 //buy a clue thing idk at this point
@@ -218,12 +250,26 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
 
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
+    let alert = document.querySelector('#alerts-p');
+    document.querySelector('#clue-button').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
-    await fetchData(`${url}/end-turn`);
+    const game_end = await fetchData(`${url}/end-turn`);
+    if (game_end.status === 0) {
+        alert.innerText = 'Musk found his car, you LOSE';
+    } else {
+        document.querySelector('#alerts').classList.remove('hide');
+        alert.innerText = 'Your turn has ended \n Starting new Round';
+    }
     await gameSetup();
-    alert('Your turn has ended \n A new round has begun');
+});
+
+//remove the alert
+document.querySelector('#alerts').addEventListener('click', function () {
+    document.querySelector('#alerts').classList.add('hide');
+    let alert = document.querySelector('#alerts-p');
+    alert.innerText = '';
 });
 
 //Draw the airports markers on the map
@@ -266,9 +312,15 @@ async function airportInRngMarker() {
                 marker.bindPopup(popupContent);
                 marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
-                    await fetchData(`${url}/movement/${airport.ident}`);
-                    console.log(`${url}movement/${airport.ident}`)
-                    layerGroup.clearLayers();
+                    const game_end = await fetchData(`${url}/movement/${airport.ident}`);
+                    console.log(`${url}movement/${airport.ident}`);
+
+                    document.querySelector('#alerts').classList.remove('hide');
+                        if (game_end.status === 2) {
+                            document.querySelector('#alerts').classList.add('hide');
+                            let alert = document.querySelector('#alerts-p');
+                            alert.innerText = 'You found Elon Musk! You WON the game!';
+                        }
                     await gameSetup(url);
                 });
             }
@@ -289,6 +341,7 @@ async function airportsMarkers() {
 //right now only creates the markers for all airports and the player
 async function gameSetup() {
     try {
+        layerGroup.clearLayers();
         await playerData();
         await airportsMarkers()
         await playerMarker();
