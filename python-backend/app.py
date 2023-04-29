@@ -303,26 +303,23 @@ def buy_clue():
     # Make sure the player has enough money and return status 0 (fail) if not so.
     if player.money < 100:
         return json.dumps({"status" : 0})
+    # Don't allow multiple clues to be bought on the same turn
+    if player.bought_clue == 1:
+        return json.dumps({"status" : 0})
     
     clue = game_actions.buy_clue(config.conn, player, musk)
 
     return json.dumps(clue)
 
 
-@app.route('/event')
-def events(player):
+@app.route('/location-event')
+def location_event(player):
     try:
-        if player.location == 'KDTW' or player.location == 'KSTL' or player.location == 'KORD':
-            message = game_events.event1(player)
-            return message
+        event = game_events.location_event(player)
 
-        elif player.location == 'MHPR' or player.location == 'MMMX' or player.location == 'MMGL':
-            message = game_events.event2(player)
-            return message
-        else:
-            raise Exception('XD')
+        return json.dumps(event)
     except Exception:
-        return 'Error'
+        return json.dumps({"status" : 0, "message" : "You had a bad feeling but nothing happened?"})
     
 
 # For browsing all available planes

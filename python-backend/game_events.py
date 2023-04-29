@@ -1,54 +1,49 @@
 import random
 
 
-def event1(player):
+def trigger_event(player, evt):
+    if evt == 'robber':
+        message = 'You were robbed.'
+        player.money = player.money - 100   # you lose money
+        if player.money < 0:
+            player.money = 0
+    elif evt == 'thief':
+        message = 'Some of your fuel got stolen.'
+        player.plane.current_fuel = player.plane.current_fuel - 5000  # you lose some fuel
+        if player.plane.current_fuel < 0:
+            player.plane.current_fuel = 0
+    elif evt == 'cartel':
+        message = 'You were kidnapped by the cartel and lose the rest of your turn.'
+        player.end_turn()
 
-    probability = random.randint(1, 2)  # Decide your fate with a 50 / 50 chance
+    return {"status" : 1, "message" : message}
+    
+
+def location_event(player):
+    high_risk = {'KDTW', 'KSTL', 'KORD', 'MHPR', 'MMMX', 'MMGL'}
+    cartel_risk = {'MHPR', 'MMMX', 'MMGL'}
+
+    if player.location in high_risk:
+        probability = random.randint(1, 2)  # 50% chance for bad things to happen
+    else:
+        probability = random.randint(1, 20) # 5% chance for bad things to happen
 
     if probability == 1:  # unlucky man
-        what_happens = random.randint(1, 2)  # decide your "punishment" with your bad luck
-
-        if what_happens == 1:
-            message = 'You were robbed'
-            player.money = player.money - 100   # you lose money
-            if player.money < 0:
-                player.money = 0
+        if player.location in cartel_risk:
+            what_happens = random.randint(1, 100)
         else:
-            message = 'Some of your fuel got stolen'
-            player.plane.current_fuel = player.plane.current_fuel - 5000  # you lose some fuel
-            if player.plane.current_fuel < 0:
-                player.plane.current_fuel = 0
-    else:
-        message = None
+            what_happens = random.randint(1, 90)
 
-    return message
-
-
-def event2(player):
-
-    probability = random.randint(1, 2)  # Decide your fate with a 50 / 50 chance
-
-    if probability == 1:
-        what_happens = random.randint(1, 100)
-
-        if what_happens < 10:
-            message = 'You were kidnapped by the cartel, you lose 1 whole round'
-            player.end_turn()
-
-        elif 10 < what_happens < 55:
-            message = 'You were robbed'
-            player.money = player.money - 100  # you lose money
-            if player.money < 0:
-                player.money = 0
-
+        if what_happens <= 45:
+            result = trigger_event(player, 'robber')
+        elif 45 < what_happens <= 90:
+            result = trigger_event(player, 'thief')
+        elif 90 < what_happens:
+            result = trigger_event(player, 'cartel')
         else:
-            message = 'Some of your fuel got stolen'
-            player.plane.current_fuel = player.plane.current_fuel - 5000  # you lose some fuel
-
-            if player.plane.current_fuel < 0:
-                player.plane.current_fuel = 0
-
+            pass
+            
     else:
-        message = None
+        result = {"status" : 1, "message" : "Nothing of note happened."}
 
-    return message
+    return result
