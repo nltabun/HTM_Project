@@ -28,7 +28,7 @@ html {
 
 body {
     width: 98%;
-    background-color: #9BA4B5;
+    background-color: #394a6c;
     margin-left: 1rem;
     margin-right: 1rem;
 }
@@ -128,7 +128,7 @@ body {
 .formBtn {
     width: 45%;
     height: 3rem;
-    background: #394867;
+    background: #212A3E;
     color: #fff;
     font-weight: 100;
     font-size: 1.2em;
@@ -153,7 +153,7 @@ body {
 
 #menu-input {
     padding: 2vh;
-    background-color: #394867;
+    background-color: #212A3E;
     color: white;
     border: 1px solid #9BA4B5;
     width: 55%;
@@ -193,7 +193,7 @@ body {
 }
 
 .formBtn:hover {
-    background-color: #2c2c2c;
+    background-color: #19222f;
 }
 
 button:hover, input:hover, label:hover {
@@ -262,7 +262,6 @@ button:hover, input:hover, label:hover {
     color: white;
     font-weight: bold;
     font-size: 1.2em;
-
     margin-left: -1rem;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
@@ -322,7 +321,7 @@ button:hover, input:hover, label:hover {
 }
 
 .options label:hover {
-    background: #2c2c2c;
+    background: #212a3e;
 }
 
 .options {
@@ -364,3 +363,7 @@ button:hover, input:hover, label:hover {
     height: 30rem;
 }
 
+#fuelForm p {
+    font-weight: bold;
+    font-size: large;
+}
