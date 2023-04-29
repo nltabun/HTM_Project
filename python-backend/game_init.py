@@ -23,7 +23,7 @@ def generate_airplanes(format=0):
     planes = []
 
     plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000, 50000, 999999)
-    plane1 = game_objects.Airplane('MickyD CD-01', 48000, 1.0, 850, 0, 150)
+    plane1 = game_objects.Airplane('MickyD CD-01', 50000, 1.0, 850, 0, 150)
     plane2 = game_objects.Airplane('Boijong 420', 100000, 1.1, 900, 0, 1050)
     plane3 = game_objects.Airplane('Cloudbus A69', 88000, 0.9, 1000, 0, 1400)
     plane4 = game_objects.Airplane('Specific Statics F-61', 7000, 0.1, 2500, 0, 3000)
