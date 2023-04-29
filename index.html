@@ -33,7 +33,6 @@
             <table>
                 <tr>
                     <td>Player Name: <span id="name"></span></td>
-                    <td>Bought clue: <span id="playerClue"></span></td>
                     <td>Stonks: <span id="stock"></span> TSLA</td>
                     <td>Action points: <span id="actionpoints"></span></td>
                     <td>Range: <span id="range"></span>Km</td>
@@ -44,7 +43,6 @@
         </section>
         <div class="game-info">
             <section class="select">
-
                 <div id="game-actions">
                     <figure>
                         <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
@@ -83,14 +81,12 @@
                       
                         <form class="hide" id="clue-form">
                             <figure id="clue-button">
-                                <input class="formBtn hide" id="confirm-clue" type="submit" value="You sure?">
+                                <input class="formBtn hide" id="confirm-clue" type="submit" value="Price: 100 stock">
                             </figure>
                             <p id="clue-p"></p>
                         </form>
                       
                         <form class="hide" id="fuelForm">
-                        <form class="hide plsHide" id="fuelForm">
-                            <td> <p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
                             <td>Fuel in reserve: <span id="fuelStorage"></span></td>
 
                             <input checked="checked" id="load" name="buy-load" type="radio" value="load">
@@ -118,7 +114,14 @@
                             </form>
                         </div>
                     </div>
+
+                    <div id="alerts" class="hide">
+                        <p id="alerts-p"></p>
+                        <p>Click to hide</p>
+                    </div>
+
                 </div>
+
             </section>
         </div>
     </div>
