@@ -173,7 +173,20 @@ INSERT INTO `airport` VALUES
   (1990,'CYYZ','large_airport','Lester B. Pearson International Airport',43.6772003174,-79.63059997559999,569,'NA','CA','CA-ON','Toronto','yes','CYYZ','YYZ','YYZ','YTO, Toronto International Airport, Malt',5),
   (1941,'CYVR','large_airport','Vancouver International Airport',49.193901062,-123.183998108,14,'NA','CA','CA-BC','Vancouver','yes','CYVR','YVR','','',5),
   (1946,'CYWG','large_airport','Winnipeg / James Armstrong Richardson International Airport',49.909999847399995,-97.2398986816,783,'NA','CA','CA-MB','Winnipeg','yes','CYWG','YWG','YWG','CFB Winnipeg',5),
-  (4664,'MHSC','medium_airport','Palmerola International Airport',14.3824,-87.621201,2061,'NA','HN','HN-CM','Tegucigalpa','yes','MHPR','XPL','','Comayagua International, MHSC, Enrique S',6)
+  (4664,'MHSC','medium_airport','Palmerola International Airport',14.3824,-87.621201,2061,'NA','HN','HN-CM','Tegucigalpa','yes','MHPR','XPL','','Comayagua International, MHSC, Enrique S',6),
+  (3878,'KSFO','large_airport','San Francisco International Airport',37.61899948120117,-122.375,13,'NA','US','US-CA','San Francisco','yes','KSFO','SFO','SFO','QSF, QBA',4),
+  (1840,'CYOW','large_airport','Ottawa Macdonald-Cartier International Airport',45.3224983215332,-75.66919708251953,374,'NA','CA','CA-ON','Ottawa','yes','CYOW','YOW','YOW','Uplands, UUP, CUUP',5),
+  (1928,'CYUL','large_airport','Montreal / Pierre Elliott Trudeau International Airport',45.4706001282,-73.7407989502,118,'NA','CA','CA-QC','Montréal','yes','CYUL','YUL','YUL','YMQ, Dorval Airport',5),
+  (1973,'CYYC','large_airport','Calgary International Airport',51.113899231,-114.019996643,3557,'NA','CA','CA-AB','Calgary','yes','CYYC','YYC','','McCall Field',5),
+  (3685,'KMIA','large_airport','Miami International Airport',25.79319953918457,-80.29060363769531,8,'NA','US','US-FL','Miami','yes','KMIA','MIA','MIA','MFW, South Florida',2),
+  (3862,'KSAN','large_airport','San Diego International Airport',32.7336006165,-117.190002441,17,'NA','US','US-CA','San Diego','yes','KSAN','SAN','SAN','Lindbergh Field',4),
+  (3386,'KAUS','large_airport','Austin Bergstrom International Airport',30.197535,-97.662015,542,'NA','US','US-TX','Austin','yes','KAUS','AUS','AUS','',2),
+  (3853,'KRNO','large_airport','Reno Tahoe International Airport',39.49909973144531,-119.76799774169922,4415,'NA','US','US-NV','Reno','yes','KRNO','RNO','RNO','',4),
+  (3454,'KCLE','large_airport','Cleveland Hopkins International Airport',41.4117012024,-81.8498001099,791,'NA','US','US-OH','Cleveland','yes','KCLE','CLE','CLE','',3),
+  (4732,'MMMY','medium_airport','General Mariano Escobedo International Airport',25.7785,-100.107002,1278,'NA','MX','MX-NLE','Monterrey','yes','MMMY','MTY','','',6),
+  (4713,'MMHO','large_airport','General Ignacio P. Garcia International ',29.095899581900003,-111.047996521,627,'NA','MX','MX-SON','Hermosillo','yes','MMHO','HMO','','', 6),
+  (4644,'MGGT','large_airport','La Aurora Airport',14.5833,-90.527496,4952,'NA','GT','GT-GU','Guatemala City','yes','MGGT','GUA','','',6),
+  (43048,'MMTG','medium_airport','Angel Albino Corzo International Airport',16.5636005402,-93.02249908450001,1499,'NA','MX','MX-CHP','Tuxtla Gutiérrez','yes','MMTG','TGZ','TGZ','',6)
 ;
 /*!40000 ALTER TABLE `airport` ENABLE KEYS */;
 UNLOCK TABLES;
