@@ -52,21 +52,24 @@ def generate_airplanes(format=0):
         return planes
 
 
-# Setup players when no data exists in 'game' table
+# Setup players and save game data to database
 def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc, game_len, id_key):
-    start_money = config.player_money
-    start_fuel = config.player_fuel
-    start_plane = planes[config.player_plane]
+    if game_len.capitalize() == 'Short' or game_len.capitalize() == 'S':
+        turns = random.randint(config.short_min, config.short_max)
+        start_money = config.player_money * 2
+        start_fuel = config.player_fuel * 3
+        start_plane = planes[config.player_plane]
+    elif game_len.capitalize() == 'Long' or game_len.capitalize() == 'L':
+        turns = random.randint(config.long_min, config.long_max)
+        start_money = config.player_money
+        start_fuel = config.player_fuel
+        start_plane = planes[config.player_plane]
+    else:
+        print('Invalid game length value.')
+
     musk_money = config.musk_money
     musk_fuel = config.musk_fuel
     musk_plane = planes[config.musk_plane]
-
-    if game_len.capitalize() == 'Short' or game_len.capitalize() == 'S':
-        turns = random.randint(config.short_min, config.short_max)
-    elif game_len.capitalize() == 'Long' or game_len.capitalize() == 'L':
-        turns = random.randint(config.long_min, config.long_max)
-    else:
-        print('Invalid game length value')
     
     player = f'{id_key}, {start_fuel}, {start_money}, \'{start_loc}\', \'{player_name}\', \'{start_plane.name}\', {start_plane.current_fuel} , {turns}'
     musk = f'{id_key+1}, {musk_fuel}, {musk_money}, \'{musk_start_loc}\', \'Elon Musk\', \'{musk_plane.name}\', {musk_plane.current_fuel}, {turns}'
