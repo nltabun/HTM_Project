@@ -19,6 +19,8 @@
 
         </h1>
     </header>
+
+
     <div id="map"></div>
     <div class="game-info">
         <section class="select">
@@ -55,13 +57,31 @@
                     <figure>
                         <input class="formBtn" id="action-end" type="submit" value="End turn">
                     </figure>
+                    <div class="hide" id="northeast">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="northeast" src="img/map/northeast.png">
+                    </div>
+                    <div class="hide" id="north">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="north" src="img/map/north.jpg">
+                    </div>
+                    <div class="hide" id="west">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="west" src="img/map/west.jpg">
+                    </div>
+                    <div class="hide" id="south">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="south" src="img/map/south.jpg">
+                    </div>
+
+
                     <div class="options">
                         <form class="hide plsHide" id="fuelForm">
                             <td>Fuel in reserve: <span id="fuelStorage"></span></td>
                             <input checked="checked" id="load" name="buy-load" type="radio" value="load">
                             <label for="load">Load (custom amount)</label>
                             <input id="max" name="buy-load" type="radio" value="max">
-                            <label for="max">Load (max amount))</label><br>
+                            <label for="max">Load (max amount)</label><br>
                             <input id="buy" name="buy-load" type="radio" value="buy">
                             <label for="buy">Buy</label><br>
                             <input id="how-much" placeholder="How much fuel?" type="text">
@@ -70,7 +90,8 @@
                         <div>
                             <form class="plsHide hide" id="miniForm">
                                 <td><span id="question"></span></td>
-                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio" value="1">
+                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
+                                           value="1">
                                     <label for="a1" id="aa1"></label></td>
                                 <td><input class="options" id="a2" name="choice1" type="radio" value="2">
                                     <label for="a2" id="aa2"></label></td>
@@ -87,6 +108,7 @@
             </section>
         </div>
     </div>
+
 
     <div class="menus">
         <div id="main-menu">
