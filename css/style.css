@@ -7,7 +7,6 @@
     width: 10px;
 }
 
-
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
@@ -234,7 +233,6 @@ button:hover, input:hover, label:hover {
 
 #game-info {
     width: 55%;
-
     float: right;
 }
 
@@ -261,7 +259,6 @@ button:hover, input:hover, label:hover {
 #game-actions .formBtn {
     width: 10rem;
     height: 3rem;
-    background: #868585;
     color: white;
     font-weight: bold;
     font-size: 1.2em;
@@ -333,11 +330,15 @@ button:hover, input:hover, label:hover {
     width: 40%;
     height: 50%;
     text-align: center;
+}
 
+.options input {
+    width: 98%;
+    text-align: center;
 }
 
 #fuelForm .formBtn {
-    width: 10rem;
+    width: 20rem;
     height: 3rem;
     background: #868585;
     color: white;
@@ -362,6 +363,7 @@ button:hover, input:hover, label:hover {
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
 
-#game-actions img{
+#game-actions img {
     height: 30rem;
 }
+
