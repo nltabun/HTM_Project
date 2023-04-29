@@ -406,7 +406,7 @@ def musk_actions():
 
         game_movement.player_movement(musk, target)
     except Exception:
-        print('Musk encountered issues while trying to move.')
+        game_fuel.load_fuel(musk)
 
     musk.decrease_turns()  # Turn over
 
