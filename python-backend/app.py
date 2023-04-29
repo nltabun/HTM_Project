@@ -242,7 +242,7 @@ def movement(location):
         # Make the actual move. Returns if successful
         move = game_movement.player_movement(player, target)
         
-        events(player)
+        location_events(player)
 
         if move: # If the move was successful
             if player.location == musk.location: # Player found Musk and wins the game
@@ -312,14 +312,20 @@ def buy_clue():
     return json.dumps(clue)
 
 
-@app.route('/location-event')
-def location_event(player):
+# Check if you get a random event when arriving at a location
+@app.route('/location-events')
+def location_events():
     try:
         event = game_events.location_event(player)
 
         return json.dumps(event)
     except Exception:
         return json.dumps({"status" : 0, "message" : "You had a bad feeling but nothing happened?"})
+    
+
+@app.route('/weather-events')
+def weather_events(): # TODO
+    pass
     
 
 # For browsing all available planes

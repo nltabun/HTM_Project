@@ -47,3 +47,7 @@ def location_event(player):
         result = {"status" : 1, "message" : "Nothing of note happened."}
 
     return result
+
+
+def weather_event(player, weather): # TODO
+    pass
