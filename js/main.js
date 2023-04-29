@@ -1,5 +1,5 @@
 'use strict'
-// icons
+// regions
 const airportIcon = L.divIcon({className: 'red-icon'});
 const playerIcon = L.divIcon({className: 'player-icon'});
 const inRangeIcon = L.divIcon({className: 'inRange-icon'});
@@ -79,6 +79,9 @@ async function playerData() {
     let name = document.querySelector('#name');
     name.innerText = playerData.name;
 
+    let clue = document.querySelector('#playerClue');
+    clue.innerText = playerData.clueBought;
+
     let stock = document.querySelector('#stock');
     stock.innerText = playerData.money;
 
@@ -95,8 +98,9 @@ async function playerData() {
     fuelStorage.innerText = playerData.fuelReserve;
 
     if (playerData.ap <= 0) {
+        document.querySelector('#fuelForm').classList.add('hide');
         document.querySelector('#miniForm').classList.add('hide');
-        document.querySelector('.plsHide').classList.add('hide');
+        document.querySelector('#clue-form').classList.add('hide');
         await fetchData(`${url}/end-turn`);
         await gameSetup();
         alert('Your turn has ended \n A new round has begun');
@@ -106,6 +110,10 @@ async function playerData() {
 //open the minigame menu
 document.querySelector('#action-minigame').addEventListener('click', async function(evt) {
     evt.preventDefault();
+    document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#miniForm').classList.remove('hide');
+
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
 
@@ -124,9 +132,6 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
                 i++;
             }
 
-        console.log(document.querySelector("#passIt").title);
-        document.querySelector('.plsHide').classList.add('hide');
-        document.querySelector('#miniForm').classList.remove('hide');
     }
 
 });
@@ -144,8 +149,8 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
 
 //open the fuel menu
 document.querySelector('#action-fuel').addEventListener('click', function() {
-    document.querySelector('.plsHide').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
 });
 
@@ -174,9 +179,47 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     await gameSetup();
 });
 
+//buy a clue thing idk at this point
+document.querySelector('#action-clue').addEventListener('click', function() {
+    document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#clue-form').classList.remove('hide');
+    document.querySelector('#clue-button').classList.remove('hide');
+
+    let clue_p = document.querySelector('#clue-p');
+    clue_p.innerText = "";
+});
+
+//confirm clue purchase and give the clue
+document.querySelector('#confirm-clue').addEventListener('click', async function (evt) {
+    evt.preventDefault();
+    document.querySelector('#clue-button').classList.add('hide');
+    const clue = await fetchData(`${url}/clues`);
+    let clue_p = document.querySelector('#clue-p');
+
+    if (clue.status === 0) {
+        clue_p.innerText = "You dont have enough money or you've already bought your clue this round";
+    } else {
+        switch (clue.clueType) {
+            case 1:
+                clue_p.innerText = `Elon Musk is ${clue.clue} of you`;
+                break;
+            case 2:
+                clue_p.innerText = "Elon musk is in this region";
+                //TODO if else shit for the map region images
+                break;
+            case 3:
+                clue_p.innerText = "Elon musk is in one these airports:";
+                break;
+        }
+    }
+    await gameSetup();
+});
+
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
-    document.querySelector('.plsHide').classList.add('hide');
+    document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     await fetchData(`${url}/end-turn`);
     await gameSetup();

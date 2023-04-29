@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script defer src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
@@ -30,6 +33,7 @@
             <table>
                 <tr>
                     <td>Player Name: <span id="name"></span></td>
+                    <td>Bought clue: <span id="playerClue"></span></td>
                     <td>Stonks: <span id="stock"></span> TSLA</td>
                     <td>Action points: <span id="actionpoints"></span></td>
                     <td>Range: <span id="range"></span>Km</td>
@@ -76,22 +80,32 @@
 
 
                     <div class="options">
+                      
+                        <form class="hide" id="clue-form">
+                            <figure id="clue-button">
+                                <input class="formBtn hide" id="confirm-clue" type="submit" value="You sure?">
+                            </figure>
+                            <p id="clue-p"></p>
+                        </form>
+                      
+                        <form class="hide" id="fuelForm">
                         <form class="hide plsHide" id="fuelForm">
+                            <td> <p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
                             <td>Fuel in reserve: <span id="fuelStorage"></span></td>
+
                             <input checked="checked" id="load" name="buy-load" type="radio" value="load">
                             <label for="load">Load (custom amount)</label>
                             <input id="max" name="buy-load" type="radio" value="max">
                             <label for="max">Load (max amount)</label><br>
                             <input id="buy" name="buy-load" type="radio" value="buy">
-                            <label for="buy">Buy</label><br>
-                            <input id="how-much" placeholder="How much fuel?" type="text">
+                            <label for="buy">Buy fuel</label><br>
+                            <input id="how-much" placeholder="Enter the amount of fuel" type="text">
                             <input class="formBtn" type="submit" value="Submit">
                         </form>
                         <div>
-                            <form class="plsHide hide" id="miniForm">
+                            <form class="hide" id="miniForm">
                                 <td><span id="question"></span></td>
-                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
-                                           value="1">
+                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio" value="1">
                                     <label for="a1" id="aa1"></label></td>
                                 <td><input class="options" id="a2" name="choice1" type="radio" value="2">
                                     <label for="a2" id="aa2"></label></td>

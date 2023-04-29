@@ -1,12 +1,13 @@
-@font-face {
-    font-family: Arial;
-    src: url('https://fonts.cdnfonts.com/css/arial-2');
-}
+/*@font-face {*/
+/*    font-family: Arial;*/
+/*    src: url('https://fonts.cdnfonts.com/css/arial-2');*/
+/*}*/
+
+/*https://colorhunt.co/palette/f1f6f9394867212a3e9ba4b5*/
 
 ::-webkit-scrollbar {
     width: 10px;
 }
-
 
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
@@ -21,13 +22,13 @@
 }
 
 html {
-    font-family: Arial, sans-serif;
+    font-family: 'Josefin Sans';
     color: white;
 }
 
 body {
     width: 98%;
-    background-color: #343434;
+    background-color: #394a6c;
     margin-left: 1rem;
     margin-right: 1rem;
 }
@@ -120,24 +121,22 @@ body {
     margin: 4rem auto;
     flex-direction: column;
     color: white;
-    border: 2px solid white;
-    background-color: black;
+    border: 1px solid #9BA4B5;
+    background-color: #212A3E;
 }
 
 .formBtn {
     width: 45%;
     height: 3rem;
-    background: black;
+    background: #212A3E;
     color: #fff;
     font-weight: 100;
     font-size: 1.2em;
-    border: 2px solid white;
-
 }
 
 .formBtn:active {
-    background-color: #000000;
-    box-shadow: 0 5px #666;
+    background-color: #212A3E;
+    box-shadow: #212A3E;
     transform: translateY(4px);
 }
 
@@ -148,15 +147,15 @@ body {
     color: #fff;
     font-weight: 100;
     font-size: 1rem;
-    border: 2px solid white;
+    border: 1px solid #9BA4B5;
     margin: 1rem auto;
 }
 
 #menu-input {
     padding: 2vh;
-    background-color: black;
+    background-color: #212A3E;
     color: white;
-    border: 2px solid white;
+    border: 1px solid #9BA4B5;
     width: 55%;
     margin: 1rem auto;
     text-align: center;
@@ -194,7 +193,7 @@ body {
 }
 
 .formBtn:hover {
-    background-color: #2c2c2c;
+    background-color: #19222f;
 }
 
 button:hover, input:hover, label:hover {
@@ -227,14 +226,13 @@ button:hover, input:hover, label:hover {
     width: 55rem;
     height: 50%;
     margin-bottom: 1rem;
-    background-color: #595959;
+    background-color: #212A3E;
     float: right;
 
 }
 
 #game-info {
     width: 55%;
-
     float: right;
 }
 
@@ -261,11 +259,9 @@ button:hover, input:hover, label:hover {
 #game-actions .formBtn {
     width: 10rem;
     height: 3rem;
-    background: #868585;
     color: white;
     font-weight: bold;
     font-size: 1.2em;
-    border: 1px gray;
     margin-left: -1rem;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
@@ -314,18 +310,18 @@ button:hover, input:hover, label:hover {
 }
 
 .options input[type="radio"]:checked + label {
-    background: #383838;
+    background: #394867;
 }
 
 .options label {
     padding: 5px;
-    border: 1px solid #262626;
+    border: 1px solid #9BA4B5;
     cursor: pointer;
     z-index: 90;
 }
 
 .options label:hover {
-    background: #2c2c2c;
+    background: #212a3e;
 }
 
 .options {
@@ -333,17 +329,19 @@ button:hover, input:hover, label:hover {
     width: 40%;
     height: 50%;
     text-align: center;
+}
 
+.options input {
+    width: 98%;
+    text-align: center;
 }
 
 #fuelForm .formBtn {
-    width: 10rem;
+    width: 20rem;
     height: 3rem;
-    background: #868585;
     color: white;
     font-weight: bold;
     font-size: 1.2em;
-    border: 1px gray;
     margin: 1rem auto;
     text-align: center;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
@@ -352,16 +350,20 @@ button:hover, input:hover, label:hover {
 #miniForm .formBtn {
     width: 10rem;
     height: 3rem;
-    background: #868585;
     color: white;
     font-weight: bold;
     font-size: 1.2em;
-    border: 1px gray;
+    border: 2px solid #9BA4B5;
     margin: 1rem auto;
     text-align: center;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
 
-#game-actions img{
+#game-actions img {
     height: 30rem;
+}
+
+#fuelForm p {
+    font-weight: bold;
+    font-size: large;
 }
