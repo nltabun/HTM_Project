@@ -303,6 +303,8 @@ def buy_clue():
     # Make sure the player has enough money and return status 0 (fail) if not so.
     if player.money < 100:
         return json.dumps({"status" : 0})
+    if player.bought_clue == 1:
+        return json.dumps({"status": 0})
     
     clue = game_actions.buy_clue(config.conn, player, musk)
 

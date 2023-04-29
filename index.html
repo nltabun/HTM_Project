@@ -33,6 +33,7 @@
             <table>
                 <tr>
                     <td>Player Name: <span id="name"></span></td>
+                    <td>Bought clue: <span id="playerClue"></span></td>
                     <td>Stonks: <span id="stock"></span> TSLA</td>
                     <td>Action points: <span id="actionpoints"></span></td>
                     <td>Range: <span id="range"></span>Km</td>
@@ -79,8 +80,19 @@
 
 
                     <div class="options">
+                      
+                        <form class="hide" id="clue-form">
+                            <figure id="clue-button">
+                                <input class="formBtn hide" id="confirm-clue" type="submit" value="You sure?">
+                            </figure>
+                            <p id="clue-p"></p>
+                        </form>
+                      
+                        <form class="hide" id="fuelForm">
                         <form class="hide plsHide" id="fuelForm">
                             <td> <p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
+                            <td>Fuel in reserve: <span id="fuelStorage"></span></td>
+
                             <input checked="checked" id="load" name="buy-load" type="radio" value="load">
                             <label for="load">Load (custom amount)</label>
                             <input id="max" name="buy-load" type="radio" value="max">
@@ -91,7 +103,7 @@
                             <input class="formBtn" type="submit" value="Submit">
                         </form>
                         <div>
-                            <form class="plsHide hide" id="miniForm">
+                            <form class="hide" id="miniForm">
                                 <td><span id="question"></span></td>
                                 <td><input checked="checked" class="options" id="a1" name="choice1" type="radio" value="1">
                                     <label for="a1" id="aa1"></label></td>
