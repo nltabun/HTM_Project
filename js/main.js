@@ -6,7 +6,7 @@ const inRangeIcon = L.divIcon({className: 'inRange-icon'});
 
 //the map
 const map = L.map('map', {tap: false});
-L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
     maxZoom: 50,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
 }).addTo(map);
@@ -268,3 +268,5 @@ document.querySelector('#back-button2').addEventListener('click', function (evt)
     document.querySelector('#load-game').classList.add('hide');
     document.querySelector('#main-menu').classList.remove('hide');
 });
+
+

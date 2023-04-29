@@ -76,6 +76,7 @@ body {
     margin-bottom: 1rem;
     width: 50%;
     float: left;
+    z-index: 1;
 }
 
 
@@ -359,4 +360,8 @@ button:hover, input:hover, label:hover {
     margin: 1rem auto;
     text-align: center;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+}
+
+#game-actions img{
+    height: 30rem;
 }
