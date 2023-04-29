@@ -49,9 +49,11 @@ def check_for_save_data(param):
         cursor.execute(query)
         result = str(cursor.fetchone()).strip('(,)')
 
+        if result == 'None':
+            result = 0
+
         return result
     else:
-
         result = ''
 
         return result
