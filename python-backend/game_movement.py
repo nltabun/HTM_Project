@@ -20,7 +20,7 @@ def airport_municipality(connection, location):
     cursor.execute(sql)
     result = cursor.fetchone()
 
-    return result
+    return result[0]
 
 
 # Fetch a defined number of random airports from airport database. Default 2
