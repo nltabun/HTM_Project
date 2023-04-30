@@ -121,11 +121,13 @@ def buy_clue(connection, player, musk):
                 }
         # Three potential Musk locations 
         elif random_clue == 3:
-            airports = game_movement.random_airports(connection)
-            airports.append((game_movement.select_airport(connection, musk.location)[0][0], musk.location))
-            print(airports)
+            airports = game_movement.random_airports(connection, 2, 1)
+            musk_airport = game_movement.select_airport(connection, musk.location)[0][0]
+            musk_coords = game_movement.get_player_coordinates(connection, musk.location)
+            airports.append((musk_airport, musk.location, musk_coords))
 
             random.shuffle(airports)
+            
             data = {
                 "status" : 1,
                 "clueType" : 3,
