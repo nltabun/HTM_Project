@@ -25,8 +25,9 @@
 
 
     <div id="map"></div>
-    <div class="game-info">
-        <section class="select">
+
+    <section class="select" id="info">
+        <div class="game-info">
             <header>
                 <h2>Info</h2>
             </header>
@@ -40,136 +41,131 @@
                     <td>Location: <span id="player-location"></span></td>
                 </tr>
             </table>
-        </section>
-        <div class="game-info">
-            <section class="select">
-                <div id="game-actions">
-                    <figure>
-                        <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
+        </div>
+    </section>
+    <section class="select">
+        <div id="game-actions">
+            <figure>
+                <input class="formBtn" id="action-minigame" type="submit" value="Minigame">
+            </figure>
+            <figure>
+                <input class="formBtn" id="action-fuel" type="submit" value="Fuel management">
+            </figure>
+            <figure>
+                <input class="formBtn" id="action-clue" type="submit" value="Clue">
+            </figure>
+            <figure>
+                <input class="formBtn" id="action-plane" type="submit" value="Plane market">
+            </figure>
+            <figure>
+                <input class="formBtn" id="action-end" type="submit" value="End turn">
+            </figure>
+            <div class="hide" id="northeast">
+                <p>Elon musk is located in the highlighted area</p>
+                <img alt="northeast" src="img/map/northeast.png">
+            </div>
+            <div class="hide" id="north">
+                <p>Elon musk is located in the highlighted area</p>
+                <img alt="north" src="img/map/north.jpg">
+            </div>
+            <div class="hide" id="west">
+                <p>Elon musk is located in the highlighted area</p>
+                <img alt="west" src="img/map/west.jpg">
+            </div>
+            <div class="hide" id="south">
+                <p>Elon musk is located in the highlighted area</p>
+                <img alt="south" src="img/map/south.jpg">
+            </div>
+            <div class="options">
+                <form class="hide" id="clue-form">
+                    <figure id="clue-button">
+                        <input class="formBtn hide" id="confirm-clue" type="submit" value="Price: 100 stock">
                     </figure>
-                    <figure>
-                        <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
-                    </figure>
-                    <figure>
-                        <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
-       z             </figure>
-                    <figure>
-                        <input class="formBtn" id="action-plane" type="submit" value="Plane market">
-                    </figure>
-                    <figure>
-                        <input class="formBtn" id="action-end" type="submit" value="End turn">
-                    </figure>
-                    <div class="hide" id="northeast">
-                        <p>Elon musk is located in the highlighted area</p>
-                        <img alt="northeast" src="img/map/northeast.png">
-                    </div>
-                    <div class="hide" id="north">
-                        <p>Elon musk is located in the highlighted area</p>
-                        <img alt="north" src="img/map/north.jpg">
-                    </div>
-                    <div class="hide" id="west">
-                        <p>Elon musk is located in the highlighted area</p>
-                        <img alt="west" src="img/map/west.jpg">
-                    </div>
-                    <div class="hide" id="south">
-                        <p>Elon musk is located in the highlighted area</p>
-                        <img alt="south" src="img/map/south.jpg">
-                    </div>
+                    <p id="clue-p"></p>
+                </form>
+                <form class="hide" id="fuelForm">
+                    <td><p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
+                    <input checked="checked" id="load" name="buy-load" type="radio" value="load">
+                    <label for="load">Load (custom amount)</label>
+                    <input id="max" name="buy-load" type="radio" value="max">
+                    <label for="max">Load (max amount)</label><br>
+                    <input id="buy" name="buy-load" type="radio" value="buy">
+                    <label for="buy">Buy fuel</label><br>
+                    <input id="how-much" placeholder="Enter the amount of fuel" type="text">
+                    <input class="formBtn" type="submit" value="Submit">
+                </form>
+                <div>
+                    <form class="hide" id="miniForm">
+                        <td><span id="question"></span></td>
+                        <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
+                                   value="1">
+                            <label for="a1" id="aa1"></label></td>
+                        <td><input class="options" id="a2" name="choice1" type="radio" value="2">
+                            <label for="a2" id="aa2"></label></td>
+                        <td><input class="options" id="a3" name="choice1" type="radio" value="3">
+                            <label for="a3" id="aa3"></label></td>
+                        <td><input class="options" id="a4" name="choice1" type="radio" value="4">
+                            <label for="a4" id="aa4"></label></td>
+                        <input class="formBtn" id="aa" type="submit" value="Submit">
+                        <div class="hide" id="passIt" title="b"></div>
+                    </form>
+                </div>
+                <div>
+                    <form class="hide" id="planeForm">
 
-
-                    <div class="options">
-
-                        <form class="hide" id="clue-form">
-                            <figure id="clue-button">
-
-                                <input class="formBtn hide" id="confirm-clue" type="submit" value="Price: 100 stock">
-                            </figure>
-                            <p id="clue-p"></p>
-                        </form>
-         
-                        <form class="hide" id="fuelForm">
-                            <td>Fuel in reserve: <span id="fuelStorage"></span></td>
-                        <form class="hide" id="fuelForm">
-                            <td><p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
-                            <input checked="checked" id="load" name="buy-load" type="radio" value="load">
-                            <label for="load">Load (custom amount)</label>
-                            <input id="max" name="buy-load" type="radio" value="max">
-                            <label for="max">Load (max amount)</label><br>
-                            <input id="buy" name="buy-load" type="radio" value="buy">
-                            <label for="buy">Buy fuel</label><br>
-                            <input id="how-much" placeholder="Enter the amount of fuel" type="text">
-                            <input class="formBtn" type="submit" value="Submit">
-                        </form>
-                        <div>
-                            <form class="hide" id="miniForm">
-                                <td><span id="question"></span></td>
-                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
-                                           value="1">
-                                    <label for="a1" id="aa1"></label></td>
-                                <td><input class="options" id="a2" name="choice1" type="radio" value="2">
-                                    <label for="a2" id="aa2"></label></td>
-                                <td><input class="options" id="a3" name="choice1" type="radio" value="3">
-                                    <label for="a3" id="aa3"></label></td>
-                                <td><input class="options" id="a4" name="choice1" type="radio" value="4">
-                                    <label for="a4" id="aa4"></label></td>
-                                <input class="formBtn" id="aa" type="submit" value="Submit">
-                                <div class="hide" id="passIt" title="b"></div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div id="alerts" class="hide">
-                        <p id="alerts-p"></p>
-                        <p>Click to hide</p>
-                    </div>
+                    </form>
 
                 </div>
+                <div class="hide" id="alerts">
+                    <p id="alerts-p"></p>
+                    <p>Click to hide</p>
+                </div>
+            </div>
+    </section>
+</div>
+</div>
 
-            </section>
-        </div>
+
+<div class="menus">
+    <div id="main-menu">
+        <form class="menu-form" id="mainMenu-form">
+            <h1>HUNT THE MUSK</h1>
+            <input class="formBtn" id="new-button" type="submit" value="New Game">
+            <input class="formBtn" id="load-button" type="submit" value="Load Game">
+        </form>
     </div>
-
-
-    <div class="menus">
-        <div id="main-menu">
-            <form class="menu-form" id="mainMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <input class="formBtn" id="new-button" type="submit" value="New Game">
-                <input class="formBtn" id="load-button" type="submit" value="Load Game">
-            </form>
-        </div>
-        <div class="hide" id="new-game">
-            <form class="menu-form" id="newGameMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <p>Please enter your name</p>
-                <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
-                <p>Do you want to play a short or long game?</p>
+    <div class="hide" id="new-game">
+        <form class="menu-form" id="newGameMenu-form">
+            <h1>HUNT THE MUSK</h1>
+            <p>Please enter your name</p>
+            <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
+            <p>Do you want to play a short or long game?</p>
+            <div class="options">
+                <input checked="checked" id="short" name="game_length" type="radio" value="Short">
+                <label for="short">Short</label>
+                <input id="long" name="game_length" type="radio" value="Long">
+                <label for="long">Long</label>
+            </div>
+            <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
+            <input class="formBtn" id="back-button" type="submit" value="Back">
+        </form>
+    </div>
+    <div class="hide" id="load-game">
+        <form class="menu-form" id="loadGameMenu-form">
+            <h1>HUNT THE MUSK</h1>
+            <div id="loadGame-list">
                 <div class="options">
-                    <input checked="checked" id="short" name="game_length" type="radio" value="Short">
-                    <label for="short">Short</label>
-                    <input id="long" name="game_length" type="radio" value="Long">
-                    <label for="long">Long</label>
+                    <ol id="loadGame-ol">
+                    </ol>
                 </div>
-                <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
-                <input class="formBtn" id="back-button" type="submit" value="Back">
-            </form>
-        </div>
-        <div class="hide" id="load-game">
-            <form class="menu-form" id="loadGameMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <div id="loadGame-list">
-                    <div class="options">
-                        <ol id="loadGame-ol">
-                        </ol>
-                    </div>
-                    <input class="formBtn" id="back-button2" type="submit" value="Back">
-                    <input class="formBtn" type="submit" value="Continue Game">
-                </div>
-            </form>
-        </div>
-
+                <input class="formBtn" id="back-button2" type="submit" value="Back">
+                <input class="formBtn" type="submit" value="Continue Game">
+            </div>
+        </form>
     </div>
-    </main>
+
+</div>
+</main>
 </div>
 </body>
 </html>
