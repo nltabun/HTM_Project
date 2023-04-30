@@ -12,8 +12,8 @@ conn = mysql.connector.connect(
 
 # Start config
 # Player money (TSLA Stock), fuel reserve & default plane index
-player_money = 250
-player_fuel = 20000
+player_money = 500
+player_fuel = 50000
 player_plane = 1
 # Musk money (TSLA Stock), fuel reserve & plane index
 musk_money = 1000000 

@@ -167,6 +167,10 @@ body {
     width: 10vh;
 }
 
+#alerts {
+    background-color: green;
+}
+
 .menu-form p {
     margin: 2vh 10vh;
 }

@@ -49,9 +49,11 @@ def check_for_save_data(param):
         cursor.execute(query)
         result = str(cursor.fetchone()).strip('(,)')
 
+        if result == 'None':
+            result = 0
+
         return result
     else:
-
         result = ''
 
         return result
@@ -242,7 +244,7 @@ def movement(location):
         # Make the actual move. Returns if successful
         move = game_movement.player_movement(player, target)
         
-        events(player)
+        location_events(player)
 
         if move: # If the move was successful
             if player.location == musk.location: # Player found Musk and wins the game
@@ -303,28 +305,29 @@ def buy_clue():
     # Make sure the player has enough money and return status 0 (fail) if not so.
     if player.money < 100:
         return json.dumps({"status" : 0})
+    # Don't allow multiple clues to be bought on the same turn
     if player.bought_clue == 1:
-        return json.dumps({"status": 0})
+        return json.dumps({"status" : 0})
     
     clue = game_actions.buy_clue(config.conn, player, musk)
 
     return json.dumps(clue)
 
 
-@app.route('/event')
-def events(player):
+# Check if you get a random event when arriving at a location
+@app.route('/location-events')
+def location_events():
     try:
-        if player.location == 'KDTW' or player.location == 'KSTL' or player.location == 'KORD':
-            message = game_events.event1(player)
-            return message
+        event = game_events.location_event(player)
 
-        elif player.location == 'MHPR' or player.location == 'MMMX' or player.location == 'MMGL':
-            message = game_events.event2(player)
-            return message
-        else:
-            raise Exception('XD')
+        return json.dumps(event)
     except Exception:
-        return 'Error'
+        return json.dumps({"status" : 0, "message" : "You had a bad feeling but nothing happened?"})
+    
+
+@app.route('/weather-events')
+def weather_events(): # TODO
+    pass
     
 
 # For browsing all available planes
@@ -403,7 +406,7 @@ def musk_actions():
 
         game_movement.player_movement(musk, target)
     except Exception:
-        print('Musk encountered issues while trying to move.')
+        game_fuel.load_fuel(musk)
 
     musk.decrease_turns()  # Turn over
 
