@@ -107,14 +107,18 @@ def buy_clue(connection, player, musk):
                 }
                 for row in result:
                     zone = row[1]
-                    if zone == 1: # Musk is located in the east coast
-                        data.update({"clue" : "EC"})
-                    elif zone == 2: # Musk is located in the central US
-                        data.update({"clue" : "CU"})
-                    elif zone == 3: # Musk is located in the west coast
-                        data.update({"clue" : "WC"})
-                    elif zone == 4: # Outside of the United States of America
-                        data.update({"clue" : "OA"})
+                    if zone == 1: # Musk is currently in the Northeast
+                        data.update({"clue" : "NEA"})
+                    elif zone == 2: # Musk is currently in the South
+                        data.update({"clue" : "STH"})
+                    elif zone == 3: # Musk is currently in the Midwest
+                        data.update({"clue" : "MDW"})
+                    elif zone == 4: # Musk is currently in the Pacific
+                        data.update({"clue" : "PAC"})
+                    elif zone == 5: # Musk is currently in Canada
+                        data.update({"clue" : "CAN"})
+                    elif zone == 6: # Musk is currently in Mexico or Central America
+                        data.update({"clue" : "MCA"})
             else:
                 data = {
                     "status" : 0
