@@ -96,12 +96,14 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
 
 
 # Makes a list of airports that are in range
-def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
+def airports_in_range(airport_list, player_movement_per_ap, player_range=0, ap_penalty=0):
     in_range = []
 
     for row in airport_list:
         if row[1] <= player_range:
-            ap_cost = math.ceil(row[1] / player_movement_per_ap)
+            ap_cost = math.ceil(row[1] / player_movement_per_ap) + ap_penalty
+            if ap_cost > 5:
+                continue
             row_with_ap = (row[0], row[1], ap_cost, row[2], row[3], row[4])
 
             in_range.append(row_with_ap)
