@@ -98,6 +98,8 @@ def refresh_player_data():
         data = player.stats()
         data.update({"status" : 1})
 
+        get_weather_data(player.location, 1)
+
         return json.dumps(data)
     except:
         return json.dumps({"status" : 0})
@@ -204,12 +206,14 @@ def get_all_airport_coordinates():
 
 @app.route('/weather/<location>')
 def get_weather_data(location, set_local=1):
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={config.api_key}'
+    municipality = game_movement.airport_municipality(config.conn, location)
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={municipality}&units=metric&appid={config.api_key}'
     response = requests.get(url)
+
     if response.status_code == 200:
         weather_data = response.json()
         temp = weather_data['main']['temp']
-        weather_id = weather_data['weather'][0]['id']
+        weather_id = str(weather_data['weather'][0]['id'])
         weather_desc = weather_data['weather'][0]['description']
         wind_speed = weather_data['wind']['speed']
         visibility = weather_data['visibility']
@@ -239,7 +243,7 @@ def get_weather_data(location, set_local=1):
 def movement(location):
     try:
         # Get non-formatted version of the list with airports in range
-        in_range = airports_in_range(return_format=1)
+        in_range = airports_in_range(return_format=1, ap_penalty=player.movement_penalty)
 
         # Check that the attempted move is legal
         legal_move = False
@@ -331,11 +335,6 @@ def location_events():
         return json.dumps(event)
     except Exception:
         return json.dumps({"status" : 0, "message" : "You had a bad feeling but nothing happened?"})
-    
-
-@app.route('/weather-events')
-def weather_events(): # TODO
-    pass
     
 
 # For browsing all available planes
