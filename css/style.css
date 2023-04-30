@@ -228,8 +228,15 @@ button:hover, input:hover, label:hover {
     border: black 2px solid;
 }
 
+
+.clueAirport {
+    background-color: violet;
+    border-radius: 50%;
+    border: black 2px solid;
+
 #info {
     height: 4rem;
+
 }
 
 .select {
