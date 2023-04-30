@@ -24,4 +24,7 @@ musk_plane = 0
 short_min = 15
 short_max = 20
 long_min = 30
-long_max = 40 
+long_max = 40
+
+# Weather api
+api_key = 'f08355556ae585e753c3498c6cc4756c'

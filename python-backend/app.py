@@ -201,8 +201,7 @@ def get_all_airport_coordinates():
 
 @app.route('/weather/<location>')
 def get_weather_data(location):
-    api_key = 'f08355556ae585e753c3498c6cc4756c'
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={api_key}'
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={config.api_key}'
     response = requests.get(url)
     if response.status_code == 200:
         weather_data = response.json()
@@ -211,15 +210,16 @@ def get_weather_data(location):
         wind_speed = weather_data['wind']['speed']
         visibility = weather_data['visibility']
         weather_data = {
-            'temperature': temp,
-            'weather_desc': weather_desc,
-            'wind_speed': wind_speed,
-            'visibility': visibility
+            "status" : 1,
+            "temperature" : temp,
+            "weather_desc" : weather_desc,
+            "wind_speed" : wind_speed,
+            "visibility" : visibility
         }
         return json.dumps(weather_data)
 
     else:
-        return json.dumps('PERKELE ei tänne!')
+        return json.dumps({"status" : 0})
 
 
 # Moves player to <location>
