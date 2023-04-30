@@ -1,9 +1,5 @@
-/*@font-face {*/
-/*    font-family: Arial;*/
-/*    src: url('https://fonts.cdnfonts.com/css/arial-2');*/
-/*}*/
-
 /*https://colorhunt.co/palette/f1f6f9394867212a3e9ba4b5*/
+
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -66,6 +62,16 @@ body {
 
 @media screen and (min-width: 800px) {
     #map {
+        height: 50rem;
+        width: 70rem;
+    }
+
+    #game-info {
+        height: 50rem;
+        width: 70rem;
+    }
+
+    .select {
         height: 50rem;
         width: 70rem;
     }
@@ -222,10 +228,15 @@ button:hover, input:hover, label:hover {
     border: black 2px solid;
 }
 
+
 .clueAirport {
     background-color: violet;
     border-radius: 50%;
     border: black 2px solid;
+
+#info {
+    height: 4rem;
+
 }
 
 .select {
@@ -238,12 +249,7 @@ button:hover, input:hover, label:hover {
     margin-bottom: 1rem;
     background-color: #212A3E;
     float: right;
-
-}
-
-#game-info {
-    width: 55%;
-    float: right;
+    z-index: 1;
 }
 
 .select h2,
@@ -265,7 +271,6 @@ button:hover, input:hover, label:hover {
     text-align: center;
 }
 
-
 #game-actions .formBtn {
     width: 10rem;
     height: 3rem;
@@ -284,7 +289,7 @@ button:hover, input:hover, label:hover {
 }
 
 .select #game-actions {
-    height: 40.4rem;
+    height: 39.7rem;
 }
 
 #new-game #options {
@@ -301,8 +306,13 @@ button:hover, input:hover, label:hover {
 }
 
 .options {
+    list-style-type:none;
     margin: 25px 0 0 0;
     padding: 0;
+}
+
+.options li {
+    position: relative;
 }
 
 .options label,
@@ -315,7 +325,7 @@ button:hover, input:hover, label:hover {
 }
 
 .options input[type="radio"] {
-    opacity: 0.01;
+    opacity: 0.00;
     z-index: 100;
 }
 
@@ -377,3 +387,26 @@ button:hover, input:hover, label:hover {
     font-weight: bold;
     font-size: large;
 }
+
+#alerts-p {
+    font-size: large;
+}
+
+#alerts {
+    padding: 2rem;
+    text-align: center;
+    z-index: 992;
+    background-color: #37618a;
+    position: relative;
+    border-radius: 4px;
+}
+
+
+#miniForm span, label{
+    font-size: large;
+}
+
+.options #confirm-clue{
+    text-align: center;
+}
+

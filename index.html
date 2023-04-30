@@ -25,8 +25,9 @@
 
 
     <div id="map"></div>
-    <div class="game-info">
-        <section class="select">
+
+    <section class="select" id="info">
+        <div class="game-info">
             <header>
                 <h2>Info</h2>
             </header>
@@ -114,59 +115,56 @@
                             </form>
                         </div>
                     </div>
-
-                    <div id="alerts" class="hide">
-                        <p id="alerts-p"></p>
-                        <p>Click to hide</p>
-                    </div>
-
+                <div class="hide" id="alerts">
+                    <p id="alerts-p"></p>
+                    <p>Click to hide</p>
                 </div>
+            </div>
+    </section>
+</div>
+</div>
 
-            </section>
-        </div>
+
+<div class="menus">
+    <div id="main-menu">
+        <form class="menu-form" id="mainMenu-form">
+            <h1>HUNT THE MUSK</h1>
+            <input class="formBtn" id="new-button" type="submit" value="New Game">
+            <input class="formBtn" id="load-button" type="submit" value="Load Game">
+        </form>
     </div>
-
-
-    <div class="menus">
-        <div id="main-menu">
-            <form class="menu-form" id="mainMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <input class="formBtn" id="new-button" type="submit" value="New Game">
-                <input class="formBtn" id="load-button" type="submit" value="Load Game">
-            </form>
-        </div>
-        <div class="hide" id="new-game">
-            <form class="menu-form" id="newGameMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <p>Please enter your name</p>
-                <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
-                <p>Do you want to play a short or long game?</p>
+    <div class="hide" id="new-game">
+        <form class="menu-form" id="newGameMenu-form">
+            <h1>HUNT THE MUSK</h1>
+            <p>Please enter your name</p>
+            <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
+            <p>Do you want to play a short or long game?</p>
+            <div class="options">
+                <input checked="checked" id="short" name="game_length" type="radio" value="Short">
+                <label for="short">Short</label>
+                <input id="long" name="game_length" type="radio" value="Long">
+                <label for="long">Long</label>
+            </div>
+            <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
+            <input class="formBtn" id="back-button" type="submit" value="Back">
+        </form>
+    </div>
+    <div class="hide" id="load-game">
+        <form class="menu-form" id="loadGameMenu-form">
+            <h1>HUNT THE MUSK</h1>
+            <div id="loadGame-list">
                 <div class="options">
-                    <input checked="checked" id="short" name="game_length" type="radio" value="Short">
-                    <label for="short">Short</label>
-                    <input id="long" name="game_length" type="radio" value="Long">
-                    <label for="long">Long</label>
+                    <ol id="loadGame-ol">
+                    </ol>
                 </div>
-                <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
-                <input class="formBtn" id="back-button" type="submit" value="Back">
-            </form>
-        </div>
-        <div class="hide" id="load-game">
-            <form class="menu-form" id="loadGameMenu-form">
-                <h1>HUNT THE MUSK</h1>
-                <div id="loadGame-list">
-                    <div class="options">
-                        <ol id="loadGame-ol">
-                        </ol>
-                    </div>
-                    <input class="formBtn" id="back-button2" type="submit" value="Back">
-                    <input class="formBtn" type="submit" value="Continue Game">
-                </div>
-            </form>
-        </div>
-
+                <input class="formBtn" id="back-button2" type="submit" value="Back">
+                <input class="formBtn" type="submit" value="Continue Game">
+            </div>
+        </form>
     </div>
-    </main>
+
+</div>
+</main>
 </div>
 </body>
 </html>
