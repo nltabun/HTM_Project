@@ -243,8 +243,6 @@ def movement(location):
 
         # Make the actual move. Returns if successful
         move = game_movement.player_movement(player, target)
-        
-        location_events(player)
 
         if move: # If the move was successful
             if player.location == musk.location: # Player found Musk and wins the game
