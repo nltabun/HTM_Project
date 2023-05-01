@@ -35,6 +35,7 @@
                     <td>Player Name: <span id="name"></span></td>
                     <td>Stonks: <span id="stock"></span> TSLA</td>
                     <td>Action points: <span id="actionpoints"></span></td>
+                    <td>Current plane: <span id="plane"></span></td>
                     <td>Range: <span id="range"></span>Km</td>
                     <td>Fuel: <span id="fuel"></span></td>
                     <td>Location: <span id="player-location"></span></td>
@@ -97,31 +98,39 @@
                             <input id="how-much" placeholder="Enter the amount of fuel" type="text">
                             <input class="formBtn" type="submit" value="Submit">
                         </form>
-                        <div>
-                            <form class="hide" id="miniForm">
-                                <td><span id="question"></span></td>
-                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
-                                           value="1">
-                                    <label for="a1" id="aa1"></label></td>
-                                <td><input class="options" id="a2" name="choice1" type="radio" value="2">
-                                    <label for="a2" id="aa2"></label></td>
-                                <td><input class="options" id="a3" name="choice1" type="radio" value="3">
-                                    <label for="a3" id="aa3"></label></td>
-                                <td><input class="options" id="a4" name="choice1" type="radio" value="4">
-                                    <label for="a4" id="aa4"></label></td>
-                                <input class="formBtn" id="aa" type="submit" value="Submit">
-                                <div class="hide" id="passIt" title="b"></div>
-                            </form>
-                        </div>
+                        <form class="hide" id="miniForm">
+                            <td><span id="question"></span></td>
+                            <td><input checked="checked" class="options" id="a1" name="choice1" type="radio" value="1">
+                                <label for="a1" id="aa1"></label></td>
+                            <td><input class="options" id="a2" name="choice1" type="radio" value="2">
+                                <label for="a2" id="aa2"></label></td>
+                            <td><input class="options" id="a3" name="choice1" type="radio" value="3">
+                                <label for="a3" id="aa3"></label></td>
+                            <td><input class="options" id="a4" name="choice1" type="radio" value="4">
+                                <label for="a4" id="aa4"></label></td>
+                            <input class="formBtn" id="aa" type="submit" value="Submit">
+                            <div class="hide" id="passIt" title="b"></div>
+                        </form>
+                        <form class="hide" id="planeForm">
+                            <div id="currentPlane">
+                            </div>
+                            <ol id="planeForm-ol">
+                            </ol>
+                            <input class="formBtn" type="submit" value="Compare plane">
+                        </form>
+                        <form class="hide" id="planeComparison">
+                            <div id="currentPlane2"></div>
+                            <span id="stats"></span>
+                            <div id="comparedPlane"></div>
+                            <input class="formBtn" type="submit" value="Purchase plane">
+                        </form>
                     </div>
 
                     <div id="alerts" class="hide">
                         <p id="alerts-p"></p>
                         <p>Click to hide</p>
                     </div>
-
                 </div>
-
             </section>
         </div>
     </div>
