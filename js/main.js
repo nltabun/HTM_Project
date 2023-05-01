@@ -3,6 +3,7 @@
 const airportIcon = L.divIcon({className: 'red-icon'});
 const playerIcon = L.divIcon({className: 'player-icon'});
 const inRangeIcon = L.divIcon({className: 'inRange-icon'});
+const clueAirports = L.divIcon({className: 'clueAirport'});
 
 //the map
 const map = L.map('map', {tap: false});
@@ -99,9 +100,10 @@ async function playerData() {
         document.querySelector('#clue-form').classList.add('hide');
         document.querySelector('#planeForm').classList.add('hide');
         const game_end = await fetchData(`${url}/end-turn`);
+        await fetchData(`${url}save-game`);
 
-        document.querySelector('#alerts').classList.remove('hide');
         if (game_end.status === 0) {
+            document.querySelector('#alerts').classList.remove('hide');
             alert.innerText = 'Musk found his car, you LOSE';
         } else {
             document.querySelector('#alerts').classList.remove('hide');
@@ -139,9 +141,7 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
             document.querySelector("[id=" + CSS.escape(label) + "]").innerHTML = answer;
             i++;
         }
-
     }
-
 });
 
 //submitting the answer to minigame question
@@ -244,7 +244,7 @@ document.querySelector('#action-clue').addEventListener('click', function () {
 document.querySelector('#confirm-clue').addEventListener('click', async function (evt) {
     evt.preventDefault();
     document.querySelector('#clue-button').classList.add('hide');
-    const clue = await fetchData(`${url}/clues`);
+    const clue = await fetchData(`${url}clues`);
     let clue_p = document.querySelector('#clue-p');
 
     if (clue.status === 0) {
@@ -255,15 +255,59 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
                 clue_p.innerText = `Elon Musk is ${clue.clue} of you`;
                 break;
             case 2:
-                clue_p.innerText = "Elon musk is in this region";
-                //TODO if else shit for the map region images
+                //TODO add maps for mexico and canada
+                if (clue.clue === 'NEA') {
+                    document.querySelector('#northeast').classList.remove('hide');
+                } else if (clue.clue === 'STH') {
+                    document.querySelector('#south').classList.remove('hide');
+                } else if (clue.clue === 'MDW') {
+                    document.querySelector('#north').classList.remove('hide');
+                } else if (clue.clue === 'PAC') {
+                    document.querySelector('#west').classList.remove('hide');
+                } else if (clue.clue === 'CAN') {
+                } else if (clue.clue === 'MCA') {
+                }
                 break;
             case 3:
-                clue_p.innerText = "Elon musk is in one these airports:";
-                break;
+                clue_p.innerText = "Elon musk is in one these airports highlighted in purple (disappears in 10 seconds)";
+                for (let airport of clue.clue) {
+                    if (Array.isArray(airport[2])) {
+                        const array = airport[2];
+                        const marker = L.marker([array[0], array[1]], {icon: clueAirports}).addTo(map);
+                        marker.bindPopup(`<b>${airport[0]}</b>`);
+                        marker.setZIndexOffset(1000);
+                        marker.addTo(layerGroup);
+                    } else {
+                        const marker = L.marker([airport[2], airport[3]], {icon: clueAirports}).addTo(map);
+                        marker.bindPopup(`<b>${airport[0]}</b>`);
+                        marker.setZIndexOffset(1000);
+                        marker.addTo(layerGroup);
+                    }
+                }
         }
     }
-    await gameSetup();
+    function bruh() {
+        gameSetup();
+    }
+    await playerData();
+    setTimeout(bruh, 10000)
+});
+
+//hide the map clue
+document.querySelector('#south').addEventListener('click', function (){
+    document.querySelector('#south').classList.add('hide');
+});
+
+document.querySelector('#west').addEventListener('click', function (){
+    document.querySelector('#west').classList.add('hide');
+});
+
+document.querySelector('#northeast').addEventListener('click', function (){
+    document.querySelector('#northeast').classList.add('hide');
+});
+
+document.querySelector('#north').addEventListener('click', function (){
+    document.querySelector('#north').classList.add('hide');
 });
 
 //end round button
@@ -281,6 +325,7 @@ document.querySelector('#action-end').addEventListener('click', async function (
         document.querySelector('#alerts').classList.remove('hide');
         alert.innerText = 'Your turn has ended \n Starting new Round';
     }
+    await fetchData(`${url}save-game`);
     await gameSetup();
 });
 
@@ -332,6 +377,12 @@ async function airportInRngMarker() {
                 marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
                     const game_end = await fetchData(`${url}/movement/${airport.ident}`);
+                        if (game_end.status === 2) {
+                            document.querySelector('#alerts').classList.remove('hide');
+                            let alert = document.querySelector('#alerts-p');
+                            alert.innerText = 'You found Elon Musk! You WON the game!';
+                        }
+
                     console.log(`${url}movement/${airport.ident}`);
 
                     document.querySelector('#alerts').classList.remove('hide');
@@ -383,5 +434,3 @@ document.querySelector('#back-button2').addEventListener('click', function (evt)
     document.querySelector('#load-game').classList.add('hide');
     document.querySelector('#main-menu').classList.remove('hide');
 });
-
-
