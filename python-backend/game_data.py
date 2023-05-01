@@ -78,3 +78,15 @@ def saved_games(connection):
     print(result)
 
     return result
+
+
+# Delete game from database
+def delete_save(connection, id):
+    try:
+        sql = f'DELETE FROM game WHERE id = {id} OR id = {id+1}'
+        cur = connection.cursor()
+        cur.execute(sql)
+
+        return {"status" : 1}
+    except:
+        return {"status" : 0}
