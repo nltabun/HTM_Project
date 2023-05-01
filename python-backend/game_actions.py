@@ -51,7 +51,11 @@ def answer_minigame(connection, player, qid, answer):
 
         # Update the players money
         if player.location == 'PHNL':
-            player.money = player.money + (result_prize * 3)  #triple the amount of money if in hawaii
+            result_prize = result_prize * 3
+            player.money = player.money + result_prize  #triple the amount of money if in hawaii
+        elif player.location == 'KLAS' or player.location == 'KRNO':
+            result_prize = result_prize * 2
+            player.money = player.money + result_prize
         else:
             player.money = player.money + result_prize
 
@@ -64,9 +68,20 @@ def answer_minigame(connection, player, qid, answer):
             "prize" : result_prize
         }
     else:
-        data = {
-            "status" : 0,
-        }
+        if player.location == 'KLAS' or player.location == 'KRNO':
+            if player.money > 100:
+                player.money -= 100
+            else:
+                player.money = 0
+
+            data = {
+                "status" : -1,
+                "prize" : -100
+            }
+        else:
+            data = {
+                "status" : 0,
+            }
 
     # Reduce ap by 1 and disable minigames for this turn
     player.current_ap -= 1

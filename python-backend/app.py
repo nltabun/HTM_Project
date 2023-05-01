@@ -26,7 +26,7 @@ def test():
     print(player)
     print(musk)
 
-    return 'test'
+    return test
 
 
 # For getting active saves or current highest game id # TODO: Maybe reformat returns
@@ -89,6 +89,17 @@ def load_game(id):
     get_weather_data(player.location, 1)
 
     return refresh_player_data()
+
+
+# When game ends, delete saved data from database
+# Return final player data
+@app.route('/game-end')
+def end_game():
+    final_player_data = refresh_player_data()
+    delete = game_data.delete_save(config.conn, player.id)
+    final_player_data.update({"status" : delete})
+
+    return final_player_data
 
 
 # Return player data in JSON
@@ -243,7 +254,7 @@ def get_weather_data(location, set_local=1):
 def movement(location):
     try:
         # Get non-formatted version of the list with airports in range
-        in_range = airports_in_range(return_format=1, ap_penalty=player.movement_penalty)
+        in_range = airports_in_range(return_format=1)
 
         # Check that the attempted move is legal
         legal_move = False
