@@ -26,7 +26,7 @@ def test():
     print(player)
     print(musk)
 
-    return 'test'
+    return test
 
 
 # For getting active saves or current highest game id # TODO: Maybe reformat returns
@@ -91,12 +91,25 @@ def load_game(id):
     return refresh_player_data()
 
 
+# When game ends, delete saved data from database
+# Return final player data
+@app.route('/game-end')
+def end_game():
+    final_player_data = refresh_player_data()
+    delete = game_data.delete_save(config.conn, player.id)
+    final_player_data.update({"status" : delete})
+
+    return final_player_data
+
+
 # Return player data in JSON
 @app.route('/refresh-player-data')
 def refresh_player_data():
     try:
         data = player.stats()
         data.update({"status" : 1})
+
+        get_weather_data(player.location, 1)
 
         return json.dumps(data)
     except:
@@ -204,12 +217,14 @@ def get_all_airport_coordinates():
 
 @app.route('/weather/<location>')
 def get_weather_data(location, set_local=1):
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={config.api_key}'
+    municipality = game_movement.airport_municipality(config.conn, location)
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={municipality}&units=metric&appid={config.api_key}'
     response = requests.get(url)
+
     if response.status_code == 200:
         weather_data = response.json()
         temp = weather_data['main']['temp']
-        weather_id = weather_data['weather'][0]['id']
+        weather_id = str(weather_data['weather'][0]['id'])
         weather_desc = weather_data['weather'][0]['description']
         wind_speed = weather_data['wind']['speed']
         visibility = weather_data['visibility']
@@ -331,11 +346,6 @@ def location_events():
         return json.dumps(event)
     except Exception:
         return json.dumps({"status" : 0, "message" : "You had a bad feeling but nothing happened?"})
-    
-
-@app.route('/weather-events')
-def weather_events(): # TODO
-    pass
     
 
 # For browsing all available planes

@@ -41,7 +41,7 @@ document.querySelector('#load-button').addEventListener('click', async function 
 });
 
 //actually load the selected save file
-document.querySelector('#loadGameMenu-form').addEventListener('submit', async function(evt) {
+document.querySelector('#loadGameMenu-form').addEventListener('submit', async function (evt) {
     evt.preventDefault();
     const gameId = document.querySelector('input[name=choice]:checked').value;
     document.querySelector('#load-game').classList.add('hide');
@@ -62,7 +62,7 @@ document.querySelector('#load-button').addEventListener('click', function (evt) 
     document.querySelector('#load-game').classList.remove('hide');
     document.querySelector('#main-menu').classList.add('hide');
 });
-    
+
 //fetch the json data from the desired url
 async function fetchData(url) {
     try {
@@ -76,6 +76,7 @@ async function fetchData(url) {
 //load the players data
 async function playerData() {
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
+    const weatherData = await fetchData(`${url}weather/${playerData.location}`);
 
     let name = document.querySelector('#name');
     name.innerText = playerData.name;
@@ -86,19 +87,40 @@ async function playerData() {
     let AP = document.querySelector('#actionpoints');
     AP.innerText = playerData.ap;
 
+    let currentPlane = document.querySelector('#plane');
+    currentPlane.innerText = playerData.plane;
+
     let range = document.querySelector('#range');
     range.innerText = Math.round(playerData.range);
 
     let fuel = document.querySelector('#fuel');
     fuel.innerText = `${playerData.fuelCurrent} / ${playerData.fuelCapacity}`;
 
-     let fuelStorage = document.querySelector('#fuelStorage');
+    let fuelStorage = document.querySelector('#fuelStorage');
     fuelStorage.innerText = playerData.fuelReserve;
 
+    let temp = document.querySelector('#temp');
+    temp.innerText = Math.round(weatherData.temperature);
+
+    let weather_desc = document.querySelector('#weather-desc');
+    weather_desc.innerText = weatherData.weather_desc;
+
+    let wind = document.querySelector('#wind-speed');
+    wind.innerText = weatherData.wind_speed;
+
+    let visib = document.querySelector('#visibility');
+    visib.innerText = weatherData.visibility;
+
     if (playerData.ap <= 0) {
+        document.querySelector('#planeForm').classList.add('hide');
+        document.querySelector('#planeComparison').classList.add('hide');
         document.querySelector('#fuelForm').classList.add('hide');
         document.querySelector('#miniForm').classList.add('hide');
         document.querySelector('#clue-form').classList.add('hide');
+        document.querySelector('#south').classList.add('hide');
+        document.querySelector('#west').classList.add('hide');
+        document.querySelector('#northeast').classList.add('hide');
+        document.querySelector('#north').classList.add('hide');
         const game_end = await fetchData(`${url}/end-turn`);
         await fetchData(`${url}save-game`);
 
@@ -114,11 +136,17 @@ async function playerData() {
 }
 
 //open the minigame menu
-document.querySelector('#action-minigame').addEventListener('click', async function(evt) {
+document.querySelector('#action-minigame').addEventListener('click', async function (evt) {
     evt.preventDefault();
     let alert = document.querySelector('#alerts-p');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
+    document.querySelector('#south').classList.add('hide');
+    document.querySelector('#west').classList.add('hide');
+    document.querySelector('#northeast').classList.add('hide');
+    document.querySelector('#north').classList.add('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
@@ -136,40 +164,49 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
             let id1 = 'a' + i;
             let label = 'aa' + i;
             //console.log(id1);
-            document.querySelector("[id=" + CSS.escape(id1) +"]").value = answer;
-            document.querySelector("[id=" + CSS.escape(label) +"]").innerHTML = answer;
+            document.querySelector("[id=" + CSS.escape(id1) + "]").value = answer;
+            document.querySelector("[id=" + CSS.escape(label) + "]").innerHTML = answer;
             i++;
         }
     }
 });
 
 //submitting the answer to minigame question
-        document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
-            evt.preventDefault();
-            let alert = document.querySelector('#alerts-p');
-            document.querySelector('#miniForm').classList.add('hide');
-            const qId = document.querySelector("#passIt").title;
-            const answer = document.querySelector('input[name=choice1]:checked').value;
-            const result = await fetchData(`${url}minigame/answer/${qId}=${answer}`);
+document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
+    evt.preventDefault();
+    let alert = document.querySelector('#alerts-p');
+    document.querySelector('#miniForm').classList.add('hide');
+    const qId = document.querySelector("#passIt").title;
+    const answer = document.querySelector('input[name=choice1]:checked').value;
+    const result = await fetchData(`${url}minigame/answer/${qId}=${answer}`);
 
-            document.querySelector('#alerts').classList.remove('hide');
-            if (result.status === 1) {
-                alert.innerText = `Your answer was correct, you earned ${result.prize} stock`;
-            }else {
-                alert.innerText = `Your answer was incorrect. Better luck next time.`;
-            }
-            await gameSetup();
-    });
+    document.querySelector('#alerts').classList.remove('hide');
+    if (result.status === 1) {
+        alert.innerText = `Your answer was correct, you earned ${result.prize} stocks.`;
+    } else if (result.status === -1) {
+        alert.innerText = `Your answer was incorrect, you also lost ${result.prize} stocks.`;
+    } else {
+        alert.innerText = `Your answer was incorrect. Better luck next time.`;
+    }
+    await gameSetup();
+});
 
 //open the fuel menu
+
 document.querySelector('#action-fuel').addEventListener('click', function() {
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#south').classList.add('hide');
+    document.querySelector('#west').classList.add('hide');
+    document.querySelector('#northeast').classList.add('hide');
+    document.querySelector('#north').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
 });
 
 //buy or load fuel
-document.querySelector('#fuelForm').addEventListener('submit', async function(evt) {
+document.querySelector('#fuelForm').addEventListener('submit', async function (evt) {
     evt.preventDefault();
     const playerData = await fetchData(`${url}refresh-player-data`);
     let buy_load = document.querySelector('input[name=buy-load]:checked').value;
@@ -205,16 +242,99 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     } else {
         if (fuel.success === true) {
             alert.innerText = `You bought ${how_much} fuel, it cost you ${spent} stock.`;
-        }else {
+        } else {
             alert.innerText = `You cannot afford that much fuel.`;
         }
     }
 });
 
-//buy a clue thing idk at this point
-document.querySelector('#action-clue').addEventListener('click', function() {
+//open the plane browser
+document.querySelector('#action-plane').addEventListener('click', async function(evt) {
+    evt.preventDefault();
+    const list = document.querySelector('#planeForm-ol');
+    const current = document.querySelector('#currentPlane');
+    list.innerHTML = '';
+
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
+    document.querySelector('#planeForm').classList.remove('hide');
+
+    const planes = await fetchData(`${url}planes/browse`);
+
+    for (let plane of planes.planes) {
+        if (planes.currentPlaneIdx === plane.index) {
+            current.innerHTML += `<td> Current plane: ${plane.name} 
+                                 <br> fuel capacity: ${plane.fuelCapacity}
+                                 <br> fuel efficiency: ${plane.fuelEfficiency}
+                                 <br> speed: ${plane.speed} </td>`;
+        } else {
+            list.innerHTML += `<li> <input type="radio" name="bruh" id="${plane.index}" value="${plane.index}"> <label for="${plane.index}">
+                                 name: ${plane.name}
+                            <br> fuel capacity: ${plane.fuelCapacity} 
+                            <br> fuel efficiency: ${plane.fuelEfficiency}
+                            <br> speed: ${plane.speed}
+                            <br> cost: ${plane.cost} </label></li>`;
+        }
+    }
+});
+
+//plane comparison
+document.querySelector('#planeForm').addEventListener('submit', async function(evt) {
+    evt.preventDefault();
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.remove('hide');
+
+    const compPlaneId = document.querySelector('input[name=bruh]:checked').value;
+    const planes = await fetchData(`${url}planes/browse`);
+    const comparisonData = await fetchData(`${url}planes/compare/${planes.currentPlaneIdx}=${compPlaneId}`);
+
+    const currentPlane = document.querySelector('#currentPlane2');
+    const stats = document.querySelector('#stats');
+    const comparablePlane = document.querySelector('#comparedPlane');
+
+    currentPlane.innerHTML = `<p>Current plane: 
+                              <br>name: ${comparisonData.old_plane.name} 
+                              <br>fuel capacity: ${comparisonData.old_plane.fuelCapacity} 
+                              <br> fuel efficiency: ${comparisonData.old_plane.fuelEfficiency}
+                              <br> speed: ${comparisonData.old_plane.speed}</p>`;
+    stats.innerText = `Stat differences: (positive = better, negative = worse) 
+                      \n fuel capacity: ${comparisonData.new_plane.fuelCapacity - comparisonData.old_plane.fuelCapacity} 
+                      \n fuel efficiency: ${Math.round((comparisonData.new_plane.fuelEfficiency - comparisonData.old_plane.fuelEfficiency) * 10) / 10} 
+                      \n speed: ${comparisonData.new_plane.speed - comparisonData.old_plane.speed} 
+                      \n new plane cost: ${comparisonData.cost} stock`;
+    comparablePlane.innerHTML = `<p>New plane: 
+                                <br>name: ${comparisonData.new_plane.name} 
+                                <br>fuel capacity: ${comparisonData.new_plane.fuelCapacity} 
+                                <br> fuel efficiency: ${comparisonData.new_plane.fuelEfficiency}
+                                <br> speed: ${comparisonData.new_plane.speed}</p>`;
+
+    document.querySelector('#planeComparison').addEventListener('submit', async function(evt){
+        evt.preventDefault();
+        document.querySelector('#planeComparison').classList.add('hide');
+        let alert = document.querySelector('#alerts-p');
+        document.querySelector('#alerts').classList.remove('hide');
+        const bruh = await fetchData(`${url}planes/buy=${compPlaneId}`);
+        if(bruh.status === 0) {
+            alert.innerText = 'Something went wrong with your purchase';
+        }else {
+            alert.innerText = 'Your purchase was successful';
+        }
+        await gameSetup();
+    });
+});
+
+//buy a clue thing idk at this point
+document.querySelector('#action-clue').addEventListener('click', function () {
+    document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
+    document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#south').classList.add('hide');
+    document.querySelector('#west').classList.add('hide');
+    document.querySelector('#northeast').classList.add('hide');
+    document.querySelector('#north').classList.add('hide');
     document.querySelector('#clue-form').classList.remove('hide');
     document.querySelector('#clue-button').classList.remove('hide');
 
@@ -225,6 +345,7 @@ document.querySelector('#action-clue').addEventListener('click', function() {
 //confirm clue purchase and give the clue
 document.querySelector('#confirm-clue').addEventListener('click', async function (evt) {
     evt.preventDefault();
+    let doneSetup = 0;
     document.querySelector('#clue-button').classList.add('hide');
     const clue = await fetchData(`${url}clues`);
     let clue_p = document.querySelector('#clue-p');
@@ -264,41 +385,55 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
                         marker.bindPopup(`<b>${airport[0]}</b>`);
                         marker.setZIndexOffset(1000);
                         marker.addTo(layerGroup);
+
+                        doneSetup = 1;
                     }
                 }
         }
     }
+
     function bruh() {
         gameSetup();
     }
-    await playerData();
-    setTimeout(bruh, 10000)
+
+    if (doneSetup === 1) {
+        await playerData();
+        setTimeout(bruh, 10000);
+    } else {
+        await gameSetup();
+    }
 });
 
 //hide the map clue
-document.querySelector('#south').addEventListener('click', function (){
+document.querySelector('#south').addEventListener('click', function () {
     document.querySelector('#south').classList.add('hide');
 });
 
-document.querySelector('#west').addEventListener('click', function (){
+document.querySelector('#west').addEventListener('click', function () {
     document.querySelector('#west').classList.add('hide');
 });
 
-document.querySelector('#northeast').addEventListener('click', function (){
+document.querySelector('#northeast').addEventListener('click', function () {
     document.querySelector('#northeast').classList.add('hide');
 });
 
-document.querySelector('#north').addEventListener('click', function (){
+document.querySelector('#north').addEventListener('click', function () {
     document.querySelector('#north').classList.add('hide');
 });
 
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
     let alert = document.querySelector('#alerts-p');
-    document.querySelector('#clue-button').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
+    document.querySelector('#south').classList.add('hide');
+    document.querySelector('#west').classList.add('hide');
+    document.querySelector('#northeast').classList.add('hide');
+    document.querySelector('#north').classList.add('hide');
+    
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
         alert.innerText = 'Musk found his car, you LOSE';
@@ -317,7 +452,7 @@ document.querySelector('#alerts').addEventListener('click', function () {
     alert.innerText = '';
 });
 
-//Draw the airports markers on the map
+//Draw the players marker on the map
 async function playerMarker()  {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const playerLoc = await fetchData(`${url}locate/0`);
@@ -358,11 +493,11 @@ async function airportInRngMarker() {
                 marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
                     const game_end = await fetchData(`${url}/movement/${airport.ident}`);
-                        if (game_end.status === 2) {
-                            document.querySelector('#alerts').classList.remove('hide');
-                            let alert = document.querySelector('#alerts-p');
-                            alert.innerText = 'You found Elon Musk! You WON the game!';
-                        }
+                    if (game_end.status === 2) {
+                        document.querySelector('#alerts').classList.remove('hide');
+                        let alert = document.querySelector('#alerts-p');
+                        alert.innerText = 'You found Elon Musk! You WON the game!';
+                    }
                     await gameSetup(url);
                 });
             }
@@ -374,9 +509,9 @@ async function airportInRngMarker() {
 async function airportsMarkers() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     for (let airport of airports) {
-            const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport.name} </b>`);
-            marker.addTo(layerGroup);
+        const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
+        marker.bindPopup(`<b>${airport.name} </b>`);
+        marker.addTo(layerGroup);
     }
 }
 
