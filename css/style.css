@@ -1,9 +1,5 @@
-/*@font-face {*/
-/*    font-family: Arial;*/
-/*    src: url('https://fonts.cdnfonts.com/css/arial-2');*/
-/*}*/
-
 /*https://colorhunt.co/palette/f1f6f9394867212a3e9ba4b5*/
+
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -28,6 +24,7 @@ html {
 
 body {
     width: 98%;
+    margin: auto;
     background-color: #394a6c;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -48,7 +45,8 @@ body {
 }
 
 .container {
-    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .page-title {
@@ -63,13 +61,11 @@ body {
     text-align: center;
 }
 
-
-@media screen and (min-width: 800px) {
-    #map {
-        height: 50rem;
-        width: 70rem;
-    }
+#map {
+    height: 45vw;
+    width: 40vw;
 }
+
 
 #map {
     border-radius: 6px;
@@ -82,7 +78,7 @@ body {
 
 
 #main-menu {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -96,7 +92,7 @@ body {
 }
 
 #new-game {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -106,7 +102,7 @@ body {
 }
 
 #load-game {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -118,7 +114,7 @@ body {
 .menu-form {
     display: flex;
     width: 35%;
-    margin: 4rem auto;
+    margin: 2vw auto;
     flex-direction: column;
     color: white;
     border: 1px solid #9BA4B5;
@@ -127,7 +123,7 @@ body {
 
 .formBtn {
     width: 45%;
-    height: 3rem;
+    height: 2vw;
     background: #212A3E;
     color: #fff;
     font-weight: 100;
@@ -165,6 +161,10 @@ body {
     display: flex;
     margin: 0.5rem 15vh;
     width: 10vh;
+}
+
+#alerts {
+    background-color: green;
 }
 
 .menu-form p {
@@ -218,22 +218,28 @@ button:hover, input:hover, label:hover {
     border: black 2px solid;
 }
 
+
+.clueAirport {
+    background-color: violet;
+    border-radius: 50%;
+    border: black 2px solid;
+
+#info {
+    height: 4rem;
+
+}
+
 .select {
     padding: 1em;
     font-size: small;
     border-radius: 6px;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
-    width: 55rem;
-    height: 50%;
+    width: 45vw;
+    height: 38vw;
     margin-bottom: 1rem;
     background-color: #212A3E;
     float: right;
-
-}
-
-#game-info {
-    width: 55%;
-    float: right;
+    z-index: 1;
 }
 
 .select h2,
@@ -255,7 +261,6 @@ button:hover, input:hover, label:hover {
     text-align: center;
 }
 
-
 #game-actions .formBtn {
     width: 10rem;
     height: 3rem;
@@ -274,7 +279,7 @@ button:hover, input:hover, label:hover {
 }
 
 .select #game-actions {
-    height: 40.4rem;
+    height: 39.7rem;
 }
 
 #new-game #options {
@@ -291,8 +296,13 @@ button:hover, input:hover, label:hover {
 }
 
 .options {
+    list-style-type: none;
     margin: 25px 0 0 0;
     padding: 0;
+}
+
+.options li {
+    position: relative;
 }
 
 .options label,
@@ -305,7 +315,7 @@ button:hover, input:hover, label:hover {
 }
 
 .options input[type="radio"] {
-    opacity: 0.01;
+    opacity: 0.00;
     z-index: 100;
 }
 
@@ -366,4 +376,117 @@ button:hover, input:hover, label:hover {
 #fuelForm p {
     font-weight: bold;
     font-size: large;
+    margin-top: 1rem;
+}
+
+#alerts-p {
+    font-size: large;
+    line-height: 3rem;
+}
+
+#alerts {
+    padding: 2rem;
+    text-align: center;
+    z-index: 992;
+    background-color: #37618a;
+    position: relative;
+    border-radius: 4px;
+}
+
+
+#miniForm span, label {
+    font-size: large;
+}
+
+.options #confirm-clue {
+    text-align: center;
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+  /* Adjust the font size of the page title */
+  .page-title {
+    font-size: 28px;
+  }
+
+  /* Reduce the size of the map */
+  #map {
+    height: 250px;
+  }
+
+  /* Center the game info */
+  .game-info {
+    text-align: center;
+  }
+
+  /* Make the table rows stack on top of each other */
+  .game-info table tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* Adjust the font size and line height of the table cells */
+  .game-info table td {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Make the game action buttons stack on top of each other */
+  #game-actions figure {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* Adjust the font size of the game action buttons */
+  #game-actions .formBtn {
+    font-size: 15px;
+  }
+}
+
+/* Medium screens */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Adjust the font size of the page title */
+  .page-title {
+    font-size: 36px;
+  }
+
+  /* Reduce the size of the map */
+  #map {
+    height: 350px;
+  }
+
+  /* Adjust the font size and line height of the table cells */
+  .game-info table td {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* Adjust the font size of the game action buttons */
+  #game-actions .formBtn {
+    font-size: 15px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1025px) {
+
+
+  #map {
+    height: 45vw;
+  }
+
+  /* Adjust the font size and line height of the table cells */
+  .game-info table td {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  /* Adjust the font size of the game action buttons */
+  #game-actions .formBtn {
+    font-size: 15px;
+  }
+
+  .options .formBtn{
+      width: 30vw;
+  }
 }

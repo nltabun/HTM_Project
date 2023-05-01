@@ -3,6 +3,7 @@
 const airportIcon = L.divIcon({className: 'red-icon'});
 const playerIcon = L.divIcon({className: 'player-icon'});
 const inRangeIcon = L.divIcon({className: 'inRange-icon'});
+const clueAirports = L.divIcon({className: 'clueAirport'});
 
 //the map
 const map = L.map('map', {tap: false});
@@ -34,13 +35,12 @@ document.querySelector('#load-button').addEventListener('click', async function 
     const target = document.querySelector('#loadGame-ol');
     const response = await fetchData(`${url}save-data/info`);
     for (let session of response) {
-        target.innerHTML += '<li> <input type="radio" class="options" id="' + session[1] + '" name="choice" value="' + session[1]
-            + '" /> ' + '<label for="' + session[1] + '"> ' + session[0] + ' </label> </li>';
+        target.innerHTML += '<li> <input type="radio" class="options" id="' + session[1] + '" name="choice" value="' + session[1] + '" /> ' + '<label for="' + session[1] + '"> ' + session[0] + ' </label> </li>';
     }
 });
 
 //actually load the selected save file
-document.querySelector('#loadGameMenu-form').addEventListener('submit', async function(evt) {
+document.querySelector('#loadGameMenu-form').addEventListener('submit', async function (evt) {
     evt.preventDefault();
     const gameId = document.querySelector('input[name=choice]:checked').value;
     document.querySelector('#load-game').classList.add('hide');
@@ -61,7 +61,7 @@ document.querySelector('#load-button').addEventListener('click', function (evt) 
     document.querySelector('#load-game').classList.remove('hide');
     document.querySelector('#main-menu').classList.add('hide');
 });
-    
+
 //fetch the json data from the desired url
 async function fetchData(url) {
     try {
@@ -79,9 +79,6 @@ async function playerData() {
     let name = document.querySelector('#name');
     name.innerText = playerData.name;
 
-    let clue = document.querySelector('#playerClue');
-    clue.innerText = playerData.clueBought;
-
     let stock = document.querySelector('#stock');
     stock.innerText = playerData.money;
 
@@ -94,73 +91,107 @@ async function playerData() {
     let fuel = document.querySelector('#fuel');
     fuel.innerText = `${playerData.fuelCurrent} / ${playerData.fuelCapacity}`;
 
-     let fuelStorage = document.querySelector('#fuelStorage');
+    let fuelStorage = document.querySelector('#fuelStorage');
     fuelStorage.innerText = playerData.fuelReserve;
 
     if (playerData.ap <= 0) {
         document.querySelector('#fuelForm').classList.add('hide');
         document.querySelector('#miniForm').classList.add('hide');
         document.querySelector('#clue-form').classList.add('hide');
-        await fetchData(`${url}/end-turn`);
-        await gameSetup();
-        alert('Your turn has ended \n A new round has begun');
+        document.querySelector('#planeForm').classList.add('hide');
+        const game_end = await fetchData(`${url}/end-turn`);
+        await fetchData(`${url}save-game`);
+
+        if (game_end.status === 0) {
+            document.querySelector('#alerts').classList.remove('hide');
+            alert.innerText = 'Musk found his car, you LOSE';
+        } else {
+            document.querySelector('#alerts').classList.remove('hide');
+            alert.innerText = 'Your turn has ended \n Starting new Round';
         }
+        await gameSetup();
+    }
 }
 
 //open the minigame menu
-document.querySelector('#action-minigame').addEventListener('click', async function(evt) {
+document.querySelector('#action-minigame').addEventListener('click', async function (evt) {
     evt.preventDefault();
+    let alert = document.querySelector('#alerts-p');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
-    document.querySelector('#miniForm').classList.remove('hide');
+    document.querySelector('#planeForm').classList.add('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
-
+        document.querySelector('#alerts').classList.remove('hide');
+        alert.innerText = `You've already done a minigame this round`;
     } else {
+        document.querySelector('#miniForm').classList.remove('hide');
+        console.log(playerData.minigameDone);
         let gameData = await fetchData(`${url}minigame/play`)
         const question = document.querySelector('#question');
         question.innerHTML = gameData.question;
         let i = 1;
         document.querySelector('#passIt').title = gameData.id;
-            for (let answer of gameData.answers) {
-                let id1 = 'a' + i;
-                let label = 'aa' + i;
-                //console.log(id1);
-                document.querySelector("[id=" + CSS.escape(id1) +"]").value = answer;
-                document.querySelector("[id=" + CSS.escape(label) +"]").innerHTML = answer;
-                i++;
-            }
-
+        for (let answer of gameData.answers) {
+            let id1 = 'a' + i;
+            let label = 'aa' + i;
+            //console.log(id1);
+            document.querySelector("[id=" + CSS.escape(id1) + "]").value = answer;
+            document.querySelector("[id=" + CSS.escape(label) + "]").innerHTML = answer;
+            i++;
+        }
     }
-
 });
 
 //submitting the answer to minigame question
-        document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
-            evt.preventDefault();
-            document.querySelector('#miniForm').classList.add('hide');
-            const qId = document.querySelector("#passIt").title;
-            const answer = document.querySelector('input[name=choice1]:checked').value;
-            console.log(answer)
-            await fetchData(`${url}minigame/answer/${qId}=${answer}`);
-            await gameSetup();
-    });
+document.querySelector('#miniForm').addEventListener('submit', async function (evt) {
+    evt.preventDefault();
+    let alert = document.querySelector('#alerts-p');
+    document.querySelector('#miniForm').classList.add('hide');
+    const qId = document.querySelector("#passIt").title;
+    const answer = document.querySelector('input[name=choice1]:checked').value;
+    const result = await fetchData(`${url}minigame/answer/${qId}=${answer}`);
 
-//open the fuel menu
-document.querySelector('#action-fuel').addEventListener('click', function() {
+    document.querySelector('#alerts').classList.remove('hide');
+    if (result.status === 1) {
+        alert.innerText = `Your answer was correct, you earned ${result.prize} stock`;
+    } else {
+        alert.innerText = `Your answer was incorrect. Better luck next time.`;
+    }
+    await gameSetup();
+});
+
+
+//open planeshop menu
+document.querySelector('#action-plane').addEventListener('click', function () {
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.remove('hide');
+});
+
+//buy plane
+
+
+
+
+//open the fuel menu
+document.querySelector('#action-fuel').addEventListener('click', function () {
+    document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
+
 });
 
 //buy or load fuel
-document.querySelector('#fuelForm').addEventListener('submit', async function(evt) {
+document.querySelector('#fuelForm').addEventListener('submit', async function (evt) {
     evt.preventDefault();
     const playerData = await fetchData(`${url}refresh-player-data`);
     let buy_load = document.querySelector('input[name=buy-load]:checked').value;
 
-    let how_much = 0;
+    let how_much;
     if (buy_load === 'max') {
         let max_fuel = playerData.fuelCapacity - playerData.fuelCurrent;
         if (playerData.fuelReserve > max_fuel) {
@@ -175,14 +206,33 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     console.log(how_much, buy_load);
     console.log(`${url}fuel-management/${buy_load}=${how_much}`);
     document.querySelector('#fuelForm').classList.add('hide');
-    await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
+    const fuel = await fetchData(`${url}fuel-management/${buy_load}=${how_much}`);
     await gameSetup();
+
+    document.querySelector('#alerts').classList.remove('hide');
+    let alert = document.querySelector('#alerts-p');
+    const spent = fuel.oldMoney - fuel.newMoney;
+
+    if (buy_load === 'load') {
+        if (how_much > playerData.fuelReserve) {
+            alert.innerText = `You do not have that much fuel in reserve.`;
+        } else {
+            alert.innerText = `You loaded ${how_much} fuel into your plane.`;
+        }
+    } else {
+        if (fuel.success === true) {
+            alert.innerText = `You bought ${how_much} fuel, it cost you ${spent} stock.`;
+        } else {
+            alert.innerText = `You cannot afford that much fuel.`;
+        }
+    }
 });
 
 //buy a clue thing idk at this point
-document.querySelector('#action-clue').addEventListener('click', function() {
+document.querySelector('#action-clue').addEventListener('click', function () {
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
     document.querySelector('#clue-form').classList.remove('hide');
     document.querySelector('#clue-button').classList.remove('hide');
 
@@ -194,7 +244,7 @@ document.querySelector('#action-clue').addEventListener('click', function() {
 document.querySelector('#confirm-clue').addEventListener('click', async function (evt) {
     evt.preventDefault();
     document.querySelector('#clue-button').classList.add('hide');
-    const clue = await fetchData(`${url}/clues`);
+    const clue = await fetchData(`${url}clues`);
     let clue_p = document.querySelector('#clue-p');
 
     if (clue.status === 0) {
@@ -205,29 +255,89 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
                 clue_p.innerText = `Elon Musk is ${clue.clue} of you`;
                 break;
             case 2:
-                clue_p.innerText = "Elon musk is in this region";
-                //TODO if else shit for the map region images
+                //TODO add maps for mexico and canada
+                if (clue.clue === 'NEA') {
+                    document.querySelector('#northeast').classList.remove('hide');
+                } else if (clue.clue === 'STH') {
+                    document.querySelector('#south').classList.remove('hide');
+                } else if (clue.clue === 'MDW') {
+                    document.querySelector('#north').classList.remove('hide');
+                } else if (clue.clue === 'PAC') {
+                    document.querySelector('#west').classList.remove('hide');
+                } else if (clue.clue === 'CAN') {
+                } else if (clue.clue === 'MCA') {
+                }
                 break;
             case 3:
-                clue_p.innerText = "Elon musk is in one these airports:";
-                break;
+                clue_p.innerText = "Elon musk is in one these airports highlighted in purple (disappears in 10 seconds)";
+                for (let airport of clue.clue) {
+                    if (Array.isArray(airport[2])) {
+                        const array = airport[2];
+                        const marker = L.marker([array[0], array[1]], {icon: clueAirports}).addTo(map);
+                        marker.bindPopup(`<b>${airport[0]}</b>`);
+                        marker.setZIndexOffset(1000);
+                        marker.addTo(layerGroup);
+                    } else {
+                        const marker = L.marker([airport[2], airport[3]], {icon: clueAirports}).addTo(map);
+                        marker.bindPopup(`<b>${airport[0]}</b>`);
+                        marker.setZIndexOffset(1000);
+                        marker.addTo(layerGroup);
+                    }
+                }
         }
     }
-    await gameSetup();
+    function bruh() {
+        gameSetup();
+    }
+    await playerData();
+    setTimeout(bruh, 10000)
+});
+
+//hide the map clue
+document.querySelector('#south').addEventListener('click', function (){
+    document.querySelector('#south').classList.add('hide');
+});
+
+document.querySelector('#west').addEventListener('click', function (){
+    document.querySelector('#west').classList.add('hide');
+});
+
+document.querySelector('#northeast').addEventListener('click', function (){
+    document.querySelector('#northeast').classList.add('hide');
+});
+
+document.querySelector('#north').addEventListener('click', function (){
+    document.querySelector('#north').classList.add('hide');
 });
 
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
+    let alert = document.querySelector('#alerts-p');
+    document.querySelector('#clue-button').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
-    await fetchData(`${url}/end-turn`);
+    const game_end = await fetchData(`${url}/end-turn`);
+    if (game_end.status === 0) {
+        alert.innerText = 'Musk found his car, you LOSE';
+    } else {
+        document.querySelector('#alerts').classList.remove('hide');
+        alert.innerText = 'Your turn has ended \n Starting new Round';
+    }
+    await fetchData(`${url}save-game`);
     await gameSetup();
-    alert('Your turn has ended \n A new round has begun');
+});
+
+//remove the alert
+document.querySelector('#alerts').addEventListener('click', function () {
+    document.querySelector('#alerts').classList.add('hide');
+    let alert = document.querySelector('#alerts-p');
+    alert.innerText = '';
 });
 
 //Draw the airports markers on the map
-async function playerMarker()  {
+async function playerMarker() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const playerLoc = await fetchData(`${url}locate/0`);
 
@@ -266,9 +376,21 @@ async function airportInRngMarker() {
                 marker.bindPopup(popupContent);
                 marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
-                    await fetchData(`${url}/movement/${airport.ident}`);
-                    console.log(`${url}movement/${airport.ident}`)
-                    layerGroup.clearLayers();
+                    const game_end = await fetchData(`${url}/movement/${airport.ident}`);
+                        if (game_end.status === 2) {
+                            document.querySelector('#alerts').classList.remove('hide');
+                            let alert = document.querySelector('#alerts-p');
+                            alert.innerText = 'You found Elon Musk! You WON the game!';
+                        }
+
+                    console.log(`${url}movement/${airport.ident}`);
+
+                    document.querySelector('#alerts').classList.remove('hide');
+                    if (game_end.status === 2) {
+                        document.querySelector('#alerts').classList.add('hide');
+                        let alert = document.querySelector('#alerts-p');
+                        alert.innerText = 'You found Elon Musk! You WON the game!';
+                    }
                     await gameSetup(url);
                 });
             }
@@ -280,15 +402,16 @@ async function airportInRngMarker() {
 async function airportsMarkers() {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     for (let airport of airports) {
-            const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
-            marker.bindPopup(`<b>${airport.name} </b>`);
-            marker.addTo(layerGroup);
+        const marker = L.marker([airport.latitude_deg, airport.longitude_deg], {icon: airportIcon}).addTo(map);
+        marker.bindPopup(`<b>${airport.name} </b>`);
+        marker.addTo(layerGroup);
     }
 }
 
 //right now only creates the markers for all airports and the player
 async function gameSetup() {
     try {
+        layerGroup.clearLayers();
         await playerData();
         await airportsMarkers()
         await playerMarker();
@@ -311,5 +434,3 @@ document.querySelector('#back-button2').addEventListener('click', function (evt)
     document.querySelector('#load-game').classList.add('hide');
     document.querySelector('#main-menu').classList.remove('hide');
 });
-
-
