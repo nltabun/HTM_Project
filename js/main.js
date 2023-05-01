@@ -144,22 +144,24 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
 });
 
 //submitting the answer to minigame question
-        document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
-            evt.preventDefault();
-            let alert = document.querySelector('#alerts-p');
-            document.querySelector('#miniForm').classList.add('hide');
-            const qId = document.querySelector("#passIt").title;
-            const answer = document.querySelector('input[name=choice1]:checked').value;
-            const result = await fetchData(`${url}minigame/answer/${qId}=${answer}`);
+document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
+    evt.preventDefault();
+    let alert = document.querySelector('#alerts-p');
+    document.querySelector('#miniForm').classList.add('hide');
+    const qId = document.querySelector("#passIt").title;
+    const answer = document.querySelector('input[name=choice1]:checked').value;
+    const result = await fetchData(`${url}minigame/answer/${qId}=${answer}`);
 
-            document.querySelector('#alerts').classList.remove('hide');
-            if (result.status === 1) {
-                alert.innerText = `Your answer was correct, you earned ${result.prize} stock`;
-            }else {
-                alert.innerText = `Your answer was incorrect. Better luck next time.`;
-            }
-            await gameSetup();
-    });
+    document.querySelector('#alerts').classList.remove('hide');
+    if (result.status === 1) {
+        alert.innerText = `Your answer was correct, you earned ${result.prize} stocks.`;
+    } else if (result.status === -1) {
+        alert.innerText = `Your answer was incorrect, you also lost ${result.prize} stocks.`;
+    } else {
+        alert.innerText = `Your answer was incorrect. Better luck next time.`;
+    }
+    await gameSetup();
+});
 
 //open the fuel menu
 document.querySelector('#action-fuel').addEventListener('click', function() {

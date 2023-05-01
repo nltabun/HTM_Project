@@ -70,13 +70,15 @@ def answer_minigame(connection, player, qid, answer):
     else:
         if player.location == 'KLAS' or player.location == 'KRNO':
             if player.money > 100:
+                result_prize = 100
                 player.money -= 100
             else:
+                result_prize = player.money
                 player.money = 0
 
             data = {
                 "status" : -1,
-                "prize" : -100
+                "prize" : result_prize
             }
         else:
             data = {
