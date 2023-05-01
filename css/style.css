@@ -23,7 +23,9 @@ html {
 }
 
 body {
+
     width: 98%;
+    margin: auto;
     background-color: #394a6c;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -390,6 +392,7 @@ button:hover, input:hover, label:hover {
 
 #alerts-p {
     font-size: large;
+    line-height: 3rem;
 }
 
 #alerts {
