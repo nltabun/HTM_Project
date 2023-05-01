@@ -22,106 +22,106 @@
 
         </h1>
     </header>
-
-    <main class="flex-wrap">
         <div id="map"></div>
 
-        <section class="select" id="info">
-            <div class="game-info">
-                <header>
-                    <h2>Info</h2>
-                </header>
-                <table>
-                    <tr>
-                        <td>Player Name: <span id="name"></span></td>
-                        <td>Stonks: <span id="stock"></span> TSLA</td>
-                        <td>Action points: <span id="actionpoints"></span></td>
-                        <td>Range: <span id="range"></span>Km</td>
-                        <td>Fuel: <span id="fuel"></span></td>
-                        <td>Location: <span id="player-location"></span></td>
-                    </tr>
-                </table>
+
+    <div id="map"></div>
+
+    <section class="select" id="info">
+        <div class="game-info">
+            <header>
+                <h2>Info</h2>
+            </header>
+            <table>
+                <tr>
+                    <td>Player Name: <span id="name"></span></td>
+                    <td>Stonks: <span id="stock"></span> TSLA</td>
+                    <td>Action points: <span id="actionpoints"></span></td>
+                    <td>Range: <span id="range"></span>Km</td>
+                    <td>Fuel: <span id="fuel"></span></td>
+                    <td>Location: <span id="player-location"></span></td>
+                </tr>
+            </table>
+        </section>
+        <div class="game-info">
+            <section class="select">
+                <div id="game-actions">
+                    <figure>
+                        <input class="formBtn" id="action-minigame" type="submit" value="Play a minigame">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-fuel" type="submit" value="Manage your fuel">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-clue" type="submit" value="Buy a clue">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-plane" type="submit" value="Plane market">
+                    </figure>
+                    <figure>
+                        <input class="formBtn" id="action-end" type="submit" value="End turn">
+                    </figure>
+                    <div class="hide listener" id="northeast">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="northeast" src="img/map/northeast.png">
+                    </div>
+                    <div class="hide listener" id="north">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="north listener" src="img/map/north.jpg">
+                    </div>
+                    <div class="hide listener" id="west">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="west" src="img/map/west.jpg">
+                    </div>
+                    <div class="hide listener" id="south">
+                        <p>Elon musk is located in the highlighted area</p>
+                        <img alt="south" src="img/map/south.jpg">
+                    </div>
+
+
+                    <div class="options">
+
+                        <form class="hide" id="clue-form">
+                            <figure id="clue-button">
+                                <input class="formBtn hide" id="confirm-clue" type="submit" value="Price: 100 stock">
+                            </figure>
+                            <p id="clue-p"></p>
+                        </form>
+
+                        <form class="hide" id="fuelForm">
+                            <td><p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
+                            <input checked="checked" id="load" name="buy-load" type="radio" value="load">
+                            <label for="load">Load (custom amount)</label>
+                            <input id="max" name="buy-load" type="radio" value="max">
+                            <label for="max">Load (max amount)</label><br>
+                            <input id="buy" name="buy-load" type="radio" value="buy">
+                            <label for="buy">Buy fuel</label><br>
+                            <input id="how-much" placeholder="Enter the amount of fuel" type="text">
+                            <input class="formBtn" type="submit" value="Submit">
+                        </form>
+                        <div>
+                            <form class="hide" id="miniForm">
+                                <td><span id="question"></span></td>
+                                <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
+                                           value="1">
+                                    <label for="a1" id="aa1"></label></td>
+                                <td><input class="options" id="a2" name="choice1" type="radio" value="2">
+                                    <label for="a2" id="aa2"></label></td>
+                                <td><input class="options" id="a3" name="choice1" type="radio" value="3">
+                                    <label for="a3" id="aa3"></label></td>
+                                <td><input class="options" id="a4" name="choice1" type="radio" value="4">
+                                    <label for="a4" id="aa4"></label></td>
+                                <input class="formBtn" id="aa" type="submit" value="Submit">
+                                <div class="hide" id="passIt" title="b"></div>
+                            </form>
+                        </div>
+                    </div>
+                <div class="hide" id="alerts">
+                    <p id="alerts-p"></p>
+                    <p>Click to hide</p>
+                </div>
             </div>
-        </section>
-        <section class="select">
-            <div id="game-actions">
-                <figure>
-                    <input class="formBtn" id="action-minigame" type="submit" value="Minigame">
-                </figure>
-                <figure>
-                    <input class="formBtn" id="action-fuel" type="submit" value="Fuel management">
-                </figure>
-                <figure>
-                    <input class="formBtn" id="action-clue" type="submit" value="Clue">
-                </figure>
-                <figure>
-                    <input class="formBtn" id="action-plane" type="submit" value="Plane market">
-                </figure>
-                <figure>
-                    <input class="formBtn" id="action-end" type="submit" value="End turn">
-                </figure>
-                <div class="hide" id="northeast">
-                    <p>Elon musk is located in the highlighted area</p>
-                    <img alt="northeast" src="img/map/northeast.png">
-                </div>
-                <div class="hide" id="north">
-                    <p>Elon musk is located in the highlighted area</p>
-                    <img alt="north" src="img/map/north.jpg">
-                </div>
-                <div class="hide" id="west">
-                    <p>Elon musk is located in the highlighted area</p>
-                    <img alt="west" src="img/map/west.jpg">
-                </div>
-                <div class="hide" id="south">
-                    <p>Elon musk is located in the highlighted area</p>
-                    <img alt="south" src="img/map/south.jpg">
-                </div>
-                <div class="options">
-                    <form class="hide" id="clue-form">
-                        <figure id="clue-button">
-                            <input class="formBtn hide" id="confirm-clue" type="submit" value="Price: 100 stock">
-                        </figure>
-                        <p id="clue-p"></p>
-                    </form>
-                    <form class="hide" id="fuelForm">
-                        <td><p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
-                        <input checked="checked" id="load" name="buy-load" type="radio" value="load">
-                        <label for="load">Load (custom amount)</label>
-                        <input id="max" name="buy-load" type="radio" value="max">
-                        <label for="max">Load (max amount)</label><br>
-                        <input id="buy" name="buy-load" type="radio" value="buy">
-                        <label for="buy">Buy fuel</label><br>
-                        <input id="how-much" placeholder="Enter the amount of fuel" type="text">
-                        <input class="formBtn" type="submit" value="Submit">
-                    </form>
-                    <div>
-                        <form class="hide" id="miniForm">
-                            <td><span id="question"></span></td>
-                            <td><input checked="checked" class="options" id="a1" name="choice1" type="radio"
-                                       value="1">
-                                <label for="a1" id="aa1"></label></td>
-                            <td><input class="options" id="a2" name="choice1" type="radio" value="2">
-                                <label for="a2" id="aa2"></label></td>
-                            <td><input class="options" id="a3" name="choice1" type="radio" value="3">
-                                <label for="a3" id="aa3"></label></td>
-                            <td><input class="options" id="a4" name="choice1" type="radio" value="4">
-                                <label for="a4" id="aa4"></label></td>
-                            <input class="formBtn" id="aa" type="submit" value="Submit">
-                            <div class="hide" id="passIt" title="b"></div>
-                        </form>
-                    </div>
-                    <div>
-                        <form class="hide" id="planeForm">
-
-                        </form>
-
-                    </div>
-                    <div class="hide" id="alerts">
-                        <p id="alerts-p"></p>
-                        <p>Click to hide</p>
-                    </div>
-                </div>
-        </section>
+    </section>
 </div>
 </div>
 

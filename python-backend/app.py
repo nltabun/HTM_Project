@@ -86,6 +86,8 @@ def load_game(id):
     global plane_list
     plane_list = game_init.generate_airplanes()
 
+    get_weather_data(player.location, 1)
+
     return refresh_player_data()
 
 
@@ -104,14 +106,15 @@ def refresh_player_data():
 # Returns a list of all the airports in range (default: Player)
 # If parameter return_format=0 then return in JSON (default)
 @app.route('/airport-in-range/')
-def airports_in_range(current_player=1, return_format=0):
+def airports_in_range(current_player=1, return_format=0, ap_penalty=0):
     if current_player == 1: # If default then use globally defined player
         current_player = player
+        ap_penalty = player.movement_penalty
 
     airport_list = game_movement.get_all_airport_coordinates(config.conn)
     start_loc = game_movement.get_player_coordinates(config.conn, current_player.location)
     airports = game_movement.calculate_all_airport_distance(airport_list, start_loc)
-    in_range_list = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range())
+    in_range_list = game_movement.airports_in_range(airports, current_player.travel_speed, current_player.range(), ap_penalty)
 
     if return_format == 0:
         formatted_list = []
@@ -135,7 +138,7 @@ def airports_in_range(current_player=1, return_format=0):
 # Return status = 1 if no issues, otherwise 0
 @app.route('/save-game')
 def save_game():
-    save = game_data.save_to_game_table()
+    save = game_data.save_to_game_table(config.conn, player, musk)
 
     return json.dumps(save)
 
@@ -200,26 +203,33 @@ def get_all_airport_coordinates():
 
 
 @app.route('/weather/<location>')
-def get_weather_data(location):
-    api_key = 'f08355556ae585e753c3498c6cc4756c'
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={api_key}'
+def get_weather_data(location, set_local=1):
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&appid={config.api_key}'
     response = requests.get(url)
     if response.status_code == 200:
         weather_data = response.json()
         temp = weather_data['main']['temp']
+        weather_id = weather_data['weather'][0]['id']
         weather_desc = weather_data['weather'][0]['description']
         wind_speed = weather_data['wind']['speed']
         visibility = weather_data['visibility']
         weather_data = {
-            'temperature': temp,
-            'weather_desc': weather_desc,
-            'wind_speed': wind_speed,
-            'visibility': visibility
+            "status" : 1,
+            "temperature" : temp,
+            "weather_desc" : weather_desc,
+            "wind_speed" : wind_speed,
+            "visibility" : visibility
         }
-        return json.dumps(weather_data)
 
+        if set_local == 1:
+            if weather_id in config.bad_weather:
+                player.movement_penalty = 1
+            else:
+                player.movement_penalty = 0
+
+        return json.dumps(weather_data)
     else:
-        return json.dumps('PERKELE ei tänne!')
+        return json.dumps({"status" : 0})
 
 
 # Moves player to <location>
@@ -243,8 +253,6 @@ def movement(location):
 
         # Make the actual move. Returns if successful
         move = game_movement.player_movement(player, target)
-        
-        location_events(player)
 
         if move: # If the move was successful
             if player.location == musk.location: # Player found Musk and wins the game
@@ -368,7 +376,7 @@ def end_turn():
     musk_status = musk_actions() # Musk plays his turn
 
     if musk_status == 0:  # Musk wins the game
-        return json.dumps({"status": 0})  # Display lost game screen
+        return json.dumps({"status" : 0})  # Display lost game screen
     else:  # Game continues
         # Reset player ap
         player.current_ap = player.max_ap
@@ -376,7 +384,7 @@ def end_turn():
         player.done_minigame = 0
         player.bought_clue = 0
 
-        return json.dumps({"status": 1})  # Refresh player data and continue game normally
+        return json.dumps({"status" : 1})  # Refresh player data and continue game normally
 
 
 # Defines the actions Musk takes during his turn. Returns whether or not he has won the game: 0 = win, 1 = game continues

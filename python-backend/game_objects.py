@@ -40,6 +40,7 @@ class Player:
         self.travel_speed = plane.speed # ap per km
         self.max_ap = 5
         self.current_ap = self.max_ap
+        self.movement_penalty = 0
         self.done_minigame = 0
         self.bought_clue = 0
         self.enemy_location = ''
@@ -93,7 +94,7 @@ class Player:
         return f'{self.fuel_reserve}, {self.money}, {self.location}, \'{self.name}\', \'{self.plane.name}\', {self.plane.current_fuel}, {self.turns_left}'
     
     def update_values(self): # returns player statistics in the correct format to update a player in the database
-        return f'fuel = {self.fuel_reserve}, stonks = {self.money}, location = {self.location}, plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}, turns_left = {self.turns_left}'
+        return f'fuel = {self.fuel_reserve}, stonks = {self.money}, location = \'{self.location}\', plane = \'{self.plane.name}\', plane_fuel = {self.plane.current_fuel}, turns_left = {self.turns_left}'
     
     def fuel_status(self):
         return f'Plane fuel tank: {self.plane.current_fuel}/{self.plane.fuel_capacity}\nFuel reserve: {self.fuel_reserve}'

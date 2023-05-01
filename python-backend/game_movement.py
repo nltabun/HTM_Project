@@ -3,6 +3,7 @@
 from geopy import distance
 import math
 
+
 # Fetches airport name with an ICAO code
 def select_airport(connection, location):
     sql = f'SELECT name FROM airport WHERE ident = \'{location}\''
@@ -12,6 +13,7 @@ def select_airport(connection, location):
 
     return result
 
+
 def airport_municipality(connection, location):
     sql = f'SELECT municipality FROM airport WHERE ident = \'{location}\''
     cursor = connection.cursor()
@@ -20,13 +22,19 @@ def airport_municipality(connection, location):
 
     return result
 
+
 # Fetch a defined number of random airports from airport database. Default 2
-def random_airports(connection, count=2):
-    sql = f'SELECT name, ident FROM airport ORDER BY RAND() LIMIT {count}'
+# Optionally get coordinates for airports aswell
+def random_airports(connection, count=2, coords=0):
+    if coords == 0:
+        sql = f'SELECT name, ident FROM airport ORDER BY RAND() LIMIT {count}'
+    else:
+        sql = f'SELECT name, ident, latitude_deg, longitude_deg FROM airport ORDER BY RAND() LIMIT {count}'
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
+
 
 # Fetches players ICAO code
 def player_location_name(connection, player):
@@ -39,15 +47,17 @@ def player_location_name(connection, player):
 
     return result
 
+
 # Fetches players coordinates
 def get_player_coordinates(connection, player_loc):
     sql = f'SELECT latitude_deg, longitude_deg FROM airport WHERE ident = \'{player_loc}\''
 
     cursor = connection.cursor()
     cursor.execute(sql)
-    tulos = cursor.fetchone()
+    result = cursor.fetchone()
     
-    return tulos
+    return result
+
 
 # Fetches coordinates for all airports
 def get_all_airport_coordinates(connection):
@@ -63,12 +73,14 @@ def get_all_airport_coordinates(connection):
     
     return airport_coordinates
 
+
 # Does the calculation between the player and an airport.
 def calculate_distance(location_data, player_location):
     player_coordinates = (player_location[0], player_location[1])
     airport_location = (location_data[0], location_data[1])
     
     return float(distance.distance(airport_location, player_coordinates).km)
+
 
 # Calculates the distance between the player and all airports
 def calculate_all_airport_distance(airport_list, player_coordinates):
@@ -82,13 +94,16 @@ def calculate_all_airport_distance(airport_list, player_coordinates):
     
     return distances
 
+
 # Makes a list of airports that are in range
-def airports_in_range(airport_list, player_movement_per_ap, player_range=0):
+def airports_in_range(airport_list, player_movement_per_ap, player_range=0, ap_penalty=0):
     in_range = []
 
     for row in airport_list:
         if row[1] <= player_range:
-            ap_cost = math.ceil(row[1] / player_movement_per_ap)
+            ap_cost = math.ceil(row[1] / player_movement_per_ap) + ap_penalty
+            if ap_cost > 5:
+                continue
             row_with_ap = (row[0], row[1], ap_cost, row[2], row[3], row[4])
 
             in_range.append(row_with_ap)
