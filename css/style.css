@@ -23,7 +23,6 @@ html {
 }
 
 body {
-
     width: 98%;
     margin: auto;
     background-color: #394a6c;
@@ -46,7 +45,8 @@ body {
 }
 
 .container {
-    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .page-title {
@@ -61,23 +61,11 @@ body {
     text-align: center;
 }
 
-
-@media screen and (min-width: 800px) {
-    #map {
-        height: 50rem;
-        width: 70rem;
-    }
-
-    #game-info {
-        height: 50rem;
-        width: 70rem;
-    }
-
-    .select {
-        height: 50rem;
-        width: 70rem;
-    }
+#map {
+    height: 45vw;
+    width: 40vw;
 }
+
 
 #map {
     border-radius: 6px;
@@ -90,7 +78,7 @@ body {
 
 
 #main-menu {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -104,7 +92,7 @@ body {
 }
 
 #new-game {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -114,7 +102,7 @@ body {
 }
 
 #load-game {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -126,7 +114,7 @@ body {
 .menu-form {
     display: flex;
     width: 35%;
-    margin: 4rem auto;
+    margin: 2vw auto;
     flex-direction: column;
     color: white;
     border: 1px solid #9BA4B5;
@@ -135,7 +123,7 @@ body {
 
 .formBtn {
     width: 45%;
-    height: 3rem;
+    height: 2vw;
     background: #212A3E;
     color: #fff;
     font-weight: 100;
@@ -246,8 +234,8 @@ button:hover, input:hover, label:hover {
     font-size: small;
     border-radius: 6px;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
-    width: 55rem;
-    height: 50%;
+    width: 45vw;
+    height: 38vw;
     margin-bottom: 1rem;
     background-color: #212A3E;
     float: right;
@@ -308,7 +296,7 @@ button:hover, input:hover, label:hover {
 }
 
 .options {
-    list-style-type:none;
+    list-style-type: none;
     margin: 25px 0 0 0;
     padding: 0;
 }
@@ -388,6 +376,7 @@ button:hover, input:hover, label:hover {
 #fuelForm p {
     font-weight: bold;
     font-size: large;
+    margin-top: 1rem;
 }
 
 #alerts-p {
@@ -405,11 +394,99 @@ button:hover, input:hover, label:hover {
 }
 
 
-#miniForm span, label{
+#miniForm span, label {
     font-size: large;
 }
 
-.options #confirm-clue{
+.options #confirm-clue {
     text-align: center;
 }
 
+/* Small screens */
+@media (max-width: 768px) {
+  /* Adjust the font size of the page title */
+  .page-title {
+    font-size: 28px;
+  }
+
+  /* Reduce the size of the map */
+  #map {
+    height: 250px;
+  }
+
+  /* Center the game info */
+  .game-info {
+    text-align: center;
+  }
+
+  /* Make the table rows stack on top of each other */
+  .game-info table tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* Adjust the font size and line height of the table cells */
+  .game-info table td {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Make the game action buttons stack on top of each other */
+  #game-actions figure {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* Adjust the font size of the game action buttons */
+  #game-actions .formBtn {
+    font-size: 15px;
+  }
+}
+
+/* Medium screens */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Adjust the font size of the page title */
+  .page-title {
+    font-size: 36px;
+  }
+
+  /* Reduce the size of the map */
+  #map {
+    height: 350px;
+  }
+
+  /* Adjust the font size and line height of the table cells */
+  .game-info table td {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* Adjust the font size of the game action buttons */
+  #game-actions .formBtn {
+    font-size: 15px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1025px) {
+
+
+  #map {
+    height: 45vw;
+  }
+
+  /* Adjust the font size and line height of the table cells */
+  .game-info table td {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  /* Adjust the font size of the game action buttons */
+  #game-actions .formBtn {
+    font-size: 15px;
+  }
+
+  .options .formBtn{
+      width: 30vw;
+  }
+}
