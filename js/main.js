@@ -172,7 +172,7 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
 });
 
 //submitting the answer to minigame question
-document.querySelector('#miniForm').addEventListener('submit', async function (evt) {
+document.querySelector('#miniForm').addEventListener('submit', async function(evt) {
     evt.preventDefault();
     let alert = document.querySelector('#alerts-p');
     document.querySelector('#miniForm').classList.add('hide');
@@ -182,7 +182,9 @@ document.querySelector('#miniForm').addEventListener('submit', async function (e
 
     document.querySelector('#alerts').classList.remove('hide');
     if (result.status === 1) {
-        alert.innerText = `Your answer was correct, you earned ${result.prize} stock`;
+        alert.innerText = `Your answer was correct, you earned ${result.prize} stocks.`;
+    } else if (result.status === -1) {
+        alert.innerText = `Your answer was incorrect, you also lost ${result.prize} stocks.`;
     } else {
         alert.innerText = `Your answer was incorrect. Better luck next time.`;
     }
