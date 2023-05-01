@@ -86,16 +86,20 @@ async function playerData() {
     let AP = document.querySelector('#actionpoints');
     AP.innerText = playerData.ap;
 
+    let currentPlane = document.querySelector('#plane');
+    currentPlane.innerText = playerData.plane;
+
     let range = document.querySelector('#range');
     range.innerText = Math.round(playerData.range);
 
     let fuel = document.querySelector('#fuel');
     fuel.innerText = `${playerData.fuelCurrent} / ${playerData.fuelCapacity}`;
 
-     let fuelStorage = document.querySelector('#fuelStorage');
+    let fuelStorage = document.querySelector('#fuelStorage');
     fuelStorage.innerText = playerData.fuelReserve;
 
     if (playerData.ap <= 0) {
+        document.querySelector('#planeForm').classList.add('hide');
         document.querySelector('#fuelForm').classList.add('hide');
         document.querySelector('#miniForm').classList.add('hide');
         document.querySelector('#clue-form').classList.add('hide');
@@ -119,6 +123,7 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
     let alert = document.querySelector('#alerts-p');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
@@ -211,9 +216,32 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
     }
 });
 
+//open the plane browser
+document.querySelector('#action-plane').addEventListener('click', async function(evt) {
+    evt.preventDefault();
+    const target = document.querySelector('#planeForm-ol');
+    target.innerHTML = '';
+
+    document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#planeForm').classList.remove('hide');
+
+    const planes = await fetchData(`${url}planes/browse`);
+
+    for (const plane of planes.planes) {
+        target.innerHTML += `<li> <input type="radio" id="${plane.index}"> <label for="${plane.index}">name: ${plane.name}
+                            <br> fuel capacity: ${plane.fuelCapacity} 
+                            <br> fuel efficiency: ${plane.fuelEfficiency}
+                            <br> speed: ${plane.speed}
+                            <br> cost: ${plane.cost} </label></li>`;
+    }
+});
+
 //buy a clue thing idk at this point
 document.querySelector('#action-clue').addEventListener('click', function() {
     document.querySelector('#fuelForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#clue-form').classList.remove('hide');
     document.querySelector('#clue-button').classList.remove('hide');
@@ -225,6 +253,7 @@ document.querySelector('#action-clue').addEventListener('click', function() {
 //confirm clue purchase and give the clue
 document.querySelector('#confirm-clue').addEventListener('click', async function (evt) {
     evt.preventDefault();
+    let doneSetup = 0;
     document.querySelector('#clue-button').classList.add('hide');
     const clue = await fetchData(`${url}clues`);
     let clue_p = document.querySelector('#clue-p');
@@ -264,6 +293,8 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
                         marker.bindPopup(`<b>${airport[0]}</b>`);
                         marker.setZIndexOffset(1000);
                         marker.addTo(layerGroup);
+
+                        doneSetup = 1;
                     }
                 }
         }
@@ -271,8 +302,13 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
     function bruh() {
         gameSetup();
     }
-    await playerData();
-    setTimeout(bruh, 10000)
+
+    if (doneSetup === 1) {
+        await playerData();
+        setTimeout(bruh, 10000);
+    } else {
+        await gameSetup();
+    }
 });
 
 //hide the map clue
@@ -295,10 +331,10 @@ document.querySelector('#north').addEventListener('click', function (){
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
     let alert = document.querySelector('#alerts-p');
-    document.querySelector('#clue-button').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
+    document.querySelector('#planeForm').classList.add('hide');
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
         alert.innerText = 'Musk found his car, you LOSE';
