@@ -94,71 +94,71 @@ def answer_minigame(connection, player, qid, answer):
 
 # Function for buying clues
 def buy_clue(connection, player, musk):
-        # Player has enough stonks, now we deduct the price
-        player.money = player.money - 100
+    # Player has enough stonks, now we deduct the price
+    player.money = player.money - 100
 
-        # Randomize which clue we return
-        random_clue = random.randint(1, 3)  
+    # Randomize which clue we return
+    random_clue = random.randint(1, 3)  
 
-        # Gives the bearing of musk compared to the player
-        if random_clue == 1:
-            player_coord = game_movement.get_player_coordinates(connection, player.location)
-            musk_coord = game_movement.get_player_coordinates(connection, musk.location)
+    # Gives the bearing of musk compared to the player
+    if random_clue == 1:
+        player_coord = game_movement.get_player_coordinates(connection, player.location)
+        musk_coord = game_movement.get_player_coordinates(connection, musk.location)
+        data = {
+            "status" : 1,
+            "clueType" : 1,
+            "clue" : get_bearing(player_coord, musk_coord)
+        }
+    # "Zone" in which Musk currently resides
+    elif random_clue == 2:
+        # Selects the zone where Musk is located at
+        sql = f'SELECT ident, zone FROM airport WHERE ident = \'{musk.location}\''
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        if cursor.rowcount > 0:
             data = {
                 "status" : 1,
-                "clueType" : 1,
-                "clue" : get_bearing(player_coord, musk_coord)
+                "clueType" : 2,
             }
-        # "Zone" in which Musk currently resides
-        elif random_clue == 2:
-            # Selects the zone where Musk is located at
-            sql = f'SELECT ident, zone FROM airport WHERE ident = \'{musk.location}\''
-            cursor = connection.cursor()
-            cursor.execute(sql)
-            result = cursor.fetchall()
-
-            if cursor.rowcount > 0:
-                data = {
-                    "status" : 1,
-                    "clueType" : 2,
-                }
-                for row in result:
-                    zone = row[1]
-                    if zone == 1: # Musk is currently in the Northeast
-                        data.update({"clue" : "NEA"})
-                    elif zone == 2: # Musk is currently in the South
-                        data.update({"clue" : "STH"})
-                    elif zone == 3: # Musk is currently in the Midwest
-                        data.update({"clue" : "MDW"})
-                    elif zone == 4: # Musk is currently in the Pacific
-                        data.update({"clue" : "PAC"})
-                    elif zone == 5: # Musk is currently in Canada
-                        data.update({"clue" : "CAN"})
-                    elif zone == 6: # Musk is currently in Mexico or Central America
-                        data.update({"clue" : "MCA"})
-            else:
-                data = {
-                    "status" : 0
-                }
-        # Three potential Musk locations 
-        elif random_clue == 3:
-            airports = game_movement.random_airports(connection, 2, 1)
-            musk_airport = game_movement.select_airport(connection, musk.location)[0][0]
-            musk_coords = game_movement.get_player_coordinates(connection, musk.location)
-            airports.append((musk_airport, musk.location, musk_coords[0], musk_coords[1]))
-            random.shuffle(airports)
-            
+            for row in result:
+                zone = row[1]
+                if zone == 1: # Musk is currently in the Northeast
+                    data.update({"clue" : "NEA"})
+                elif zone == 2: # Musk is currently in the South
+                    data.update({"clue" : "STH"})
+                elif zone == 3: # Musk is currently in the Midwest
+                    data.update({"clue" : "MDW"})
+                elif zone == 4: # Musk is currently in the Pacific
+                    data.update({"clue" : "PAC"})
+                elif zone == 5: # Musk is currently in Canada
+                    data.update({"clue" : "CAN"})
+                elif zone == 6: # Musk is currently in Mexico or Central America
+                    data.update({"clue" : "MCA"})
+        else:
             data = {
-                "status" : 1,
-                "clueType" : 3,
-                "clue" : airports
+                "status" : 0
             }
+    # Three potential Musk locations 
+    elif random_clue == 3:
+        airports = game_movement.random_airports(connection, 2, 1)
+        musk_airport = game_movement.select_airport(connection, musk.location)[0][0]
+        musk_coords = game_movement.get_player_coordinates(connection, musk.location)
+        airports.append((musk_airport, musk.location, musk_coords[0], musk_coords[1]))
+        random.shuffle(airports)
+        
+        data = {
+            "status" : 1,
+            "clueType" : 3,
+            "clue" : airports
+        }
 
-        # Reduce player ap and check "bought clue" for this turn
-        player.current_ap -= 1
-        player.bought_clue = 1
-        print(data)
-        return data
+    # Reduce player ap and check "bought clue" for this turn
+    player.current_ap -= 1
+    player.bought_clue = 1
+    print(data)
+    return data
 
 
 
