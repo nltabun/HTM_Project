@@ -100,6 +100,7 @@ async function playerData() {
 
     if (playerData.ap <= 0) {
         document.querySelector('#planeForm').classList.add('hide');
+        document.querySelector('#planeComparison').classList.add('hide');
         document.querySelector('#fuelForm').classList.add('hide');
         document.querySelector('#miniForm').classList.add('hide');
         document.querySelector('#clue-form').classList.add('hide');
@@ -124,6 +125,7 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
@@ -168,6 +170,8 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
 
 //open the fuel menu
 document.querySelector('#action-fuel').addEventListener('click', function() {
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
@@ -219,29 +223,85 @@ document.querySelector('#fuelForm').addEventListener('submit', async function(ev
 //open the plane browser
 document.querySelector('#action-plane').addEventListener('click', async function(evt) {
     evt.preventDefault();
-    const target = document.querySelector('#planeForm-ol');
-    target.innerHTML = '';
+    const list = document.querySelector('#planeForm-ol');
+    const current = document.querySelector('#currentPlane');
+    list.innerHTML = '';
 
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#clue-form').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
     document.querySelector('#planeForm').classList.remove('hide');
 
     const planes = await fetchData(`${url}planes/browse`);
 
-    for (const plane of planes.planes) {
-        target.innerHTML += `<li> <input type="radio" id="${plane.index}"> <label for="${plane.index}">name: ${plane.name}
+    for (let plane of planes.planes) {
+        if (planes.currentPlaneIdx === plane.index) {
+            current.innerHTML += `<td> Current plane: ${plane.name} 
+                                 <br> fuel capacity: ${plane.fuelCapacity}
+                                 <br> fuel efficiency: ${plane.fuelEfficiency}
+                                 <br> speed: ${plane.speed} </td>`;
+        } else {
+            list.innerHTML += `<li> <input type="radio" name="bruh" id="${plane.index}" value="${plane.index}"> <label for="${plane.index}">
+                                 name: ${plane.name}
                             <br> fuel capacity: ${plane.fuelCapacity} 
                             <br> fuel efficiency: ${plane.fuelEfficiency}
                             <br> speed: ${plane.speed}
                             <br> cost: ${plane.cost} </label></li>`;
+        }
     }
+});
+
+//plane comparison
+document.querySelector('#planeForm').addEventListener('submit', async function(evt) {
+    evt.preventDefault();
+    document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.remove('hide');
+
+    const compPlaneId = document.querySelector('input[name=bruh]:checked').value;
+    const planes = await fetchData(`${url}planes/browse`);
+    const comparisonData = await fetchData(`${url}planes/compare/${planes.currentPlaneIdx}=${compPlaneId}`);
+
+    const currentPlane = document.querySelector('#currentPlane2');
+    const stats = document.querySelector('#stats');
+    const comparablePlane = document.querySelector('#comparedPlane');
+
+    currentPlane.innerHTML = `<p>Current plane: 
+                              <br>name: ${comparisonData.old_plane.name} 
+                              <br>fuel capacity: ${comparisonData.old_plane.fuelCapacity} 
+                              <br> fuel efficiency: ${comparisonData.old_plane.fuelEfficiency}
+                              <br> speed: ${comparisonData.old_plane.speed}</p>`;
+    stats.innerText = `Stat differences: (positive = better, negative = worse) 
+                      \n fuel capacity: ${comparisonData.new_plane.fuelCapacity - comparisonData.old_plane.fuelCapacity} 
+                      \n fuel efficiency: ${Math.round((comparisonData.new_plane.fuelEfficiency - comparisonData.old_plane.fuelEfficiency) * 10) / 10} 
+                      \n speed: ${comparisonData.new_plane.speed - comparisonData.old_plane.speed} 
+                      \n new plane cost: ${comparisonData.cost} stock`;
+    comparablePlane.innerHTML = `<p>New plane: 
+                                <br>name: ${comparisonData.new_plane.name} 
+                                <br>fuel capacity: ${comparisonData.new_plane.fuelCapacity} 
+                                <br> fuel efficiency: ${comparisonData.new_plane.fuelEfficiency}
+                                <br> speed: ${comparisonData.new_plane.speed}</p>`;
+
+    document.querySelector('#planeComparison').addEventListener('submit', async function(evt){
+        evt.preventDefault();
+        document.querySelector('#planeComparison').classList.add('hide');
+        let alert = document.querySelector('#alerts-p');
+        document.querySelector('#alerts').classList.remove('hide');
+        const bruh = await fetchData(`${url}planes/buy=${compPlaneId}`);
+        if(bruh.status === 0) {
+            alert.innerText = 'Something went wrong with your purchase';
+        }else {
+            alert.innerText = 'Your purchase was successful';
+        }
+        await gameSetup();
+    });
 });
 
 //buy a clue thing idk at this point
 document.querySelector('#action-clue').addEventListener('click', function() {
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#clue-form').classList.remove('hide');
     document.querySelector('#clue-button').classList.remove('hide');
@@ -335,6 +395,7 @@ document.querySelector('#action-end').addEventListener('click', async function (
     document.querySelector('#fuelForm').classList.add('hide');
     document.querySelector('#miniForm').classList.add('hide');
     document.querySelector('#planeForm').classList.add('hide');
+    document.querySelector('#planeComparison').classList.add('hide');
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
         alert.innerText = 'Musk found his car, you LOSE';
@@ -353,7 +414,7 @@ document.querySelector('#alerts').addEventListener('click', function () {
     alert.innerText = '';
 });
 
-//Draw the airports markers on the map
+//Draw the players marker on the map
 async function playerMarker()  {
     const airports = await fetchData(`${url}airport/coordinates/all`);
     const playerLoc = await fetchData(`${url}locate/0`);

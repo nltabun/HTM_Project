@@ -35,7 +35,7 @@
                     <td>Player Name: <span id="name"></span></td>
                     <td>Stonks: <span id="stock"></span> TSLA</td>
                     <td>Action points: <span id="actionpoints"></span></td>
-                    <td>Current plane: *<span id="plane"></span>*</td>
+                    <td>Current plane: <span id="plane"></span></td>
                     <td>Range: <span id="range"></span>Km</td>
                     <td>Fuel: <span id="fuel"></span></td>
                     <td>Location: <span id="player-location"></span></td>
@@ -112,9 +112,17 @@
                             <div class="hide" id="passIt" title="b"></div>
                         </form>
                         <form class="hide" id="planeForm">
+                            <div id="currentPlane">
+                            </div>
                             <ol id="planeForm-ol">
                             </ol>
-                            <input class="formBtn" type="submit" value="Buy plane">
+                            <input class="formBtn" type="submit" value="Compare plane">
+                        </form>
+                        <form class="hide" id="planeComparison">
+                            <div id="currentPlane2"></div>
+                            <span id="stats"></span>
+                            <div id="comparedPlane"></div>
+                            <input class="formBtn" type="submit" value="Purchase plane">
                         </form>
                     </div>
 
