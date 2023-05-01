@@ -9,6 +9,15 @@
     width: 10px;
 }
 
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.space-evenly {
+    justify-content: space-evenly;
+}
+
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
@@ -48,7 +57,8 @@ body {
 }
 
 .container {
-    width: 100%;
+    max-width: 100%;
+    margin: auto;
 }
 
 .page-title {
@@ -64,25 +74,23 @@ body {
 }
 
 
-@media screen and (min-width: 800px) {
-    #map {
-        height: 50rem;
-        width: 70rem;
-    }
+#map {
+    width: 100%;
+    height: 40vh;
+    overflow: hidden;
 }
 
 #map {
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
     margin-bottom: 1rem;
-    width: 50%;
-    float: left;
+    width: 50%;: left;
     z-index: 1;
 }
 
 
 #main-menu {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -96,7 +104,7 @@ body {
 }
 
 #new-game {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -106,7 +114,7 @@ body {
 }
 
 #load-game {
-    width: 119rem;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -123,6 +131,7 @@ body {
     color: white;
     border: 1px solid #9BA4B5;
     background-color: #212A3E;
+    flex-direction: column;
 }
 
 .formBtn {
@@ -167,9 +176,28 @@ body {
     width: 10vh;
 }
 
-#alerts {
-    background-color: green;
+#alerts-p {
+    font-size: large;
 }
+
+#alerts {
+    padding: 2rem;
+    text-align: center;
+    z-index: 992;
+    background-color: #37618a;
+    position: relative;
+    border-radius: 4px;
+}
+
+
+#miniForm span, label {
+    font-size: large;
+}
+
+.options #confirm-clue {
+    text-align: center;
+}
+
 
 .menu-form p {
     margin: 2vh 10vh;
@@ -183,7 +211,6 @@ body {
     max-height: 270px;
     overflow-y: scroll;
 }
-
 
 .label {
     display: inline-block;
@@ -233,17 +260,23 @@ button:hover, input:hover, label:hover {
     font-size: small;
     border-radius: 6px;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
-    width: 55rem;
-    height: 50%;
+    width: 45vw;
     margin-bottom: 1rem;
     background-color: #212A3E;
-    float: right;
+    margin-left: 1vw;
+}
 
+.game-info table {
+    font-size: 10px;
 }
 
 #game-info {
-    width: 55%;
-    float: right;
+    width: 100%;
+
+}
+
+#game-info h2 {
+    margin-bottom: 1vw;
 }
 
 .select h2,
@@ -254,7 +287,6 @@ button:hover, input:hover, label:hover {
 
 .select figure {
     width: 4rem;
-    float: right;
     margin-right: 6rem;
     text-align: center;
     padding: 0.2rem;
@@ -263,8 +295,12 @@ button:hover, input:hover, label:hover {
 .select table {
     width: 100%;
     text-align: center;
+    border-radius: 4px;
 }
 
+.select #info {
+    height: 20vw;
+}
 
 #game-actions .formBtn {
     width: 10rem;
@@ -283,6 +319,9 @@ button:hover, input:hover, label:hover {
     text-align: center;
 }
 
+#info td{
+    font-size: large;
+}
 .select #game-actions {
     height: 40.4rem;
 }
@@ -376,4 +415,22 @@ button:hover, input:hover, label:hover {
 #fuelForm p {
     font-weight: bold;
     font-size: large;
+    margin-top: 0.1rem;
+}
+
+@media screen and (min-width: 769px) {
+    .select {
+        font-size: initial;
+    }
+
+    #map {
+        width: 50%;
+        height: initial;
+    }
+
+    #game-info {
+        width: 70%;
+        padding-left: 1rem;
+        box-sizing: border-box;
+    }
 }
