@@ -1,3 +1,4 @@
+import config
 import random
 
 
@@ -20,8 +21,8 @@ def trigger_event(player, evt):
     
 
 def location_event(player):
-    high_risk = {'KDTW', 'KSTL', 'KORD', 'MHPR', 'MMMX', 'MMGL'}
-    cartel_risk = {'MHPR', 'MMMX', 'MMGL'}
+    high_risk = config.high_risk
+    cartel_risk = config.cartel_risk
 
     if player.location in high_risk:
         probability = random.randint(1, 2)  # 50% chance for bad things to happen
