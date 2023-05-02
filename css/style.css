@@ -67,14 +67,6 @@ main {
     text-align: center;
 }
 
-
-@media screen and (min-width: 800px) {
-    #map {
-        height: 50rem;
-        width: 70rem;
-    }
-}
-
 #map {
     display: flex;
     border-radius: 6px;
