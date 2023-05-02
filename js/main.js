@@ -126,6 +126,8 @@ async function playerData() {
         document.querySelector('#west').classList.add('hide');
         document.querySelector('#northeast').classList.add('hide');
         document.querySelector('#north').classList.add('hide');
+        document.querySelector('#can').classList.add('hide');
+        document.querySelector('#mex').classList.add('hide');
         const game_end = await fetchData(`${url}/end-turn`);
         await fetchData(`${url}save-game`);
 
@@ -153,6 +155,8 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
@@ -208,6 +212,8 @@ document.querySelector('#action-fuel').addEventListener('click', function() {
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
 });
 
@@ -266,6 +272,12 @@ document.querySelector('#action-plane').addEventListener('click', async function
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#planeComparison').classList.add('hide');
     document.querySelector('#planeForm').classList.remove('hide');
+    document.querySelector('#south').classList.add('hide');
+    document.querySelector('#west').classList.add('hide');
+    document.querySelector('#northeast').classList.add('hide');
+    document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
 
     const planes = await fetchData(`${url}planes/browse`);
 
@@ -341,6 +353,8 @@ document.querySelector('#action-clue').addEventListener('click', function () {
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
     document.querySelector('#clue-form').classList.remove('hide');
     document.querySelector('#clue-button').classList.remove('hide');
 
@@ -428,6 +442,14 @@ document.querySelector('#north').addEventListener('click', function () {
     document.querySelector('#north').classList.add('hide');
 });
 
+document.querySelector('#can').addEventListener('click', function () {
+    document.querySelector('#can').classList.add('hide');
+});
+
+document.querySelector('#mex').addEventListener('click', function () {
+    document.querySelector('#mex').classList.add('hide');
+});
+
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
     let alert = document.querySelector('#alerts-p');
@@ -440,6 +462,8 @@ document.querySelector('#action-end').addEventListener('click', async function (
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
     
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
