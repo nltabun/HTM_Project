@@ -17,6 +17,11 @@ map.setView([45, -108], 4);
 const url = 'http://127.0.0.1:5000/';
 const layerGroup = L.layerGroup().addTo(map);
 
+async function delGame() {
+    await fetchData(`${url}game-end`);
+    window.location.reload();
+}
+
 //create a new game after entering name and desired game length
 document.querySelector('#newGameMenu-form').addEventListener('submit', async function (evt) {
     evt.preventDefault();
@@ -126,7 +131,8 @@ async function playerData() {
 
         if (game_end.status === 0) {
             document.querySelector('#alerts').classList.remove('hide');
-            alert.innerText = 'Musk found his car, you LOSE';
+            alert.innerText = 'Musk found his car, you LOSE. Game closes in 10 seconds';
+            setTimeout(delGame, 10000);
         } else {
             document.querySelector('#alerts').classList.remove('hide');
             alert.innerText = 'Your turn has ended \n Starting new Round';
@@ -358,7 +364,6 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
                 clue_p.innerText = `Elon Musk is ${clue.clue} of you`;
                 break;
             case 2:
-                //TODO add maps for mexico and canada
                 if (clue.clue === 'NEA') {
                     document.querySelector('#northeast').classList.remove('hide');
                 } else if (clue.clue === 'STH') {
@@ -368,7 +373,9 @@ document.querySelector('#confirm-clue').addEventListener('click', async function
                 } else if (clue.clue === 'PAC') {
                     document.querySelector('#west').classList.remove('hide');
                 } else if (clue.clue === 'CAN') {
+                    document.querySelector('#can').classList.remove('hide');
                 } else if (clue.clue === 'MCA') {
+                    document.querySelector('#mex').classList.remove('hide');
                 }
                 break;
             case 3:
@@ -436,7 +443,8 @@ document.querySelector('#action-end').addEventListener('click', async function (
     
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
-        alert.innerText = 'Musk found his car, you LOSE';
+        alert.innerText = 'Musk found his car, you LOSE. Game closes in 10 seconds';
+        setTimeout(delGame, 10000);
     } else {
         document.querySelector('#alerts').classList.remove('hide');
         alert.innerText = 'Your turn has ended \n Starting new Round';
@@ -447,7 +455,7 @@ document.querySelector('#action-end').addEventListener('click', async function (
 
 //remove the alert
 document.querySelector('#alerts').addEventListener('click', function () {
-    document.querySelector('#alerts').classList.add('hide');
+    document.querySelector('#alerts').classList.add('hide')
     let alert = document.querySelector('#alerts-p');
     alert.innerText = '';
 });
@@ -492,11 +500,18 @@ async function airportInRngMarker() {
                 marker.bindPopup(popupContent);
                 marker.addTo(layerGroup);
                 goButton.addEventListener('click', async function () {
-                    const game_end = await fetchData(`${url}/movement/${airport.ident}`);
+                    const game_end = await fetchData(`${url}movement/${airport.ident}`);
+                    const event = await fetchData(`${url}location-events`);
+
+                    if (event.status === 1) {
+                        let alert = document.querySelector('#alerts-p');
+                        alert.innerText = event.message;
+                    }
                     if (game_end.status === 2) {
                         document.querySelector('#alerts').classList.remove('hide');
                         let alert = document.querySelector('#alerts-p');
-                        alert.innerText = 'You found Elon Musk! You WON the game!';
+                        alert.innerText = 'You found Elon Musk! You WON the game! Game closes in 10 seconds';
+                        setTimeout(delGame, 10000);
                     }
                     await gameSetup(url);
                 });
