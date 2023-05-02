@@ -27,10 +27,14 @@ html {
 }
 
 body {
-    width: 98%;
     background-color: #394a6c;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .button {
@@ -72,17 +76,21 @@ body {
 }
 
 #map {
+    display: flex;
     border-radius: 6px;
-    box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+    margin-left: 1rem;
     margin-bottom: 1rem;
-    width: 50%;
-    float: left;
+    max-width: 45%;
+    width: 45%;
+    min-height: 400px;
+    height: initial;
     z-index: 1;
 }
 
 
 #main-menu {
-    width: 119rem;
+    width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -96,7 +104,7 @@ body {
 }
 
 #new-game {
-    width: 119rem;
+    width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -106,7 +114,7 @@ body {
 }
 
 #load-game {
-    width: 119rem;
+    width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
@@ -237,13 +245,28 @@ button:hover, input:hover, label:hover {
     height: 50%;
     margin-bottom: 1rem;
     background-color: #212A3E;
-    float: right;
-
 }
 
-#game-info {
-    width: 55%;
-    float: right;
+#right-panel {
+    width: 50%;
+    margin: auto 0;
+}
+
+.game-info {
+    display: block;
+    width: 50%;
+}
+
+#select-info {
+    width: 90%;
+}
+
+#select-actions {
+    width: 100%;
+}
+
+#action-panel {
+    width: 90%
 }
 
 .select h2,
@@ -253,9 +276,9 @@ button:hover, input:hover, label:hover {
 }
 
 .select figure {
-    width: 4rem;
-    float: right;
-    margin-right: 6rem;
+    width: 10rem;
+    align-items: center;
+    margin: auto;
     text-align: center;
     padding: 0.2rem;
 }
@@ -265,6 +288,14 @@ button:hover, input:hover, label:hover {
     text-align: center;
 }
 
+#select-info {
+    height: 15%;
+}
+
+.action-selectors {
+    display: flex;
+}
+
 
 #game-actions .formBtn {
     width: 10rem;
@@ -272,7 +303,6 @@ button:hover, input:hover, label:hover {
     color: white;
     font-weight: bold;
     font-size: 1.2em;
-    margin-left: -1rem;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
 
@@ -281,6 +311,7 @@ button:hover, input:hover, label:hover {
     border-radius: 6px;
     margin-bottom: 1rem;
     text-align: center;
+    width: 100%;
 }
 
 .select #game-actions {
