@@ -126,6 +126,8 @@ async function playerData() {
         document.querySelector('#west').classList.add('hide');
         document.querySelector('#northeast').classList.add('hide');
         document.querySelector('#north').classList.add('hide');
+        document.querySelector('#can').classList.add('hide');
+        document.querySelector('#mex').classList.add('hide');
         const game_end = await fetchData(`${url}/end-turn`);
         await fetchData(`${url}save-game`);
 
@@ -153,6 +155,8 @@ document.querySelector('#action-minigame').addEventListener('click', async funct
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
 
     const playerData = await fetchData(`${url}refresh-player-data`); //fetch the player data
     if (playerData.minigameDone === 1) {
@@ -208,6 +212,8 @@ document.querySelector('#action-fuel').addEventListener('click', function() {
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
     document.querySelector('#fuelForm').classList.remove('hide');
 });
 
@@ -266,9 +272,15 @@ document.querySelector('#action-plane').addEventListener('click', async function
     document.querySelector('#clue-form').classList.add('hide');
     document.querySelector('#planeComparison').classList.add('hide');
     document.querySelector('#planeForm').classList.remove('hide');
+    document.querySelector('#south').classList.add('hide');
+    document.querySelector('#west').classList.add('hide');
+    document.querySelector('#northeast').classList.add('hide');
+    document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
 
     const planes = await fetchData(`${url}planes/browse`);
-
+    let i = 0;
     for (let plane of planes.planes) {
         if (planes.currentPlaneIdx === plane.index) {
             current.innerHTML += `<td> Current plane: ${plane.name} 
@@ -276,12 +288,22 @@ document.querySelector('#action-plane').addEventListener('click', async function
                                  <br> fuel efficiency: ${plane.fuelEfficiency}
                                  <br> speed: ${plane.speed} </td>`;
         } else {
-            list.innerHTML += `<li> <input type="radio" name="bruh" id="${plane.index}" value="${plane.index}"> <label for="${plane.index}">
+            if (i === 0) {
+                list.innerHTML += `<li> <input type="radio" name="bruh" id="${plane.index}" value="${plane.index}" checked="checked"> <label for="${plane.index}">
                                  name: ${plane.name}
                             <br> fuel capacity: ${plane.fuelCapacity} 
                             <br> fuel efficiency: ${plane.fuelEfficiency}
                             <br> speed: ${plane.speed}
                             <br> cost: ${plane.cost} </label></li>`;
+            } else {
+                list.innerHTML += `<li> <input type="radio" name="bruh" id="${plane.index}" value="${plane.index}"> <label for="${plane.index}">
+                                 name: ${plane.name}
+                            <br> fuel capacity: ${plane.fuelCapacity} 
+                            <br> fuel efficiency: ${plane.fuelEfficiency}
+                            <br> speed: ${plane.speed}
+                            <br> cost: ${plane.cost} </label></li>`;
+            }
+           i++;
         }
     }
 });
@@ -341,6 +363,8 @@ document.querySelector('#action-clue').addEventListener('click', function () {
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
     document.querySelector('#clue-form').classList.remove('hide');
     document.querySelector('#clue-button').classList.remove('hide');
 
@@ -428,6 +452,14 @@ document.querySelector('#north').addEventListener('click', function () {
     document.querySelector('#north').classList.add('hide');
 });
 
+document.querySelector('#can').addEventListener('click', function () {
+    document.querySelector('#can').classList.add('hide');
+});
+
+document.querySelector('#mex').addEventListener('click', function () {
+    document.querySelector('#mex').classList.add('hide');
+});
+
 //end round button
 document.querySelector('#action-end').addEventListener('click', async function () {
     let alert = document.querySelector('#alerts-p');
@@ -440,6 +472,8 @@ document.querySelector('#action-end').addEventListener('click', async function (
     document.querySelector('#west').classList.add('hide');
     document.querySelector('#northeast').classList.add('hide');
     document.querySelector('#north').classList.add('hide');
+    document.querySelector('#can').classList.add('hide');
+    document.querySelector('#mex').classList.add('hide');
     
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
@@ -502,6 +536,13 @@ async function airportInRngMarker() {
                 goButton.addEventListener('click', async function () {
                     const game_end = await fetchData(`${url}movement/${airport.ident}`);
                     const event = await fetchData(`${url}location-events`);
+
+                    document.querySelector('#south').classList.add('hide');
+                    document.querySelector('#west').classList.add('hide');
+                    document.querySelector('#northeast').classList.add('hide');
+                    document.querySelector('#north').classList.add('hide');
+                    document.querySelector('#can').classList.add('hide');
+                    document.querySelector('#mex').classList.add('hide');
 
                     if (event.status === 1) {
                         let alert = document.querySelector('#alerts-p');
