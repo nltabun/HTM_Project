@@ -193,6 +193,30 @@ main {
     overflow-y: scroll;
 }
 
+#planeForm-ol {
+    list-style-type: none;
+}
+
+#planeForm,
+#planeComparison {
+    font-size: 16px;
+}
+
+#planeForm .formBtn {
+    margin-left: 7rem;
+}
+
+#planeComparison .formBtn {
+    margin: 2rem auto;
+}
+
+#currentPlane {
+    padding-left: 2rem;
+}
+
+#stats span {
+    font: 16x;
+}
 
 .label {
     display: inline-block;
@@ -236,6 +260,11 @@ button:hover, input:hover, label:hover {
     border-radius: 50%;
     border: black 2px solid;
 }
+
+#clue-p {
+    font-size: 18px;
+}
+
 
 .select {
     padding: 1em;
@@ -286,7 +315,12 @@ button:hover, input:hover, label:hover {
 
 .select table {
     width: 100%;
-    text-align: center;
+    font-size: 13px;
+    padding-top: 0.3rem;
+}
+
+.select td {
+    width: 45rem;
 }
 
 #select-info {
@@ -347,8 +381,11 @@ button:hover, input:hover, label:hover {
     bottom: 0;
 }
 
+
+
 .options input[type="radio"] {
-    opacity: 0.01;
+    opacity: 0.0;
+    position: relative;
     z-index: 100;
 }
 
@@ -392,18 +429,29 @@ button:hover, input:hover, label:hover {
 
 #miniForm .formBtn {
     width: 10rem;
+
     height: 3rem;
     color: white;
     font-weight: bold;
     font-size: 1.2em;
-    border: 2px solid #9BA4B5;
     margin: 1rem auto;
     text-align: center;
     box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
 }
 
+#miniForm label{
+    font-size: 18px;
+}
+#miniForm #question{
+    font-size: 18px;
+}
+
 #game-actions img {
     height: 30rem;
+}
+
+#game-actions p {
+    font-size: 18px;
 }
 
 #fuelForm p {
@@ -434,8 +482,9 @@ button:hover, input:hover, label:hover {
     #action-panel {
         width: auto;
     }
-    
+
     #select-actions {
         width: auto;
     }
 }
+
