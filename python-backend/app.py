@@ -217,33 +217,36 @@ def get_all_airport_coordinates():
 
 @app.route('/weather/<location>')
 def get_weather_data(location, set_local=1):
-    municipality = game_movement.airport_municipality(config.conn, location)
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={municipality}&units=metric&appid={config.api_key}'
-    response = requests.get(url)
+    try:
+        municipality = game_movement.airport_municipality(config.conn, location)
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={municipality}&units=metric&appid={config.api_key}'
+        response = requests.get(url)
 
-    if response.status_code == 200:
-        weather_data = response.json()
-        temp = weather_data['main']['temp']
-        weather_id = str(weather_data['weather'][0]['id'])
-        weather_desc = weather_data['weather'][0]['description']
-        wind_speed = weather_data['wind']['speed']
-        visibility = weather_data['visibility']
-        weather_data = {
-            "status" : 1,
-            "temperature" : temp,
-            "weather_desc" : weather_desc,
-            "wind_speed" : wind_speed,
-            "visibility" : visibility
-        }
+        if response.status_code == 200:
+            weather_data = response.json()
+            temp = weather_data['main']['temp']
+            weather_id = str(weather_data['weather'][0]['id'])
+            weather_desc = weather_data['weather'][0]['description']
+            wind_speed = weather_data['wind']['speed']
+            visibility = weather_data['visibility']
+            weather_data = {
+                "status" : 1,
+                "temperature" : temp,
+                "weather_desc" : weather_desc,
+                "wind_speed" : wind_speed,
+                "visibility" : visibility
+            }
 
-        if set_local == 1:
-            if weather_id in config.bad_weather:
-                player.movement_penalty = 1
-            else:
-                player.movement_penalty = 0
+            if set_local == 1:
+                if weather_id in config.bad_weather:
+                    player.movement_penalty = 1
+                else:
+                    player.movement_penalty = 0
 
-        return json.dumps(weather_data)
-    else:
+            return json.dumps(weather_data)
+        else:
+            return json.dumps(config.weather_fallback)
+    except Exception:
         return json.dumps({"status" : 0})
 
 
