@@ -1,6 +1,8 @@
 # HTM_Project
+This project was made for educational purposes only. No warranty or guarantee is provided.
 ## Installing the game database
-1. Download and install MariaDB Server (recommended version 10.10.x)
-2. Launch MySQL Client
-3. Run command "source path\to\sql\file.sql" (eg. source C:/Users/Name/Documents/data.sql)
-4. ???
+Install to a local MySQL database using install_script.sql
+### OR
+Install using populatedb.py script
+## Running the game
+Run app.py and open to index.html in your browser
