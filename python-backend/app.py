@@ -95,9 +95,9 @@ def load_game(id):
 # Return final player data
 @app.route('/game-end')
 def end_game():
-    final_player_data = refresh_player_data()
+    final_player_data = player.stats()
     delete = game_data.delete_save(config.conn, player.id)
-    final_player_data.update({"status" : delete})
+    final_player_data.update(delete)
 
     return final_player_data
 
