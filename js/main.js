@@ -16,6 +16,8 @@ map.setView([45, -108], 4);
 // global variables
 const url = 'http://127.0.0.1:5000/';
 const layerGroup = L.layerGroup().addTo(map);
+let ElonSong = new Audio('img/elonWins/elonWin.mp3');
+ElonSong.volume = 0.05;
 
 async function delGame() {
     await fetchData(`${url}game-end`);
@@ -134,6 +136,8 @@ async function playerData() {
         if (game_end.status === 0) {
             document.querySelector('#alerts').classList.remove('hide');
             alert.innerText = 'Musk found his car, you LOSE. Game closes in 10 seconds';
+            document.querySelector('#elonDance').classList.remove('hide');
+            ElonSong.play();
             setTimeout(delGame, 10000);
         } else {
             document.querySelector('#alerts').classList.remove('hide');
@@ -478,6 +482,8 @@ document.querySelector('#action-end').addEventListener('click', async function (
     const game_end = await fetchData(`${url}/end-turn`);
     if (game_end.status === 0) {
         alert.innerText = 'Musk found his car, you LOSE. Game closes in 10 seconds';
+        document.querySelector('#elonDance').classList.remove('hide');
+        ElonSong.play();
         setTimeout(delGame, 10000);
     } else {
         document.querySelector('#alerts').classList.remove('hide');
