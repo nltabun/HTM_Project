@@ -184,7 +184,7 @@ INSERT INTO `airport` VALUES
   (3853,'KRNO','large_airport','Reno Tahoe International Airport',39.49909973144531,-119.76799774169922,4415,'NA','US','US-NV','Reno','yes','KRNO','RNO','RNO','',4),
   (3454,'KCLE','large_airport','Cleveland Hopkins International Airport',41.4117012024,-81.8498001099,791,'NA','US','US-OH','Cleveland','yes','KCLE','CLE','CLE','',3),
   (4732,'MMMY','medium_airport','General Mariano Escobedo International Airport',25.7785,-100.107002,1278,'NA','MX','MX-NLE','Monterrey','yes','MMMY','MTY','','',6),
-  (4713,'MMHO','large_airport','General Ignacio P. Garcia International ',29.095899581900003,-111.047996521,627,'NA','MX','MX-SON','Hermosillo','yes','MMHO','HMO','','', 6),
+  (4713,'MMHO','large_airport','General Ignacio P. Garcia International Airport',29.095899581900003,-111.047996521,627,'NA','MX','MX-SON','Hermosillo','yes','MMHO','HMO','','', 6),
   (4644,'MGGT','large_airport','La Aurora Airport',14.5833,-90.527496,4952,'NA','GT','GT-GU','Guatemala City','yes','MGGT','GUA','','',6),
   (43048,'MMTG','medium_airport','Angel Albino Corzo International Airport',16.5636005402,-93.02249908450001,1499,'NA','MX','MX-CHP','Tuxtla Gutiérrez','yes','MMTG','TGZ','TGZ','',6)
 ;
