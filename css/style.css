@@ -175,8 +175,17 @@ main {
     width: 10vh;
 }
 
+#alerts-p {
+    font-size: large;
+}
+
 #alerts {
-    background-color: green;
+    padding: 2rem;
+    text-align: center;
+    z-index: 992;
+    background-color: #37618a;
+    position: relative;
+    border-radius: 4px;
 }
 
 .menu-form p {
@@ -262,11 +271,11 @@ button:hover, input:hover, label:hover {
 }
 
 #select-actions {
-    width: 100%;
+    width: auto;
 }
 
 #action-panel {
-    width: 90%
+    width: auto;
 }
 
 .select h2,
@@ -290,6 +299,7 @@ button:hover, input:hover, label:hover {
 
 #select-info {
     height: 15%;
+    width: auto;
 }
 
 .action-selectors {
