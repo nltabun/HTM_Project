@@ -64,9 +64,12 @@ def setup_game_table(connection, player_name, start_loc, planes, musk_start_loc,
         start_money = config.player_money
         start_fuel = config.player_fuel
         start_plane = planes[config.player_plane]
-    else:
-        print('Invalid game length value.')
-
+    else: # Invalid game length value. Default to short
+        turns = random.randint(config.short_min, config.short_max)
+        start_money = config.player_money * 2
+        start_fuel = config.player_fuel * 3
+        start_plane = planes[config.player_plane]
+        
     musk_money = config.musk_money
     musk_fuel = config.musk_fuel
     musk_plane = planes[config.musk_plane]

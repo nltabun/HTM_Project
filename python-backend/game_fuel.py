@@ -23,8 +23,7 @@ def buy_fuel(player, fuel_amount):
 
 
 def load_fuel(player, fuel_amount=''):
-    if player.plane.current_fuel >= player.plane.fuel_capacity:
-        print('Fuel tank is already full.')
+    if player.plane.current_fuel >= player.plane.fuel_capacity: # Fuel tank is already full.
         return {"success" : False}
     
     old_current_fuel = player.plane.current_fuel
@@ -42,15 +41,12 @@ def load_fuel(player, fuel_amount=''):
     else:
         try:
             fuel_amount = int(fuel_amount)
-        except Exception:
-            print('Invalid value.')
+        except Exception: # Invalid value.
             return {"success" : False}
         
-        if fuel_amount > player.fuel_reserve:
-            print('Not enough fuel.')
+        if fuel_amount > player.fuel_reserve: # Not enough fuel.
             return {"success" : False}
-        elif player.plane.current_fuel + fuel_amount > player.plane.fuel_capacity:
-            print('Can\'t load that much fuel.')
+        elif player.plane.current_fuel + fuel_amount > player.plane.fuel_capacity: # Can't load that much fuel.
             return {"success" : False}
         else:
             player.plane.current_fuel += fuel_amount

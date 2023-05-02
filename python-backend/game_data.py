@@ -25,8 +25,6 @@ def load_game_table_data(connection, save_slot):
     cur.execute(query)
     result = cur.fetchall()
 
-    print(result)
-
     player = result[0]
     musk = result[1]
 
@@ -74,8 +72,6 @@ def saved_games(connection):
     cur = connection.cursor()
     cur.execute(query)
     result = cur.fetchall()
-
-    print(result)
 
     return result
 

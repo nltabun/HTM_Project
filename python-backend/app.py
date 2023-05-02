@@ -21,12 +21,13 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
+# For testing use
 @app.route('/test')
 def test():
     print(player)
     print(musk)
 
-    return test
+    return 'test'
 
 
 # For getting active saves or current highest game id # TODO: Maybe reformat returns
@@ -69,7 +70,6 @@ def new_game(name, game_length):
     
     game_init.new_game(config.conn, name, game_length, new_game_id)
 
-    print(f'New game created with id {new_game_id}')
     return json.dumps({"id" : new_game_id})
 
 
@@ -419,7 +419,6 @@ def musk_actions():
         # Randomize an airport from the list
         if len(in_range) != 0:
             n = random.randint(0, len(in_range) - 1)
-            print(str(n) + '/' + str(len(in_range) - 1))
         else:
             raise Exception('No airports in range')
 

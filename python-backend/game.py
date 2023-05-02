@@ -1,4 +1,4 @@
-# Game
+# Old main file deprecated
 
 import mysql.connector
 import game_fuel

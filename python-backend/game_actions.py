@@ -157,7 +157,7 @@ def buy_clue(connection, player, musk):
     # Reduce player ap and check "bought clue" for this turn
     player.current_ap -= 1
     player.bought_clue = 1
-    print(data)
+
     return data
 
 
