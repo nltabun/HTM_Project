@@ -26,8 +26,16 @@ short_max = 20
 long_min = 30
 long_max = 40
 
+# Exclude from start locations
+invalid_starts = 'WHERE NOT ident = \'PHNL\' AND NOT ident = \'PANC\' AND NOT ident = \'CYYT\''
+
+# High risk locations
+high_risk = {'KDTW','KSTL','KORD','MHPR','MMMX','MMGL','MHSC','MMMY','MMHO','MGGT','MMTG'}
+cartel_risk = {'MHPR','MMMX','MMGL','MHSC','MMMY','MMHO','MGGT','MMTG'}
+
 # Weather api
 api_key = 'f08355556ae585e753c3498c6cc4756c'
 bad_weather = {'200','201','202','210','211','212','221','230','231','232',
                '302','312','314','502','503','504','522','531','602','622',
                '701','711','721','731','741','751','761','762','771','781'}
+weather_fallback = {}

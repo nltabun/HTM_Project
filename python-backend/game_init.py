@@ -23,9 +23,9 @@ def generate_airplanes(format=0):
     planes = []
 
     plane_musk = game_objects.Airplane('Air Force Musk', 50000, 0.9, 1000, 50000, 999999)
-    plane1 = game_objects.Airplane('MickyD CD-01', 50000, 1.0, 850, 0, 150)
-    plane2 = game_objects.Airplane('Boijong 420', 100000, 1.1, 900, 0, 1050)
-    plane3 = game_objects.Airplane('Cloudbus A69', 88000, 0.9, 1000, 0, 1400)
+    plane1 = game_objects.Airplane('MickyD CD-01', 25000, 1.0, 850, 0, 150)
+    plane2 = game_objects.Airplane('Boijong 420', 64000, 1.1, 900, 0, 1050)
+    plane3 = game_objects.Airplane('Cloudbus A69', 55000, 0.9, 1000, 0, 1400)
     plane4 = game_objects.Airplane('Specific Statics F-61', 7000, 0.1, 2500, 0, 3000)
     plane5 = game_objects.Airplane('Sockweed F-66', 7500, 0.09, 2800, 0, 3500)
 
@@ -92,7 +92,7 @@ def reset_minigames(connection):
 # Setup new game
 def new_game(connection, name, game_len, id_key):
     cur = connection.cursor()
-    query_ident = f'SELECT ident FROM airport ORDER BY RAND() LIMIT 2'
+    query_ident = f'SELECT ident FROM airport {config.invalid_starts} ORDER BY RAND() LIMIT 2'
     cur.execute(query_ident)
     result = cur.fetchall()
     
