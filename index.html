@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <script defer src="js/main.js"></script>
+    <title>Hunt the Musk</title>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">
+
+            </h1>
+        </header>
+
+        <main>
+            <div id="map"></div>
+            <div class="game-info" id="right-panel">
+                <section class="select" id="select-info">
+                    <header>
+                        <h2>Info</h2>
+                    </header>
+                    <table>
+                        <tr>
+                            <td>Player Name: <span id="name"></span></td>
+                            <td>Stonks: <span id="stock"></span> TSLA</td>
+                            <td>Action points: <span id="actionpoints"></span></td>
+                            <td>Current plane: <span id="plane"></span></td>
+                            <td>Range: <span id="range"></span> Km</td>
+                            <td>Fuel: <span id="fuel"></span> l</td>
+                        </tr>
+                        <tr>
+                            <td>Location: <span id="player-location"></span></td>
+                            <td>Temperature: <span id="temp"></span>°C</td>
+                            <td>Weather: <span id="weather-desc"></span></td>
+                            <td>Wind speed: <span id="wind-speed"></span> m/s</td>
+                            <td>Visibility: <span id="visibility"></span> m</td>
+                        </tr>
+                    </table>
+                </section>
+                <div class="game-info" id="action-panel">
+                    <section class="select" id="select-actions">
+                        <div id="game-actions">
+                            <div class="action-selectors">
+                                <figure>
+                                    <input class="formBtn" id="action-minigame" type="submit" value="PLAY MINIGAME">
+                                </figure>
+                                <figure>
+                                    <input class="formBtn" id="action-fuel" type="submit" value="MANAGE FUEL">
+                                </figure>
+                                <figure>
+                                    <input class="formBtn" id="action-clue" type="submit" value="BUY A CLUE">
+                                </figure>
+                                <figure>
+                                    <input class="formBtn" id="action-plane" type="submit" value="BROWSE PLANES">
+                                </figure>
+                                <figure>
+                                    <input class="formBtn" id="action-end" type="submit" value="END TURN">
+                                </figure>
+                            </div>
+                            <div class="hide listener" id="northeast">
+                                <p>Elon musk is located in the highlighted area</p>
+                                <img alt="northeast" src="img/map/northeast.png">
+                            </div>
+                            <div class="hide listener" id="north">
+                                <p>Elon musk is located in the highlighted area</p>
+                                <img alt="north listener" src="img/map/north.jpg">
+                            </div>
+                            <div class="hide listener" id="west">
+                                <p>Elon musk is located in the highlighted area</p>
+                                <img alt="west" src="img/map/west.jpg">
+                            </div>
+                            <div class="hide listener" id="south">
+                                <p>Elon musk is located in the highlighted area</p>
+                                <img alt="south" src="img/map/south.jpg">
+                            </div>
+                            <div class="hide listener" id="can">
+                                <p>Elon musk is located in this area</p>
+                                <img alt="south" src="img/map/canada.jpg">
+                            </div>
+                            <div class="hide listener" id="mex">
+                                <p>Elon musk is located in this area</p>
+                                <img alt="south" src="img/map/mexico.jpg">
+                            </div>
+                            <div class="hide" id="elonDance">
+                                <p>Musk found his car, you LOSE. Game closes in 10 seconds</p>
+                                <img alt="south" src="img/elonWins/elon_dance.gif">
+                            </div>
+
+                            <div class="options">
+
+                                <form class="hide" id="clue-form">
+                                    <figure id="clue-button">
+                                        <input class="formBtn hide" id="confirm-clue" type="submit" value="Price: 100 stock">
+                                    </figure>
+                                    <p id="clue-p"></p>
+                                </form>
+
+                                <form class="hide" id="fuelForm">
+                                    <td><p>Fuel in reserve:</p> <span id="fuelStorage"></span></td>
+                                    <input checked="checked" id="load" name="buy-load" type="radio" value="load">
+                                    <label for="load">Load (custom amount)</label>
+                                    <input id="max" name="buy-load" type="radio" value="max">
+                                    <label for="max">Load (max amount)</label><br>
+                                    <input id="buy" name="buy-load" type="radio" value="buy">
+                                    <label for="buy">Buy fuel</label><br>
+                                    <input id="how-much" placeholder="Enter the amount of fuel" type="text">
+                                    <input class="formBtn" type="submit" value="Submit">
+                                </form>
+                                <form class="hide" id="miniForm">
+                                    <td><span id="question"></span></td>
+                                    <td><input checked="checked" class="options" id="a1" name="choice1" type="radio" value="1">
+                                        <label for="a1" id="aa1"></label></td>
+                                    <td><input class="options" id="a2" name="choice1" type="radio" value="2">
+                                        <label for="a2" id="aa2"></label></td>
+                                    <td><input class="options" id="a3" name="choice1" type="radio" value="3">
+                                        <label for="a3" id="aa3"></label></td>
+                                    <td><input class="options" id="a4" name="choice1" type="radio" value="4">
+                                        <label for="a4" id="aa4"></label></td>
+                                    <input class="formBtn" id="aa" type="submit" value="Submit">
+                                    <div class="hide" id="passIt" title="b"></div>
+                                </form>
+                                <form class="hide" id="planeForm">
+                                    <div id="currentPlane">
+                                    </div>
+                                    <ol id="planeForm-ol">
+                                    </ol>
+                                    <input class="formBtn" type="submit" value="Select plane">
+                                </form>
+                                <form class="hide" id="planeComparison">
+                                    <div id="currentPlane2"></div>
+                                    <span id="stats"></span>
+                                    <div id="comparedPlane"></div>
+                                    <input class="formBtn" type="submit" value="Purchase plane">
+                                </form>
+                            </div>
+
+                            <div id="alerts" class="hide">
+                                <p id="alerts-p"></p>
+                                <p>Click to hide</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <div class="menus">
+            <div id="main-menu">
+                <form class="menu-form" id="mainMenu-form">
+                    <h1>HUNT THE MUSK</h1>
+                    <input class="formBtn" id="new-button" type="submit" value="New Game">
+                    <input class="formBtn" id="load-button" type="submit" value="Load Game">
+                </form>
+            </div>
+            <div class="hide" id="new-game">
+                <form class="menu-form" id="newGameMenu-form">
+                    <h1>HUNT THE MUSK</h1>
+                    <p>Please enter your name</p>
+                    <input id="menu-input" name="playerName" placeholder="Player name" required type="text">
+                    <p>Do you want to play a short or long game?</p>
+                    <div class="options">
+                        <input checked="checked" id="short" name="game_length" type="radio" value="Short">
+                        <label for="short">Short</label>
+                        <input id="long" name="game_length" type="radio" value="Long">
+                        <label for="long">Long</label>
+                    </div>
+                    <input class="formBtn" id="new-game-button" type="submit" value="Start Game">
+                    <input class="formBtn" id="back-button" type="submit" value="Back">
+                </form>
+            </div>
+            <div class="hide" id="load-game">
+                <form class="menu-form" id="loadGameMenu-form">
+                    <h1>HUNT THE MUSK</h1>
+                    <div id="loadGame-list">
+                        <div class="options">
+                            <ol id="loadGame-ol">
+                            </ol>
+                        </div>
+                        <input class="formBtn" id="back-button2" type="submit" value="Back">
+                        <input class="formBtn" type="submit" value="Continue Game">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,490 @@
+/*@font-face {*/
+/*    font-family: Arial;*/
+/*    src: url('https://fonts.cdnfonts.com/css/arial-2');*/
+/*}*/
+
+/*https://colorhunt.co/palette/f1f6f9394867212a3e9ba4b5*/
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+html {
+    font-family: 'Josefin Sans', Serif, serif;
+    color: white;
+}
+
+body {
+    background-color: #394a6c;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.button {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 300ms;
+}
+
+
+.hide {
+    display: none;
+}
+
+.container {
+    width: 100%;
+}
+
+.page-title {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+.page-header {
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+#map {
+    display: flex;
+    border-radius: 6px;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    max-width: 45%;
+    width: 45%;
+    min-height: 400px;
+    height: initial;
+    z-index: 1;
+}
+
+
+#main-menu {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+    color: white;
+}
+
+.menus .formBtn {
+    margin: 2rem auto;
+}
+
+#new-game {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    z-index: 9998;
+    color: white;
+}
+
+#load-game {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    z-index: 9997;
+    color: white;
+}
+
+.menu-form {
+    display: flex;
+    width: 35%;
+    margin: 4rem auto;
+    flex-direction: column;
+    color: white;
+    border: 1px solid #9BA4B5;
+    background-color: #212A3E;
+}
+
+.formBtn {
+    width: 45%;
+    height: 3rem;
+    background: #212A3E;
+    color: #fff;
+    font-weight: 100;
+    font-size: 1.2em;
+}
+
+.formBtn:active {
+    background-color: #212A3E;
+    box-shadow: #212A3E;
+    transform: translateY(4px);
+}
+
+.loadBtn {
+    width: 45%;
+    height: 3rem;
+    background: black;
+    color: #fff;
+    font-weight: 100;
+    font-size: 1rem;
+    border: 1px solid #9BA4B5;
+    margin: 1rem auto;
+}
+
+#menu-input {
+    padding: 2vh;
+    background-color: #212A3E;
+    color: white;
+    border: 1px solid #9BA4B5;
+    width: 55%;
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.menu-form .radio {
+    display: flex;
+    margin: 0.5rem 15vh;
+    width: 10vh;
+}
+
+#alerts-p {
+    font-size: large;
+}
+
+#alerts {
+    padding: 2rem;
+    text-align: center;
+    z-index: 992;
+    background-color: #37618a;
+    position: relative;
+    border-radius: 4px;
+}
+
+.menu-form p {
+    margin: 2vh 10vh;
+}
+
+.menu-form h1 {
+    margin: 1rem auto;;
+}
+
+.menu-form ol {
+    max-height: 270px;
+    overflow-y: scroll;
+}
+
+#planeForm-ol {
+    list-style-type: none;
+}
+
+#planeForm,
+#planeComparison {
+    font-size: 16px;
+}
+
+#planeForm .formBtn {
+    margin-left: 7rem;
+}
+
+#planeComparison .formBtn {
+    margin: 2rem auto;
+}
+
+#currentPlane {
+    padding-left: 2rem;
+}
+
+#stats span {
+    font: 16x;
+}
+
+.label {
+    display: inline-block;
+    margin: 1rem 10vh;
+}
+
+.name {
+    display: flex;
+    width: 35%;
+    margin: 1rem 10vh;
+}
+
+.formBtn:hover {
+    background-color: #19222f;
+}
+
+button:hover, input:hover, label:hover {
+    cursor: pointer;
+}
+
+.red-icon {
+    background-color: indianred;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+.player-icon {
+    background-color: dodgerblue;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+.inRange-icon {
+    background-color: lawngreen;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+.clueAirport {
+    background-color: violet;
+    border-radius: 50%;
+    border: black 2px solid;
+}
+
+#clue-p {
+    font-size: 18px;
+}
+
+
+.select {
+    padding: 1em;
+    font-size: small;
+    border-radius: 6px;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+    width: 55rem;
+    height: 50%;
+    margin-bottom: 1rem;
+    background-color: #212A3E;
+}
+
+#right-panel {
+    width: 50%;
+    margin: auto 0;
+}
+
+.game-info {
+    display: block;
+    width: 50%;
+}
+
+#select-info {
+    width: 90%;
+}
+
+#select-actions {
+    width: auto;
+}
+
+#action-panel {
+    width: auto;
+}
+
+.select h2,
+.select figure {
+    margin: 0.3rem;
+    padding: 0;
+}
+
+.select figure {
+    width: 10rem;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    padding: 0.2rem;
+}
+
+.select table {
+    width: 100%;
+    font-size: 13px;
+    padding-top: 0.3rem;
+}
+
+.select td {
+    width: 45rem;
+}
+
+#select-info {
+    height: 15%;
+    width: auto;
+}
+
+.action-selectors {
+    display: flex;
+}
+
+
+#game-actions .formBtn {
+    width: 10rem;
+    height: 3rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+}
+
+#game-actions {
+    font-size: small;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%;
+}
+
+.select #game-actions {
+    height: 40.4rem;
+}
+
+#new-game #options {
+    width: 4rem;
+    text-align: center;
+}
+
+#load-game {
+    text-align: center;
+}
+
+#loadGame-ol {
+    list-style-type: none;
+}
+
+.options {
+    margin: 25px 0 0 0;
+    padding: 0;
+}
+
+.options label,
+.options input {
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+
+.options input[type="radio"] {
+    opacity: 0.0;
+    position: relative;
+    z-index: 100;
+}
+
+.options input[type="radio"]:checked + label {
+    background: #394867;
+}
+
+.options label {
+    padding: 5px;
+    border: 1px solid #9BA4B5;
+    cursor: pointer;
+    z-index: 90;
+}
+
+.options label:hover {
+    background: #212a3e;
+}
+
+.options {
+    margin: 1rem auto;
+    width: 40%;
+    height: 50%;
+    text-align: center;
+}
+
+.options input {
+    width: 98%;
+    text-align: center;
+}
+
+#fuelForm .formBtn {
+    width: 20rem;
+    height: 3rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 1rem auto;
+    text-align: center;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+}
+
+#miniForm .formBtn {
+    width: 10rem;
+
+    height: 3rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 1rem auto;
+    text-align: center;
+    box-shadow: rgba(1, 1, 1, 0.3) 2px 2px 2px 2px;
+}
+
+#miniForm label{
+    font-size: 18px;
+}
+#miniForm #question{
+    font-size: 18px;
+}
+
+#game-actions img {
+    height: 30rem;
+}
+
+#game-actions p {
+    font-size: 18px;
+}
+
+#fuelForm p {
+    font-weight: bold;
+    font-size: large;
+}
+
+@media screen and (max-width: 1800px) {
+    #map {
+        max-width: 90%;
+        width: 90%;
+        min-height: 400px;
+        height: 500px;
+        margin-left: 0;
+
+    }
+
+    #right-panel {
+        max-width: 90%;
+        width: 90%;
+
+    }
+
+    #select-info {
+        width: auto;
+    }
+
+    #action-panel {
+        width: auto;
+    }
+
+    #select-actions {
+        width: auto;
+    }
+}
+
