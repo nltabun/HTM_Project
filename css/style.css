@@ -408,3 +408,32 @@ button:hover, input:hover, label:hover {
     font-weight: bold;
     font-size: large;
 }
+
+@media screen and (max-width: 1800px) {
+    #map {
+        max-width: 90%;
+        width: 90%;
+        min-height: 400px;
+        height: 500px;
+        margin-left: 0;
+
+    }
+
+    #right-panel {
+        max-width: 90%;
+        width: 90%;
+
+    }
+
+    #select-info {
+        width: auto;
+    }
+
+    #action-panel {
+        width: auto;
+    }
+    
+    #select-actions {
+        width: auto;
+    }
+}
