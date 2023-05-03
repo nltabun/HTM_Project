@@ -286,7 +286,7 @@ document.querySelector('#action-plane').addEventListener('click', async function
     let i = 0;
     for (let plane of planes.planes) {
         if (planes.currentPlaneIdx === plane.index) {
-            current.innerHTML += `<td> Current plane: ${plane.name} 
+            current.innerHTML = `<td> Current plane: ${plane.name} 
                                  <br> fuel capacity: ${plane.fuelCapacity}
                                  <br> fuel efficiency: ${plane.fuelEfficiency}
                                  <br> speed: ${plane.speed} </td>`;
