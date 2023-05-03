@@ -5,4 +5,4 @@ Install to a local MySQL database using install_script.sql
 ### OR
 Install using populatedb.py script
 ## Running the game
-Run app.py and open to index.html in your browser
+Run app.py and open index.html in your browser
